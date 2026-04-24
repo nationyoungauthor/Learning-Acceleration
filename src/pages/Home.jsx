@@ -9,7 +9,7 @@ const games = [
     path: '/games/sequence-memory',
     icon: <FaLightbulb className="text-purple-400 text-2xl" />,
     desc: 'Memorize and repeat increasingly complex sequences to test your short-term memory capacity.',
-    img: '/sequenceMemory.png'
+    img: '/gameImage/sequenceMemory.png'
   },
   {
     id: 'visual-memory',
@@ -17,7 +17,7 @@ const games = [
     path: '/games/visual-memory',
     icon: <FaLightbulb className="text-red-400 text-2xl" />,
     desc: 'Remember patterns of tiles and recall them with increasing difficulty levels.',
-    img: '/visualMemory.png'
+    img: '/gameImage/visualMemory.png'
   },
   {
     id: 'word-memory',
@@ -25,56 +25,32 @@ const games = [
     path: '/games/word-memory',
     icon: <span className="text-blue-400 font-bold text-2xl font-serif">A</span>,
     desc: 'Remember a list of words and identify them among distractors.',
-    img: '/wordMemory.png'
+    img: '/gameImage/wordMemory.png'
   },
-  // {
-  //   id: 'chimp-test',
-  //   title: 'Chimp Test',
-  //   path: '/games/chimp-test',
-  //   icon: <FaBrain className="text-yellow-400 text-2xl" />,
-  //   desc: 'Are you smarter than a chimpanzee? Memorize the numbers in order.',
-  //   img: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop'
-  // },
-  // {
-  //   id: 'number-memory',
-  //   title: 'Number Memory',
-  //   path: '/games/number-memory',
-  //   icon: <FaListOl className="text-green-400 text-2xl" />,
-  //   desc: 'Remember the longest number possible after seeing it briefly.',
-  //   img: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop'
-  // },
-  // {
-  //   id: 'pattern-memory',
-  //   title: 'Pattern Memory',
-  //   path: '/games/pattern-memory',
-  //   icon: <FaThLarge className="text-pink-400 text-2xl" />,
-  //   desc: 'Memorize the visual pattern that flashes on the screen.',
-  //   img: 'https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?q=80&w=600&auto=format&fit=crop'
-  // },
-  // {
-  //   id: 'reaction-time',
-  //   title: 'Reaction Time',
-  //   path: '/games/reaction-time',
-  //   icon: <FaBolt className="text-orange-400 text-2xl" />,
-  //   desc: 'Test your visual reflexes and react as quickly as possible.',
-  //   img: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop'
-  // },
-  // {
-  //   id: 'typing-test',
-  //   title: 'Typing Test',
-  //   path: '/games/typing-test',
-  //   icon: <FaKeyboard className="text-cyan-400 text-2xl" />,
-  //   desc: 'How many words per minute can you type?',
-  //   img: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop'
-  // },
-  // {
-  //   id: 'aim-trainer',
-  //   title: 'Aim Trainer',
-  //   path: '/games/aim-trainer',
-  //   icon: <FaCrosshairs className="text-red-500 text-2xl" />,
-  //   desc: 'How quickly can you hit all the targets?',
-  //   img: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop'
-  // },
+  {
+    id: 'seen-number-memory',
+    title: 'Number Memory',
+    path: '/games/seen-number-memory',
+    icon: <span className="text-blue-400 font-bold text-2xl">1/9</span>,
+    desc: 'Remember which numbers you have seen before and which are new.',
+    img: '/gameImage/NumberMemory1.png'
+  },
+  {
+    id: 'number-sequence',
+    title: 'Number Sequence',
+    path: '/games/number-sequence',
+    icon: <span className="text-green-400 font-bold text-2xl">1/9</span>,
+    desc: 'Watch a growing sequence of numbers and repeat it in order. One more digit is added each round.',
+    img: '/gameImage/NumberSequence.png'
+  },
+  {
+    id: 'number-memory',
+    title: 'Number Memory',
+    path: '/games/number-memory',
+    icon: <span className="text-pink-400 font-bold text-2xl">1/9</span>,
+    desc: 'Memorize and recall increasingly longer number sequences to test your short-term memory capacity.',
+    img: '/gameImage/NumberMemory2.png'
+  },
 ];
 
 const Home = () => {

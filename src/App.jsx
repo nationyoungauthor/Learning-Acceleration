@@ -9,6 +9,9 @@ import Login from './pages/Login'
 import SequenceMemory from './pages/games/SequenceMemory'
 import VisualMemory from './pages/games/VisualMemory'
 import WordMemory from './pages/games/WordMemory'
+import SeenNumberMemory from './pages/games/SeenNumberMemory'
+import NumberMemory from './pages/games/NumberMemory'
+import NumberSequence from './pages/games/NumberSequence'
 
 import './App.css'
 
@@ -25,6 +28,9 @@ function App() {
             <Route path="/games/sequence-memory" element={<SequenceMemory />} />
             <Route path="/games/visual-memory" element={<VisualMemory />} />
             <Route path="/games/word-memory" element={<WordMemory />} />
+            <Route path="/games/seen-number-memory" element={<SeenNumberMemory />} />
+            <Route path="/games/number-memory" element={<NumberMemory />} />
+            <Route path="/games/number-sequence" element={<NumberSequence />} />
           </Routes>
         </main>
         <Footer />
