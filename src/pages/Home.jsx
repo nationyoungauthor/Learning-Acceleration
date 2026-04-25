@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaPlay, FaTrophy, FaLightbulb, FaBrain, FaListOl, FaThLarge, FaBolt, FaKeyboard, FaCrosshairs } from 'react-icons/fa';
+import { FaPlay, FaTrophy, FaLightbulb, FaBrain, FaListOl, FaThLarge, FaBolt, FaKeyboard, FaCrosshairs, FaPuzzlePiece, FaPalette } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 const games = [
@@ -51,6 +51,30 @@ const games = [
     desc: 'Memorize and recall increasingly longer number sequences to test your short-term memory capacity.',
     img: '/gameImage/NumberMemory2.png'
   },
+   {
+    id: 'memory-match',
+    title: 'Memory Match',
+    path: '/games/memory-match',
+    icon: <FaPuzzlePiece className="text-purple-400 text-3xl drop-shadow-md" />,
+    desc: 'Test your visual memory by matching pairs of icons in a grid',
+    img: '/gameImage/memoryMatch.png'
+  },
+  {
+    id: 'color-memory',
+    title: 'Color Memory',
+    path: '/games/color-memory',
+    icon: <FaPalette className="text-pink-400 text-3xl drop-shadow-md" />,
+    desc: 'Test your short-term memory by remembering and selecting a color you saw briefly. Can you tell similar shades apart?',
+    img: '/gameImage/colorMemory.png'
+  },
+  {
+    id: 'chimp-test',
+    title: 'Chimp Test',
+    path: '/games/chimp-test',
+    icon: <FaBrain className="text-red-400 text-3xl drop-shadow-md" />,
+    desc: 'Remember numbers and click them in ascending order! Numbers appear briefly, then disappear. Can you remember the sequence?',
+    img: '/gameImage/chimpTest.png'
+  },
 ];
 
 const Home = () => {
@@ -91,7 +115,10 @@ const Home = () => {
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-8 w-full mb-10 mt-10">
-            <button className="group flex items-center justify-center space-x-3 w-full sm:w-auto px-10 py-4 rounded-full bg-gradient-to-r from-[#00f2fe] to-[#4facfe] text-black font-black text-lg hover:from-[#3fe7f5] hover:to-[#6bb1f5] shadow-[0_0_20px_rgba(0,242,254,0.6)] hover:shadow-[0_0_30px_rgba(0,242,254,0.8)] transition-all hover:-translate-y-1.5 focus:outline-none">
+            <button 
+              onClick={() => document.getElementById('games-section')?.scrollIntoView({ behavior: 'smooth' })}
+              className="group flex items-center justify-center space-x-3 w-full sm:w-auto px-10 py-4 rounded-full bg-gradient-to-r from-[#00f2fe] to-[#4facfe] text-black font-black text-lg hover:from-[#3fe7f5] hover:to-[#6bb1f5] shadow-[0_0_20px_rgba(0,242,254,0.6)] hover:shadow-[0_0_30px_rgba(0,242,254,0.8)] transition-all hover:-translate-y-1.5 focus:outline-none"
+            >
               <FaPlay className="text-sm group-hover:scale-125 transition-transform" />
               <span>Start Training</span>
             </button>
@@ -105,7 +132,7 @@ const Home = () => {
       </section>
 
       {/* Games Section */}
-      <section className="py-24 px-6 md:px-12 max-w-7xl mx-auto w-full z-10">
+      <section id="games-section" className="py-24 px-6 md:px-12 max-w-7xl mx-auto w-full z-10">
         <div className="mb-16 text-center md:text-left flex flex-col md:flex-row items-center justify-between">
           <div>
              <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-4 tracking-tight">Memory Games <span className="text-gray-500 font-medium text-2xl">({games.length})</span></h2>

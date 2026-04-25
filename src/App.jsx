@@ -12,6 +12,9 @@ import WordMemory from './pages/games/WordMemory'
 import SeenNumberMemory from './pages/games/SeenNumberMemory'
 import NumberMemory from './pages/games/NumberMemory'
 import NumberSequence from './pages/games/NumberSequence'
+import MemoryMatch from './pages/games/MemoryMatch'
+import ColorMemory from './pages/games/ColorMemory'
+import ChimpTest from './pages/games/ChimpTest'
 
 import './App.css'
 
@@ -31,6 +34,9 @@ function App() {
             <Route path="/games/seen-number-memory" element={<SeenNumberMemory />} />
             <Route path="/games/number-memory" element={<NumberMemory />} />
             <Route path="/games/number-sequence" element={<NumberSequence />} />
+            <Route path="/games/memory-match" element={<MemoryMatch />} />
+            <Route path="/games/color-memory" element={<ColorMemory />} />
+            <Route path="/games/chimp-test" element={<ChimpTest />} />
           </Routes>
         </main>
         <Footer />
