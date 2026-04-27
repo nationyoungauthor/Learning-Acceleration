@@ -95,14 +95,14 @@ const SeenNumberMemory = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-[100px])] py-8 bg-[#151a28] px-4 font-sans text-white">
+    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-[100px])] py-8 bg-[#e8f9fd] px-4 font-sans text-gray-900">
       {/* Breadcrumbs */}
-      <div className="w-full max-w-4xl text-sm mb-6 text-gray-400 flex items-center space-x-2 mt-12 md:mt-0">
-        <Link to="/" className="hover:text-blue-400 flex items-center transition-colors"><FaHome className="mr-1"/> Home</Link>
+      <div className="w-full max-w-4xl text-sm mb-6 text-gray-600 flex items-center space-x-2 mt-12 md:mt-0">
+        <Link to="/" className="hover:text-[#ff1e00] flex items-center transition-colors"><FaHome className="mr-1"/> Home</Link>
         <span>&gt;</span>
         <span>Games</span>
         <span>&gt;</span>
-        <span className="text-gray-200">Number Memory</span>
+        <span className="text-gray-800">Number Memory</span>
       </div>
 
       {/* Main Game Card - Blue/Purple Theme */}
@@ -112,7 +112,7 @@ const SeenNumberMemory = () => {
         <div className="w-full flex justify-between absolute top-4 left-0 px-6">
             <div className="bg-black/20 px-4 py-2 rounded-xl flex flex-col font-bold self-start mt-2 md:mt-0 shadow-lg border border-white/10 backdrop-blur-sm">
                <span className="text-lg">Score: {gameState === 'menu' ? '-' : score}</span>
-               <span className="text-indigo-200 text-sm flex items-center"><FaTrophy className="mr-1"/> Best: {highScore}</span>
+               <span className="text-gray-600 text-sm flex items-center"><FaTrophy className="mr-1"/> Best: {highScore}</span>
             </div>
             
             <div className="flex space-x-3 text-xl text-indigo-100 mt-2 md:mt-0">
@@ -127,7 +127,7 @@ const SeenNumberMemory = () => {
 
         {/* Text Area */}
         <div className="text-center mt-[80px] md:mt-[70px] mb-6 min-h-[70px] px-2 md:px-12 w-full">
-           <h2 className={`text-3xl md:text-5xl font-extrabold tracking-wide mb-3 drop-shadow-md text-white transition-opacity duration-300 ${gameState === 'playing' ? 'text-2xl md:text-4xl font-serif' : 'font-serif'}`}>
+           <h2 className={`text-3xl md:text-5xl font-extrabold tracking-wide mb-3 drop-shadow-md text-gray-900 transition-opacity duration-300 ${gameState === 'playing' ? 'text-2xl md:text-4xl font-serif' : 'font-serif'}`}>
                {message}
            </h2>
            <p className="text-base md:text-xl text-indigo-100 font-medium whitespace-pre-line leading-relaxed mx-auto max-w-md drop-shadow-sm">{subMessage}</p>

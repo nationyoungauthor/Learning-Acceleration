@@ -105,14 +105,14 @@ const NumberSequence = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-[100px])] py-8 bg-[#151a28] px-4 font-sans text-white">
+    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-[100px])] py-8 bg-[#e8f9fd] px-4 font-sans text-gray-900">
       {/* Breadcrumbs */}
-      <div className="w-full max-w-4xl text-sm mb-6 text-gray-400 flex items-center space-x-2 mt-12 md:mt-0">
+      <div className="w-full max-w-4xl text-sm mb-6 text-gray-600 flex items-center space-x-2 mt-12 md:mt-0">
         <Link to="/" className="hover:text-green-400 flex items-center transition-colors"><FaHome className="mr-1"/> Home</Link>
         <span>&gt;</span>
         <span>Games</span>
         <span>&gt;</span>
-        <span className="text-gray-200">Number Sequence</span>
+        <span className="text-gray-800">Number Sequence</span>
       </div>
 
       {/* Main Game Card - Green Theme */}
@@ -137,7 +137,7 @@ const NumberSequence = () => {
 
         {/* Text Area */}
         <div className="text-center mt-[80px] md:mt-[70px] mb-6 min-h-[70px] px-2 md:px-12 w-full">
-           <h2 className="text-3xl md:text-5xl font-extrabold tracking-wide mb-3 drop-shadow-md text-white transition-opacity duration-300 font-serif">
+           <h2 className="text-3xl md:text-5xl font-extrabold tracking-wide mb-3 drop-shadow-md text-gray-900 transition-opacity duration-300 font-serif">
                {message}
            </h2>
            <p className="text-base md:text-xl text-emerald-100 font-medium whitespace-pre-line leading-relaxed mx-auto max-w-md drop-shadow-sm">{subMessage}</p>

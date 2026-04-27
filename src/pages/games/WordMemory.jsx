@@ -127,30 +127,30 @@ const WordMemory = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-[100px])] py-8 bg-[#151a28] px-4 font-sans text-white">
+    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-[100px])] py-8 bg-[#e8f9fd] px-4 font-sans text-gray-900">
       {/* Breadcrumbs */}
-      <div className="w-full max-w-3xl text-sm mb-6 text-gray-400 flex items-center space-x-2 mt-12 md:mt-0">
-        <Link to="/" className="hover:text-blue-400 flex items-center transition-colors"><FaHome className="mr-1"/> Home</Link>
+      <div className="w-full max-w-3xl text-sm mb-6 text-gray-600 flex items-center space-x-2 mt-12 md:mt-0">
+        <Link to="/" className="hover:text-[#ff1e00] flex items-center transition-colors"><FaHome className="mr-1"/> Home</Link>
         <span>&gt;</span>
         <span>Games</span>
         <span>&gt;</span>
-        <span className="text-gray-200">Word Memory</span>
+        <span className="text-gray-800">Word Memory</span>
       </div>
 
       {/* Main Game Card */}
-      <div className="w-full max-w-2xl bg-[#3b5998] rounded-2xl md:p-6 p-4 shadow-2xl shadow-blue-900/50 flex flex-col items-center justify-center relative overflow-hidden backdrop-blur-md border border-white/5 pb-10 min-h-[400px]">
+      <div className="w-full max-w-2xl bg-white rounded-2xl md:p-6 p-4 shadow-2xl shadow-gray-200/80 flex flex-col items-center justify-center relative overflow-hidden border border-gray-200 pb-10 min-h-[400px]">
         
         {/* Top Bar inside Card */}
         <div className="w-full flex justify-between absolute top-4 left-0 px-6">
-            <div className="bg-[#24355c] px-4 py-2 rounded-xl flex flex-col font-bold self-start mt-2 md:mt-0 shadow-lg border border-white/5">
+            <div className="bg-[#e8f9fd] px-4 py-2 rounded-xl flex text-gray-800 flex-col font-bold self-start mt-2 md:mt-0 shadow-lg border border-white/5">
                <span className="text-lg">Score: {score}</span>
                <span className="text-yellow-400 text-sm flex items-center"><FaTrophy className="mr-1"/> Best: {highScore}</span>
             </div>
             <div className="flex space-x-3 text-xl text-gray-300 mt-2 md:mt-0">
-               <button className="w-12 h-12 flex items-center justify-center bg-[#2a4073] rounded-full hover:bg-[#1f2f54] transition-all hover:text-white" title="Toggle Sound">
+               <button className="w-12 h-12 flex items-center justify-center bg-white rounded-full hover:bg-gray-100 transition-all text-gray-600 hover:text-[#ff1e00] border border-gray-200" title="Toggle Sound">
                   <FaVolumeUp />
                </button>
-               <button className="w-12 h-12 flex items-center justify-center bg-[#2a4073] rounded-full hover:bg-[#1f2f54] transition-all hover:text-white" title="Fullscreen">
+               <button className="w-12 h-12 flex items-center justify-center bg-white rounded-full hover:bg-gray-100 transition-all text-gray-600 hover:text-[#ff1e00] border border-gray-200" title="Fullscreen">
                   <FaExpand />
                </button>
             </div>
@@ -158,8 +158,8 @@ const WordMemory = () => {
 
         {/* Text Area */}
         <div className="text-center mt-[80px] md:mt-[70px] mb-6 min-h-[70px] px-2 md:px-12 w-full">
-           <h2 className="text-3xl md:text-4xl font-extrabold tracking-wide mb-3 drop-shadow-md text-white transition-opacity duration-300 font-serif">{message}</h2>
-           <p className="text-base md:text-lg text-blue-200 font-medium whitespace-pre-line leading-relaxed mx-auto max-w-md">{subMessage}</p>
+           <h2 className="text-3xl md:text-4xl font-extrabold tracking-wide mb-3 drop-shadow-md text-gray-900 transition-opacity duration-300 font-serif">{message}</h2>
+           <p className="text-base md:text-lg text-gray-600 font-medium whitespace-pre-line leading-relaxed mx-auto max-w-md">{subMessage}</p>
         </div>
 
         {/* Dynamic Card/Interaction Area */}
@@ -197,7 +197,7 @@ const WordMemory = () => {
         {(gameState === 'menu' || gameState === 'over') && (
             <button 
                onClick={startGame}
-               className="mt-6 px-8 py-3 bg-white/20 backdrop-blur-sm rounded-full text-xl font-bold text-white shadow-xl hover:bg-white/30 hover:scale-105 transition-all outline-none border border-white/30 hover:border-white/60"
+               className="mt-6 px-8 py-3 bg-[#ff1e00] rounded-full text-xl font-bold text-white shadow-lg hover:bg-[#e61b00] hover:scale-105 transition-all outline-none border border-transparent"
             >
                {gameState === 'over' ? 'Try Again' : 'Start Training'}
             </button>

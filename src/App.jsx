@@ -16,12 +16,19 @@ import MemoryMatch from './pages/games/MemoryMatch'
 import ColorMemory from './pages/games/ColorMemory'
 import ChimpTest from './pages/games/ChimpTest'
 
+import PatternLogic from './pages/games/PatternLogic'
+import StroopTest from './pages/games/StroopTest'
+import ColorTarget from './pages/games/ColorTarget'
+import OneToFifty from './pages/games/OneToFifty'
+import WordScramble from './pages/games/WordScramble'
+import SpeedMath from './pages/games/SpeedMath'
+
 import './App.css'
 
 function App() {
   return (
     <Router>
-      <div className="flex flex-col min-h-screen bg-[#151a28]">
+      <div className="flex flex-col min-h-screen bg-[#e8f9fd]">
         <Navbar />
         <main className="flex-grow">
           <Routes>
@@ -37,6 +44,13 @@ function App() {
             <Route path="/games/memory-match" element={<MemoryMatch />} />
             <Route path="/games/color-memory" element={<ColorMemory />} />
             <Route path="/games/chimp-test" element={<ChimpTest />} />
+
+            <Route path="/games/pattern-logic" element={<PatternLogic />} />
+            <Route path="/games/stroop-test" element={<StroopTest />} />
+            <Route path="/games/color-target" element={<ColorTarget />} />
+            <Route path="/games/one-to-fifty" element={<OneToFifty />} />
+            <Route path="/games/word-scramble" element={<WordScramble />} />
+            <Route path="/games/speed-math" element={<SpeedMath />} />
           </Routes>
         </main>
         <Footer />
