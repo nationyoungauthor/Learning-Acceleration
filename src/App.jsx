@@ -23,6 +23,11 @@ import OneToFifty from './pages/games/OneToFifty'
 import WordScramble from './pages/games/WordScramble'
 import SpeedMath from './pages/games/SpeedMath'
 
+import FiveSecondTest from './pages/games/FiveSecondTest'
+import TimeEstimator from './pages/games/TimeEstimator'
+import InvertedMouse from './pages/games/InvertedMouse'
+import PerfectCircle from './pages/games/PerfectCircle'
+
 import './App.css'
 
 function App() {
@@ -51,6 +56,11 @@ function App() {
             <Route path="/games/one-to-fifty" element={<OneToFifty />} />
             <Route path="/games/word-scramble" element={<WordScramble />} />
             <Route path="/games/speed-math" element={<SpeedMath />} />
+
+            <Route path="/games/5-second-test" element={<FiveSecondTest />} />
+            <Route path="/games/time-estimator" element={<TimeEstimator />} />
+            <Route path="/games/inverted-mouse" element={<InvertedMouse />} />
+            <Route path="/games/perfect-circle" element={<PerfectCircle />} />
           </Routes>
         </main>
         <Footer />

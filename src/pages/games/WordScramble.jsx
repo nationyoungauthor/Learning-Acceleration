@@ -188,7 +188,7 @@ const WordScramble = () => {
         {/* Game Area */}
         {gameState === 'playing' && (
           <div className="w-full max-w-md bg-white/5 rounded-[2rem] p-6 md:p-8 shadow-inner border border-white/10 text-center relative mt-4">
-            <h2 className="text-4xl md:text-5xl font-black mb-8 text-white tracking-[0.3em] ml-2 drop-shadow-md">
+            <h2 className="text-4xl md:text-5xl font-black mb-8 text-black tracking-[0.3em] ml-2 drop-shadow-md">
               {scrambledWord}
             </h2>
             

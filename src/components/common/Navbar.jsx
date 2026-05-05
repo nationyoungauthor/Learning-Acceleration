@@ -53,10 +53,10 @@ const Navbar = () => {
             </Link>
 
             {/* Blog */}
-            <Link to="/" className="flex items-center space-x-2 px-2 py-2 text-gray-400 hover:text-white transition-colors group">
+            {/* <Link to="/" className="flex items-center space-x-2 px-2 py-2 text-gray-400 hover:text-white transition-colors group">
               <FaBookOpen className="text-sm opacity-80 group-hover:opacity-100" />
               <span className="text-sm font-medium">Blog</span>
-            </Link>
+            </Link> */}
 
             {/* IQ Test (Green Border and Text) */}
             <Link to="/" className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-[#142d22] border border-[#1b4331] hover:bg-[#1b3d2e] transition-colors text-[#4dd383]">

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaPlay, FaTrophy, FaLightbulb, FaBrain, FaListOl, FaThLarge, FaBolt, FaKeyboard, FaCrosshairs, FaPuzzlePiece, FaPalette } from 'react-icons/fa';
+import { FaPlay, FaTrophy, FaLightbulb, FaBrain, FaListOl, FaThLarge, FaBolt, FaKeyboard, FaCrosshairs, FaPuzzlePiece, FaPalette, FaStopwatch, FaClock, FaMousePointer, FaCircle } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 const games = [
@@ -103,30 +103,65 @@ const logicGames = [
     desc: 'Click only the correctly colored targets while avoiding distractors.',
     img: '/gameImage/colorTarget.svg'
   },
-  // {
-  //   id: 'one-to-fifty',
-  //   title: 'One to Fifty',
-  //   path: '/games/one-to-fifty',
-  //   icon: <FaListOl className="text-orange-400 text-2xl" />,
-  //   desc: 'Click numbers in ascending order as quickly as possible to test your visual scanning.',
-  //   img: '/gameImage/oneToFifty.svg'
-  // },
-  // {
-  //   id: 'word-scramble',
-  //   title: 'Word Scramble',
-  //   path: '/games/word-scramble',
-  //   icon: <FaPuzzlePiece className="text-indigo-400 text-2xl" />,
-  //   desc: 'Unscramble letters to form valid words. Test your vocabulary and pattern recognition skills.',
-  //   img: '/gameImage/wordScramble.svg'
-  // },
-  // {
-  //   id: 'speed-math',
-  //   title: 'Speed Math',
-  //   path: '/games/speed-math',
-  //   icon: <FaKeyboard className="text-yellow-400 text-2xl" />,
-  //   desc: 'Solve arithmetic problems as quickly as possible to improve mental calculation skills.',
-  //   img: '/gameImage/speedMath.svg'
-  // }
+  {
+    id: 'one-to-fifty',
+    title: 'One to Fifty',
+    path: '/games/one-to-fifty',
+    icon: <FaListOl className="text-orange-400 text-2xl" />,
+    desc: 'Click numbers in ascending order as quickly as possible to test your visual scanning.',
+    img: '/gameImage/oneToFifty.svg'
+  },
+  {
+    id: 'word-scramble',
+    title: 'Word Scramble',
+    path: '/games/word-scramble',
+    icon: <FaPuzzlePiece className="text-indigo-400 text-2xl" />,
+    desc: 'Unscramble letters to form valid words. Test your vocabulary and pattern recognition skills.',
+    img: '/gameImage/wordScramble.svg'
+  },
+  {
+    id: 'speed-math',
+    title: 'Speed Math',
+    path: '/games/speed-math',
+    icon: <FaKeyboard className="text-yellow-400 text-2xl" />,
+    desc: 'Solve arithmetic problems as quickly as possible to improve mental calculation skills.',
+    img: '/gameImage/speedMath.svg'
+  }
+];
+
+const perceptionGames = [
+  {
+    id: '5-second-test',
+    title: '5-Second Test',
+    path: '/games/5-second-test',
+    icon: <FaStopwatch className="text-[#00f2fe] text-2xl" />,
+    desc: 'Stop the timer exactly at 5 seconds to test your time perception accuracy.',
+    img: '/gameImage/5secondTest.png'
+  },
+  {
+    id: 'time-estimator',
+    title: 'Time Estimator',
+    path: '/games/time-estimator',
+    icon: <FaClock className="text-[#8B4513] text-2xl" />,
+    desc: 'Estimate durations as accurately as possible without counting.',
+    img: '/gameImage/timeEstimator.png'
+  },
+  {
+    id: 'inverted-mouse',
+    title: 'Inverted Mouse',
+    path: '/games/inverted-mouse',
+    icon: <FaMousePointer className="text-[#00f2fe] text-2xl" />,
+    desc: 'Move your cursor to the target with fully reversed controls. Hover each numbered circle to score as many points as possible in 60 seconds.',
+    img: '/gameImage/invertedMouse.png'
+  },
+  {
+    id: 'perfect-circle',
+    title: 'Perfect Circle',
+    path: '/games/perfect-circle',
+    icon: <FaCircle className="text-[#8e98ff] text-2xl" />,
+    desc: 'Draw the most perfect circle you can! Test your hand stability and precision. The game measures how circular your drawing is in real-time.',
+    img: '/gameImage/perfectCircle.png'
+  }
 ];
 
 const Home = () => {
@@ -184,10 +219,10 @@ const Home = () => {
       </section>
 
       {/* Games Section */}
-      <section id="games-section" className="py-24 px-6 md:px-12 max-w-7xl mx-auto w-full z-10">
+      <section id="games-section" className="py-10 px-6 md:px-12 max-w-7xl mx-auto w-full z-10">
         <div className="mb-16 text-center md:text-left flex flex-col md:flex-row items-center justify-between">
           <div>
-            <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">Memory Games <span className="text-gray-500 font-medium text-2xl">({games.length})</span></h2>
+            <h2 className="text-4xl md:text-5xl font-extrabold mb-4 tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">Memory Games <span className="text-gray-500 font-medium text-2xl">({games.length})</span></h2>
             <p className="text-xl text-gray-600 max-w-2xl">
               Test and improve your working memory, visual recall, and pattern recognition.
             </p>
@@ -230,10 +265,10 @@ const Home = () => {
       </section>
 
       {/* Logic & Attention Games Section */}
-      <section id="logic-games-section" className="py-12 px-6 md:px-12 max-w-7xl mx-auto w-full z-10">
+      <section id="logic-games-section" className="py-10 px-6 md:px-12 max-w-7xl mx-auto w-full z-10">
         <div className="mb-16 text-center md:text-left flex flex-col md:flex-row items-center justify-between">
           <div>
-            <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">Logic & Attention <span className="text-gray-500 font-medium text-2xl">({logicGames.length})</span></h2>
+            <h2 className="text-4xl md:text-5xl font-extrabold mb-4 tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-500">Logic & Attention <span className="text-gray-500 font-medium text-2xl">({logicGames.length})</span></h2>
             <p className="text-xl text-gray-600 max-w-2xl">
               Enhance problem-solving, pattern recognition, and cognitive control.
             </p>
@@ -242,6 +277,52 @@ const Home = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {logicGames.map((game, index) => (
+            <Link
+              to={game.path}
+              key={index}
+              className="group flex flex-col bg-[#1c2333] hover:bg-[#242c40] rounded-3xl overflow-hidden border border-white/5 hover:border-white/20 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_10px_40px_rgba(0,0,0,0.5)]"
+            >
+              {/* Card Image Area */}
+              <div className="h-48 w-full relative flex items-center justify-center overflow-hidden bg-[#0c101a]">
+                <img src={game.img} alt={game.title} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#1c2333] to-transparent opacity-80"></div>
+              </div>
+
+              {/* Card Content Area */}
+              <div className="p-8 flex flex-col flex-grow">
+                <div className="flex items-center space-x-4 mb-4">
+                  <div className="p-3 bg-[#2a3449] rounded-2xl group-hover:bg-[#34405a] transition-colors duration-300">
+                    {game.icon}
+                  </div>
+                  <h3 className="text-2xl font-bold text-white group-hover:text-blue-400 transition-colors duration-300">{game.title}</h3>
+                </div>
+                <p className="text-gray-400 text-base leading-relaxed mb-8 flex-grow">
+                  {game.desc}
+                </p>
+                <div className="mt-auto">
+                  <div className="inline-flex items-center justify-center w-full px-6 py-3 border border-white/10 rounded-xl text-sm font-semibold text-white bg-[#2a3449] hover:bg-blue-600 hover:border-blue-500 transition-all duration-300 shadow-sm group-hover:shadow-blue-500/25">
+                    Start Training
+                  </div>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* Perception & Control Games Section */}
+      <section id="perception-games-section" className="py-10 px-6 md:px-12 max-w-7xl mx-auto w-full z-10">
+        <div className="mb-16 text-center md:text-left flex flex-col md:flex-row items-center justify-between">
+          <div>
+            <h2 className="text-4xl md:text-5xl font-extrabold mb-4 tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-emerald-400">Perception & Control <span className="text-gray-500 font-medium text-2xl">({perceptionGames.length})</span></h2>
+            <p className="text-xl text-gray-600 max-w-2xl">
+              Train your time perception, motor precision, and hand-eye coordination
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {perceptionGames.map((game, index) => (
             <Link
               to={game.path}
               key={index}
