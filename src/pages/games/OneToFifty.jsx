@@ -83,37 +83,37 @@ const OneToFifty = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-[100px])] py-8 bg-[#e8f9fd] px-4 font-sans text-gray-900">
+    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-[100px])] py-8 bg-black px-4  text-gray-100">
       {/* Breadcrumbs */}
-      <div className="w-full max-w-3xl text-sm mb-6 text-gray-600 flex items-center space-x-2 mt-12 md:mt-0">
+      <div className="w-full max-w-2xl text-sm mb-6 text-gray-400 flex items-center space-x-2 mt-12 md:mt-0">
         <Link to="/" className="hover:text-[#ff1e00] flex items-center transition-colors"><FaHome className="mr-1"/> Home</Link>
         <span>&gt;</span>
         <span>Games</span>
         <span>&gt;</span>
-        <span className="text-gray-800">One to Fifty</span>
+        <span className="text-gray-200">One to Fifty</span>
       </div>
 
       {/* Main Game Card */}
-      <div className="w-full max-w-2xl bg-white rounded-2xl md:p-6 p-4 shadow-2xl shadow-gray-200/80 flex flex-col items-center justify-center relative overflow-hidden border border-gray-200 pb-10 min-h-[400px]">
+      <div className="w-full max-w-xl bg-zinc-900 rounded-2xl md:p-6 p-4 shadow-2xl shadow-gray-200/80 flex flex-col items-center justify-center relative overflow-hidden border border-gray-200 pb-10 min-h-[350px]">
         
         {/* Top Bar inside Card */}
         <div className="w-full flex justify-between absolute top-4 left-0 px-6">
-            <div className="bg-[#e8f9fd] px-4 py-2 rounded-xl flex text-gray-800 flex-col font-bold self-start mt-2 md:mt-0 shadow-lg border border-white/5">
+            <div className="bg-black px-4 py-2 rounded-xl flex text-gray-200 flex-col font-bold self-start mt-2 md:mt-0 shadow-lg border border-white/5">
                <span className="text-sm flex items-center text-yellow-400"><FaStar className="mr-1"/> Best: {bestTime > 0 ? `${bestTime}s` : '--'}</span>
                {gameState === 'playing' && <span className="text-lg">Next: {currentNum <= 50 ? currentNum : 'Done'}</span>}
             </div>
             
             {gameState === 'playing' && (
-              <div className="bg-[#e8f9fd] px-4 py-2 rounded-xl flex text-gray-800 items-center gap-2 border border-white/5 shadow-lg mt-2 md:mt-0 font-mono font-bold text-lg text-gray-600">
+              <div className="bg-black px-4 py-2 rounded-xl flex text-gray-200 items-center gap-2 border border-white/5 shadow-lg mt-2 md:mt-0  font-bold text-lg text-gray-400">
                 <FaClock /> {formatTime(time)}s
               </div>
             )}
 
             <div className="flex space-x-3 text-xl text-gray-300 mt-2 md:mt-0">
-               <button className="w-12 h-12 flex items-center justify-center bg-white rounded-full hover:bg-gray-100 transition-all text-gray-600 hover:text-[#ff1e00] border border-gray-200" title="Toggle Sound">
+               <button className="w-12 h-12 flex items-center justify-center bg-zinc-900 rounded-full hover:bg-gray-100 transition-all text-gray-400 hover:text-[#ff1e00] border border-gray-200" title="Toggle Sound">
                   <FaVolumeUp />
                </button>
-               <button className="w-12 h-12 flex items-center justify-center bg-white rounded-full hover:bg-gray-100 transition-all text-gray-600 hover:text-[#ff1e00] border border-gray-200" title="Fullscreen">
+               <button className="w-12 h-12 flex items-center justify-center bg-zinc-900 rounded-full hover:bg-gray-100 transition-all text-gray-400 hover:text-[#ff1e00] border border-gray-200" title="Fullscreen">
                   <FaExpand />
                </button>
             </div>
@@ -122,8 +122,8 @@ const OneToFifty = () => {
         {/* Text Area */}
         {(gameState === 'menu' || gameState === 'over') && (
           <div className="text-center mt-[80px] md:mt-[70px] mb-6 min-h-[70px] px-2 md:px-12 w-full">
-             <h2 className="text-3xl md:text-4xl font-extrabold tracking-wide mb-3 drop-shadow-md text-gray-900 transition-opacity duration-300 font-serif">{message}</h2>
-             <p className="text-base md:text-lg text-gray-600 font-medium whitespace-pre-line leading-relaxed mx-auto max-w-md">{subMessage}</p>
+             <h2 className="text-3xl md:text-4xl font-extrabold tracking-wide mb-3 drop-shadow-md text-gray-100 transition-opacity duration-300 ">{message}</h2>
+             <p className="text-base md:text-lg text-gray-400 font-medium whitespace-pre-line leading-relaxed mx-auto max-w-md">{subMessage}</p>
           </div>
         )}
 
@@ -139,7 +139,7 @@ const OneToFifty = () => {
                   className={`
                     w-full h-full rounded-xl flex items-center justify-center font-bold text-xl md:text-2xl transition-all duration-100 border-t border-white/20 shadow-md
                     ${num === 0 ? 'opacity-0 cursor-default' : 'hover:scale-105 active:scale-95'}
-                    ${num === currentNum ? 'bg-orange-400 text-white border-white/40' : num > 25 ? 'bg-[#523212] text-gray-600 border-white/5' : 'bg-[#7a4c1c] text-white'}
+                    ${num === currentNum ? 'bg-orange-400 text-white border-white/40' : num > 25 ? 'bg-[#523212] text-gray-400 border-white/5' : 'bg-[#7a4c1c] text-white'}
                     ${wrongClick === i ? 'bg-red-500 !scale-90 animate-pulse' : ''}
                   `}
                 >

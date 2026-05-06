@@ -4,6 +4,7 @@ import Navbar from './components/common/Navbar'
 import Footer from './components/common/Footer'
 
 import Home from './pages/Home'
+import HighScores from './pages/HighScores'
 
 import Login from './pages/Login'
 import SequenceMemory from './pages/games/SequenceMemory'
@@ -33,11 +34,12 @@ import './App.css'
 function App() {
   return (
     <Router>
-      <div className="flex flex-col min-h-screen bg-[#e8f9fd]">
+      <div className="flex flex-col min-h-screen bg-black">
         <Navbar />
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/highscores" element={<HighScores />} />
 
             <Route path="/login" element={<Login />} />
             <Route path="/games/sequence-memory" element={<SequenceMemory />} />
