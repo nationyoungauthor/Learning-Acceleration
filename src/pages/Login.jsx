@@ -11,24 +11,24 @@ const Login = () => {
         
         <div className="relative z-10">
           <div className="text-center mb-10">
-            <h1 className="text-3xl font-extrabold text-gray-900 mb-2">Welcome Back</h1>
+            <h1 className="text-3xl font-extrabold text-gray-100 mb-2">Welcome Back</h1>
             <p className="text-gray-500 font-medium">Please enter your details to sign in.</p>
           </div>
           
           <form className="space-y-6">
             <div>
               <label className="block text-sm font-bold text-gray-700 mb-2">Email Address</label>
-              <input type="email" className="w-full px-5 py-3.5 rounded-xl bg-gray-50 border border-gray-200 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all outline-none shadow-sm" placeholder="you@example.com" />
+              <input type="email" className="w-full px-5 py-3.5 rounded-xl bg-gray-50 border border-gray-200 focus:bg-zinc-900 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all outline-none shadow-sm" placeholder="you@example.com" />
             </div>
             <div>
               <label className="block text-sm font-bold text-gray-700 mb-2">Password</label>
-              <input type="password" className="w-full px-5 py-3.5 rounded-xl bg-gray-50 border border-gray-200 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all outline-none shadow-sm" placeholder="••••••••" />
+              <input type="password" className="w-full px-5 py-3.5 rounded-xl bg-gray-50 border border-gray-200 focus:bg-zinc-900 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all outline-none shadow-sm" placeholder="••••••••" />
             </div>
             
             <div className="flex items-center justify-between pt-1">
               <label className="flex items-center space-x-2 cursor-pointer group">
                 <input type="checkbox" className="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer" />
-                <span className="text-sm font-medium text-gray-600 group-hover:text-gray-900 transition-colors">Remember me</span>
+                <span className="text-sm font-medium text-gray-400 group-hover:text-gray-100 transition-colors">Remember me</span>
               </label>
               <a href="#" className="text-sm font-bold text-indigo-600 hover:text-indigo-500 transition-colors">Forgot password?</a>
             </div>
@@ -38,7 +38,7 @@ const Login = () => {
             </button>
           </form>
           
-          <p className="text-center text-gray-600 mt-8 font-medium">
+          <p className="text-center text-gray-400 mt-8 font-medium">
             Don't have an account? <a href="#" className="text-indigo-600 font-bold hover:underline">Sign up</a>
           </p>
         </div>

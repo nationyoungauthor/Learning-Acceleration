@@ -127,31 +127,31 @@ const ColorMemory = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-[100px])] py-8 bg-[#e8f9fd] px-4 font-sans text-gray-900">
+    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-[100px])] py-8 bg-black px-4  text-gray-100">
       {/* Breadcrumbs */}
-      <div className="w-full max-w-4xl text-sm mb-6 text-gray-600 flex items-center space-x-2 mt-12 md:mt-0">
+      <div className="w-full max-w-3xl text-sm mb-6 text-gray-400 flex items-center space-x-2 mt-12 md:mt-0">
         <Link to="/" className="hover:text-[#ff1e00] flex items-center transition-colors"><FaHome className="mr-1"/> Home</Link>
         <span>&gt;</span>
         <span>Games</span>
         <span>&gt;</span>
-        <span className="text-gray-800">Color Memory</span>
+        <span className="text-gray-200">Color Memory</span>
       </div>
 
-      {/* Main Game Card - Blue Theme */}
-      <div className="w-full max-w-4xl bg-gradient-to-br from-[#1e3a8a] to-[#172554] rounded-2xl md:p-6 p-4 shadow-2xl shadow-blue-900/40 flex flex-col items-center justify-center relative overflow-hidden backdrop-blur-md border border-white/20 pb-10 min-h-[550px]">
+      {/* Main Game Card */}
+      <div className="w-full max-w-3xl bg-zinc-900 rounded-2xl md:p-6 p-4 shadow-2xl shadow-gray-200/80 flex flex-col items-center justify-center relative overflow-hidden border border-gray-200 pb-10 min-h-[450px]">
         
         {/* Top Bar inside Card */}
         <div className="w-full flex justify-between absolute top-4 left-0 px-6">
-            <div className="bg-black/20 px-4 py-2 rounded-xl flex flex-col font-bold self-start mt-2 md:mt-0 shadow-lg border border-white/10 backdrop-blur-sm">
+            <div className="bg-black px-4 py-2 rounded-xl flex flex-col font-bold self-start mt-2 md:mt-0 shadow-lg border border-white/5">
                <span className="text-lg">Level: {gameState === 'menu' ? '-' : level}</span>
-               <span className="text-gray-600 text-sm flex items-center"><FaTrophy className="mr-1"/> Best: {highScore}</span>
+               <span className="text-gray-400 text-sm flex items-center"><FaTrophy className="mr-1"/> Best: {highScore}</span>
             </div>
             
-            <div className="flex space-x-3 text-xl text-blue-100 mt-2 md:mt-0">
-               <button className="w-12 h-12 flex items-center justify-center bg-black/20 rounded-full hover:bg-black/40 transition-all hover:text-white backdrop-blur-sm" title="Toggle Sound">
+            <div className="flex space-x-3 text-xl text-gray-300 mt-2 md:mt-0">
+               <button className="w-12 h-12 flex items-center justify-center bg-zinc-900 rounded-full hover:bg-gray-100 transition-all text-gray-400 hover:text-[#ff1e00] border border-gray-200" title="Toggle Sound">
                   <FaVolumeUp />
                </button>
-               <button className="w-12 h-12 flex items-center justify-center bg-black/20 rounded-full hover:bg-black/40 transition-all hover:text-white backdrop-blur-sm" title="Fullscreen">
+               <button className="w-12 h-12 flex items-center justify-center bg-zinc-900 rounded-full hover:bg-gray-100 transition-all text-gray-400 hover:text-[#ff1e00] border border-gray-200" title="Fullscreen">
                   <FaExpand />
                </button>
             </div>
@@ -159,10 +159,10 @@ const ColorMemory = () => {
 
         {/* Text Area */}
         <div className="text-center mt-[80px] md:mt-[70px] mb-6 min-h-[70px] px-2 md:px-12 w-full">
-           <h2 className="text-3xl md:text-5xl font-extrabold tracking-wide mb-3 drop-shadow-md text-gray-900 transition-opacity duration-300 font-serif">
+           <h2 className="text-3xl md:text-5xl font-extrabold tracking-wide mb-3 drop-shadow-md text-gray-100 transition-opacity duration-300 ">
                {message}
            </h2>
-           <p className="text-base md:text-xl text-blue-100 font-medium whitespace-pre-line leading-relaxed mx-auto max-w-md drop-shadow-sm">{subMessage}</p>
+           <p className="text-base md:text-xl text-gray-400 font-medium whitespace-pre-line leading-relaxed mx-auto max-w-md drop-shadow-sm">{subMessage}</p>
         </div>
 
         {/* Target Color Display */}
@@ -194,7 +194,7 @@ const ColorMemory = () => {
         {(gameState === 'menu' || gameState === 'over') && (
             <button 
                onClick={startGame}
-               className="mt-6 px-10 py-4 bg-white/20 backdrop-blur-md rounded-full text-2xl font-black text-white shadow-xl hover:bg-white/30 hover:scale-105 transition-all outline-none border-2 border-white/50 hover:border-white shadow-[0_0_20px_rgba(255,255,255,0.3)]"
+               className="mt-6 px-10 py-4 bg-[#ff1e00] rounded-full text-xl font-bold text-white shadow-lg hover:bg-[#e61b00] hover:scale-105 transition-all outline-none border border-transparent"
             >
                {gameState === 'over' ? 'Try Again' : 'Start Training'}
             </button>

@@ -134,30 +134,30 @@ const SequenceMemory = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-[100px])] py-8 bg-[#e8f9fd] px-4 font-sans text-gray-900">
+    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-[100px])] py-8 bg-black px-4  text-gray-100">
       {/* Breadcrumbs */}
-      <div className="w-full max-w-3xl text-sm mb-6 text-gray-600 flex items-center space-x-2">
+      <div className="w-full max-w-2xl text-sm mb-6 text-gray-400 flex items-center space-x-2">
         <Link to="/" className="hover:text-[#ff1e00] flex items-center transition-colors"><FaHome className="mr-1"/> Home</Link>
         <span>&gt;</span>
         <span>Games</span>
         <span>&gt;</span>
-        <span className="text-gray-800">Sequence Memory</span>
+        <span className="text-gray-200">Sequence Memory</span>
       </div>
 
       {/* Main Game Card */}
-      <div className="w-full max-w-2xl bg-white rounded-2xl md:p-6 p-4 shadow-2xl shadow-gray-200/80 flex flex-col items-center justify-center relative overflow-hidden border border-gray-200 pb-10 min-h-[400px]">
+      <div className="w-full max-w-xl bg-zinc-900 rounded-2xl md:p-6 p-4 shadow-2xl shadow-gray-200/80 flex flex-col items-center justify-center relative overflow-hidden border border-gray-200 pb-10 min-h-[350px]">
         
         {/* Top Bar inside Card */}
         <div className="w-full flex justify-between absolute top-4 left-0 px-6">
-            <div className="bg-[#e8f9fd] px-4 py-2 rounded-xl flex text-gray-800 flex-col font-bold self-start mt-2 md:mt-0 shadow-lg border border-white/5">
+            <div className="bg-black px-4 py-2 rounded-xl flex text-gray-200 flex-col font-bold self-start mt-2 md:mt-0 shadow-lg border border-white/5">
                <span className="text-lg">Score: {score}</span>
                <span className="text-yellow-400 text-sm flex items-center"><FaTrophy className="mr-1"/> Best: {highScore}</span>
             </div>
             <div className="flex space-x-3 text-xl text-gray-300 mt-2 md:mt-0">
-               <button className="w-12 h-12 flex items-center justify-center bg-white rounded-full hover:bg-gray-100 transition-all text-gray-600 hover:text-[#ff1e00] border border-gray-200" title="Toggle Sound">
+               <button className="w-12 h-12 flex items-center justify-center bg-zinc-900 rounded-full hover:bg-gray-100 transition-all text-gray-400 hover:text-[#ff1e00] border border-gray-200" title="Toggle Sound">
                   <FaVolumeUp />
                </button>
-               <button className="w-12 h-12 flex items-center justify-center bg-white rounded-full hover:bg-gray-100 transition-all text-gray-600 hover:text-[#ff1e00] border border-gray-200" title="Fullscreen">
+               <button className="w-12 h-12 flex items-center justify-center bg-zinc-900 rounded-full hover:bg-gray-100 transition-all text-gray-400 hover:text-[#ff1e00] border border-gray-200" title="Fullscreen">
                   <FaExpand />
                </button>
             </div>
@@ -165,8 +165,8 @@ const SequenceMemory = () => {
 
         {/* Text Area */}
         <div className="text-center mt-[70px] mb-6 min-h-[70px]">
-           <h2 className="text-3xl md:text-4xl font-extrabold tracking-wide mb-2 drop-shadow-md text-gray-900 transition-opacity duration-300 font-serif">{message}</h2>
-           <p className="text-lg md:text-xl text-gray-600 font-medium">{subMessage}</p>
+           <h2 className="text-3xl md:text-4xl font-extrabold tracking-wide mb-2 drop-shadow-md text-gray-100 transition-opacity duration-300 ">{message}</h2>
+           <p className="text-lg md:text-xl text-gray-400 font-medium">{subMessage}</p>
         </div>
 
         {/* 3x3 Grid */}
@@ -179,7 +179,7 @@ const SequenceMemory = () => {
                    aria-label={`Square ${index}`}
                    className={`
                       aspect-square rounded-2xl transition-all duration-200 ease-in-out cursor-pointer
-                      ${activeSquare === index ? 'bg-white opacity-90 scale-95 shadow-[0_0_40px_rgba(255,255,255,1)] z-10' : 
+                      ${activeSquare === index ? 'bg-zinc-900 opacity-90 scale-95 shadow-[0_0_40px_rgba(255,255,255,1)] z-10' : 
                         wrongSquare === index ? 'bg-red-500 scale-95 shadow-[0_0_30px_rgba(239,68,68,0.8)] z-10 animate-pulse' : 
                         'bg-[#6582bf] hover:bg-[#7b96ce] border-t border-white/20 shadow-inner'}
                       ${(showSequence || !isPlaying) && !gameOver ? 'cursor-default pointer-events-none' : ''}

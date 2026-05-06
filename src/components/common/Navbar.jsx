@@ -47,7 +47,7 @@ const Navbar = () => {
             </Link>
 
             {/* High Scores */}
-            <Link to="/" className="flex items-center space-x-2 px-2 py-2 text-gray-400 hover:text-white transition-colors group">
+            <Link to="/highscores" className="flex items-center space-x-2 px-2 py-2 text-gray-400 hover:text-white transition-colors group">
               <FaTrophy className="text-sm opacity-80 group-hover:opacity-100" />
               <span className="text-sm font-medium">High Scores</span>
             </Link>

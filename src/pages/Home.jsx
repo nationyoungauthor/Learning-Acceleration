@@ -23,7 +23,7 @@ const games = [
     id: 'word-memory',
     title: 'Word Memory',
     path: '/games/word-memory',
-    icon: <span className="text-blue-400 font-bold text-2xl font-serif">A</span>,
+    icon: <span className="text-blue-400 font-bold text-2xl ">A</span>,
     desc: 'Remember a list of words and identify them among distractors.',
     img: '/gameImage/wordMemory.svg'
   },
@@ -166,7 +166,7 @@ const perceptionGames = [
 
 const Home = () => {
   return (
-    <div className="flex flex-col flex-grow bg-[#e8f9fd]">
+    <div className="flex flex-col flex-grow bg-black">
 
       {/* Hero Section */}
       <section className="relative flex flex-col items-center justify-center min-h-[90vh] text-center px-4 overflow-hidden group">
@@ -223,7 +223,7 @@ const Home = () => {
         <div className="mb-16 text-center md:text-left flex flex-col md:flex-row items-center justify-between">
           <div>
             <h2 className="text-4xl md:text-5xl font-extrabold mb-4 tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">Memory Games <span className="text-gray-500 font-medium text-2xl">({games.length})</span></h2>
-            <p className="text-xl text-gray-600 max-w-2xl">
+            <p className="text-xl text-gray-400 max-w-2xl">
               Test and improve your working memory, visual recall, and pattern recognition.
             </p>
           </div>
@@ -269,7 +269,7 @@ const Home = () => {
         <div className="mb-16 text-center md:text-left flex flex-col md:flex-row items-center justify-between">
           <div>
             <h2 className="text-4xl md:text-5xl font-extrabold mb-4 tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-500">Logic & Attention <span className="text-gray-500 font-medium text-2xl">({logicGames.length})</span></h2>
-            <p className="text-xl text-gray-600 max-w-2xl">
+            <p className="text-xl text-gray-400 max-w-2xl">
               Enhance problem-solving, pattern recognition, and cognitive control.
             </p>
           </div>
@@ -315,7 +315,7 @@ const Home = () => {
         <div className="mb-16 text-center md:text-left flex flex-col md:flex-row items-center justify-between">
           <div>
             <h2 className="text-4xl md:text-5xl font-extrabold mb-4 tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-emerald-400">Perception & Control <span className="text-gray-500 font-medium text-2xl">({perceptionGames.length})</span></h2>
-            <p className="text-xl text-gray-600 max-w-2xl">
+            <p className="text-xl text-gray-400 max-w-2xl">
               Train your time perception, motor precision, and hand-eye coordination
             </p>
           </div>
