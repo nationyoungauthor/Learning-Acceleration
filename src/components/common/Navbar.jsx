@@ -59,7 +59,7 @@ const Navbar = () => {
             </Link> */}
 
             {/* IQ Test (Green Border and Text) */}
-            <Link to="/" className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-[#142d22] border border-[#1b4331] hover:bg-[#1b3d2e] transition-colors text-[#4dd383]">
+            <Link to="/iq-test" className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-[#142d22] border border-[#1b4331] hover:bg-[#1b3d2e] transition-colors text-[#4dd383]">
               <FaBrain className="text-sm" />
               <span className="text-sm font-bold">IQ Test</span>
             </Link>

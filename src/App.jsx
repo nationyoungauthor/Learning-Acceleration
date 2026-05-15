@@ -29,6 +29,8 @@ import TimeEstimator from './pages/games/TimeEstimator'
 import InvertedMouse from './pages/games/InvertedMouse'
 import PerfectCircle from './pages/games/PerfectCircle'
 
+import IQTest from './pages/IQTest'
+
 import './App.css'
 
 function App() {
@@ -63,6 +65,7 @@ function App() {
             <Route path="/games/time-estimator" element={<TimeEstimator />} />
             <Route path="/games/inverted-mouse" element={<InvertedMouse />} />
             <Route path="/games/perfect-circle" element={<PerfectCircle />} />
+            <Route path="/iq-test" element={<IQTest />} />
           </Routes>
         </main>
         <Footer />
