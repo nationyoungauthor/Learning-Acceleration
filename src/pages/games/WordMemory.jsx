@@ -127,30 +127,30 @@ const WordMemory = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-[100px])] py-8 bg-black px-4  text-gray-100">
+    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-[100px])] py-8 bg-[#F8FAFC] px-4 font-sans text-[#0F172A]">
       {/* Breadcrumbs */}
-      <div className="w-full max-w-2xl text-sm mb-6 text-gray-400 flex items-center space-x-2 mt-12 md:mt-0">
-        <Link to="/" className="hover:text-[#ff1e00] flex items-center transition-colors"><FaHome className="mr-1"/> Home</Link>
+      <div className="w-full max-w-2xl text-sm mb-6 text-[#64748B] flex items-center space-x-2 mt-12 md:mt-0">
+        <Link to="/" className="hover:text-[#2563EB] flex items-center transition-colors"><FaHome className="mr-1"/> Home</Link>
         <span>&gt;</span>
         <span>Games</span>
         <span>&gt;</span>
-        <span className="text-gray-200">Word Memory</span>
+        <span className="text-[#0F172A] font-semibold">Word Memory</span>
       </div>
 
       {/* Main Game Card */}
-      <div className="w-full max-w-xl bg-zinc-900 rounded-2xl md:p-6 p-4 shadow-2xl shadow-gray-200/80 flex flex-col items-center justify-center relative overflow-hidden border border-gray-200 pb-10 min-h-[350px]">
+      <div className="w-full max-w-xl bg-white rounded-2xl md:p-6 p-4 shadow-md flex flex-col items-center justify-center relative overflow-hidden border border-gray-200 pb-10 min-h-[350px]">
         
         {/* Top Bar inside Card */}
         <div className="w-full flex justify-between absolute top-4 left-0 px-6">
-            <div className="bg-black px-4 py-2 rounded-xl flex text-gray-200 flex-col font-bold self-start mt-2 md:mt-0 shadow-lg border border-white/5">
+            <div className="bg-[#F8FAFC] px-4 py-2 rounded-xl flex text-[#0F172A] flex-col font-bold self-start mt-2 md:mt-0 shadow-sm border border-gray-200">
                <span className="text-lg">Score: {score}</span>
-               <span className="text-yellow-400 text-sm flex items-center"><FaTrophy className="mr-1"/> Best: {highScore}</span>
+               <span className="text-yellow-600 text-sm flex items-center"><FaTrophy className="mr-1"/> Best: {highScore}</span>
             </div>
-            <div className="flex space-x-3 text-xl text-gray-300 mt-2 md:mt-0">
-               <button className="w-12 h-12 flex items-center justify-center bg-zinc-900 rounded-full hover:bg-gray-100 transition-all text-gray-400 hover:text-[#ff1e00] border border-gray-200" title="Toggle Sound">
+            <div className="flex space-x-3 text-xl text-[#64748B] mt-2 md:mt-0">
+               <button className="w-12 h-12 flex items-center justify-center bg-[#F8FAFC] rounded-full hover:bg-gray-100 transition-all text-[#64748B] hover:text-[#2563EB] border border-gray-200" title="Toggle Sound">
                   <FaVolumeUp />
                </button>
-               <button className="w-12 h-12 flex items-center justify-center bg-zinc-900 rounded-full hover:bg-gray-100 transition-all text-gray-400 hover:text-[#ff1e00] border border-gray-200" title="Fullscreen">
+               <button className="w-12 h-12 flex items-center justify-center bg-[#F8FAFC] rounded-full hover:bg-gray-100 transition-all text-[#64748B] hover:text-[#2563EB] border border-gray-200" title="Fullscreen">
                   <FaExpand />
                </button>
             </div>
@@ -158,27 +158,27 @@ const WordMemory = () => {
 
         {/* Text Area */}
         <div className="text-center mt-[80px] md:mt-[70px] mb-6 min-h-[70px] px-2 md:px-12 w-full">
-           <h2 className="text-3xl md:text-4xl font-extrabold tracking-wide mb-3 drop-shadow-md text-gray-100 transition-opacity duration-300 ">{message}</h2>
-           <p className="text-base md:text-lg text-gray-400 font-medium whitespace-pre-line leading-relaxed mx-auto max-w-md">{subMessage}</p>
+           <h2 className="text-3xl md:text-4xl font-extrabold tracking-wide font-display mb-3 text-[#0F172A] transition-opacity duration-300">{message}</h2>
+           <p className="text-base md:text-lg text-[#64748B] font-medium whitespace-pre-line leading-relaxed mx-auto max-w-md">{subMessage}</p>
         </div>
 
         {/* Dynamic Card/Interaction Area */}
         {gameState === 'playing' && (
           <div className="flex flex-col items-center w-full mt-4 mb-4 min-h-[150px]">
-            <div className="text-5xl md:text-6xl font-black mb-12 tracking-wide break-all max-w-[90%] text-center text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">
+            <div className="text-5xl md:text-6xl font-black mb-12 tracking-wide break-all max-w-[90%] text-center text-[#2563EB] drop-shadow-sm">
                {currentWord}
             </div>
 
             <div className="flex gap-4 sm:gap-6 mt-auto">
                <button 
                   onClick={() => handleGuess(true)}
-                  className="flex items-center gap-2 px-8 md:px-10 py-4 bg-[#e74c3c] hover:bg-[#c0392b] text-white font-bold rounded-xl text-xl shadow-[0_0_20px_rgba(231,76,60,0.5)] transform hover:scale-105 transition-all"
+                  className="flex items-center gap-2 px-8 md:px-10 py-4 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl text-xl shadow-md transform hover:scale-105 transition-all"
                >
                   <FaCheck /> SEEN
                </button>
                <button 
                   onClick={() => handleGuess(false)}
-                  className="flex items-center gap-2 px-8 md:px-10 py-4 bg-[#2ecc71] hover:bg-[#27ae60] text-white font-bold rounded-xl text-xl shadow-[0_0_20px_rgba(46,204,113,0.5)] transform hover:scale-105 transition-all"
+                  className="flex items-center gap-2 px-8 md:px-10 py-4 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl text-xl shadow-md transform hover:scale-105 transition-all"
                >
                   <FaTimes /> NEW
                </button>
@@ -187,7 +187,7 @@ const WordMemory = () => {
             {/* Dots underneath for lives (matching screenshot's vague dots or maybe those were lives?) Let's show strikes as dots */}
             <div className="flex gap-3 mt-8">
                {[...Array(3)].map((_, i) => (
-                  <div key={i} className={`w-3 h-3 rounded-full ${i < lives ? 'bg-white/70' : 'bg-black/30 shadow-inner'}`}></div>
+                  <div key={i} className={`w-3 h-3 rounded-full ${i < lives ? 'bg-blue-500' : 'bg-gray-200 shadow-inner'}`}></div>
                ))}
             </div>
           </div>
@@ -197,7 +197,7 @@ const WordMemory = () => {
         {(gameState === 'menu' || gameState === 'over') && (
             <button 
                onClick={startGame}
-               className="mt-6 px-8 py-3 bg-[#ff1e00] rounded-full text-xl font-bold text-white shadow-lg hover:bg-[#e61b00] hover:scale-105 transition-all outline-none border border-transparent"
+               className="mt-6 px-8 py-3 bg-[#2563EB] rounded-full text-xl font-bold text-white shadow-md hover:bg-blue-700 hover:scale-105 transition-all outline-none border border-transparent"
             >
                {gameState === 'over' ? 'Try Again' : 'Start Training'}
             </button>

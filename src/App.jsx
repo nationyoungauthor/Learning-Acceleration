@@ -1,10 +1,12 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import ScrollToTop from './components/common/ScrollToTop'
 import Navbar from './components/common/Navbar'
 import Footer from './components/common/Footer'
 
 import Home from './pages/Home'
 import HighScores from './pages/HighScores'
+import Games from './pages/Games'
 
 import Login from './pages/Login'
 import SequenceMemory from './pages/games/SequenceMemory'
@@ -30,18 +32,25 @@ import InvertedMouse from './pages/games/InvertedMouse'
 import PerfectCircle from './pages/games/PerfectCircle'
 
 import IQTest from './pages/IQTest'
+import Progress from './pages/Progress'
+import About from './pages/About'
+import Dashboard from './pages/Dashboard'
+import QuizZone from './pages/QuizZone'
+import BrainAssessment from './pages/BrainAssessment'
 
 import './App.css'
 
 function App() {
   return (
     <Router>
-      <div className="flex flex-col min-h-screen bg-black">
+      <ScrollToTop />
+      <div className="flex flex-col min-h-screen bg-[#F8FAFC] text-[#0F172A]">
         <Navbar />
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/highscores" element={<HighScores />} />
+            <Route path="/games" element={<Games />} />
 
             <Route path="/login" element={<Login />} />
             <Route path="/games/sequence-memory" element={<SequenceMemory />} />
@@ -66,6 +75,12 @@ function App() {
             <Route path="/games/inverted-mouse" element={<InvertedMouse />} />
             <Route path="/games/perfect-circle" element={<PerfectCircle />} />
             <Route path="/iq-test" element={<IQTest />} />
+            <Route path="/progress" element={<Progress />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/signup" element={<Login initialIsSignUp={true} />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/quiz-zone" element={<QuizZone />} />
+            <Route path="/assessment" element={<BrainAssessment />} />
           </Routes>
         </main>
         <Footer />
