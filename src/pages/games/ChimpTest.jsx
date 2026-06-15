@@ -117,31 +117,31 @@ const ChimpTest = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-[100px])] py-8 bg-black px-4  text-gray-100">
+    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-[100px])] py-8 bg-[#F8FAFC] px-4 font-sans text-[#0F172A]">
       {/* Breadcrumbs */}
-      <div className="w-full max-w-3xl text-sm mb-6 text-gray-400 flex items-center space-x-2 mt-12 md:mt-0">
-        <Link to="/" className="hover:text-[#ff1e00] flex items-center transition-colors"><FaHome className="mr-1"/> Home</Link>
+      <div className="w-full max-w-3xl text-sm mb-6 text-[#64748B] flex items-center space-x-2 mt-12 md:mt-0">
+        <Link to="/" className="hover:text-[#2563EB] flex items-center transition-colors"><FaHome className="mr-1"/> Home</Link>
         <span>&gt;</span>
         <span>Games</span>
         <span>&gt;</span>
-        <span className="text-gray-200">Chimp Test</span>
+        <span className="text-[#0F172A] font-semibold">Chimp Test</span>
       </div>
 
       {/* Main Game Card */}
-      <div className="w-full max-w-3xl bg-zinc-900 rounded-2xl md:p-6 p-4 shadow-2xl shadow-gray-200/80 flex flex-col items-center justify-center relative overflow-hidden border border-gray-200 pb-10 min-h-[450px]">
+      <div className="w-full max-w-3xl bg-white rounded-2xl md:p-6 p-4 shadow-md flex flex-col items-center justify-center relative overflow-hidden border border-gray-200 pb-10 min-h-[450px]">
         
         {/* Top Bar inside Card */}
         <div className="w-full flex justify-between absolute top-4 left-0 px-6">
-            <div className="bg-black px-4 py-2 rounded-xl flex flex-col font-bold self-start mt-2 md:mt-0 shadow-lg border border-white/5">
-               <span className="text-lg">Numbers: {gameState === 'menu' ? '-' : level + 3}</span>
-               <span className="text-gray-400 text-sm flex items-center"><FaTrophy className="mr-1"/> Best: {highScore}</span>
+            <div className="bg-[#F8FAFC] px-4 py-2 rounded-xl flex flex-col font-bold self-start mt-2 md:mt-0 shadow-sm border border-gray-200">
+               <span className="text-lg text-[#0F172A]">Numbers: {gameState === 'menu' ? '-' : level + 3}</span>
+               <span className="text-yellow-600 text-sm flex items-center"><FaTrophy className="mr-1"/> Best: {highScore}</span>
             </div>
             
-            <div className="flex space-x-3 text-xl text-gray-300 mt-2 md:mt-0">
-               <button className="w-12 h-12 flex items-center justify-center bg-zinc-900 rounded-full hover:bg-gray-100 transition-all text-gray-400 hover:text-[#ff1e00] border border-gray-200" title="Toggle Sound">
+            <div className="flex space-x-3 text-xl text-[#64748B] mt-2 md:mt-0">
+               <button className="w-12 h-12 flex items-center justify-center bg-[#F8FAFC] rounded-full hover:bg-gray-100 transition-all text-[#64748B] hover:text-[#2563EB] border border-gray-200" title="Toggle Sound">
                   <FaVolumeUp />
                </button>
-               <button className="w-12 h-12 flex items-center justify-center bg-zinc-900 rounded-full hover:bg-gray-100 transition-all text-gray-400 hover:text-[#ff1e00] border border-gray-200" title="Fullscreen">
+               <button className="w-12 h-12 flex items-center justify-center bg-[#F8FAFC] rounded-full hover:bg-gray-100 transition-all text-[#64748B] hover:text-[#2563EB] border border-gray-200" title="Fullscreen">
                   <FaExpand />
                </button>
             </div>
@@ -149,15 +149,15 @@ const ChimpTest = () => {
 
         {/* Text Area */}
         <div className="text-center mt-[80px] md:mt-[70px] mb-6 min-h-[70px] px-2 md:px-12 w-full">
-           <h2 className="text-3xl md:text-5xl font-extrabold tracking-wide mb-3 drop-shadow-md text-gray-100 transition-opacity duration-300 ">
+           <h2 className="text-3xl md:text-5xl font-extrabold tracking-wide font-display mb-3 text-[#0F172A] transition-opacity duration-300">
                {message}
            </h2>
-           <p className="text-base md:text-xl text-gray-400 font-medium whitespace-pre-line leading-relaxed mx-auto max-w-md drop-shadow-sm">{subMessage}</p>
+           <p className="text-base md:text-xl text-[#64748B] font-medium whitespace-pre-line leading-relaxed mx-auto max-w-md drop-shadow-sm">{subMessage}</p>
         </div>
 
         {/* Grid Area */}
         {(gameState === 'playing' || gameState === 'hidden' || gameState === 'transition' || gameState === 'over') && (
-            <div className="grid grid-cols-8 grid-rows-5 gap-1 md:gap-2 w-full max-w-xl bg-black/10 p-2 md:p-4 rounded-xl border border-white/10">
+            <div className="grid grid-cols-8 grid-rows-5 gap-1 md:gap-2 w-full max-w-xl bg-gray-50 p-2 md:p-4 rounded-xl border border-gray-200 shadow-sm">
                 {tiles.map((tile, idx) => (
                     <div 
                         key={idx}
@@ -165,9 +165,9 @@ const ChimpTest = () => {
                         className={`aspect-square w-full rounded-md transition-all duration-150 flex items-center justify-center font-bold text-xl md:text-3xl
                             ${!tile ? 'invisible' : ''}
                             ${tile && tile.isClicked ? 'opacity-0 scale-90' : 'opacity-100 scale-100'}
-                            ${tile && !tile.isClicked && (gameState === 'hidden' || gameState === 'transition') ? 'bg-zinc-900 cursor-pointer hover:bg-gray-200 hover:scale-105 shadow-md' : ''}
-                            ${tile && !tile.isClicked && gameState === 'playing' ? 'bg-zinc-900 text-red-700 cursor-pointer hover:bg-gray-200 hover:scale-105 shadow-md border-b-4 border-red-900/20' : ''}
-                            ${tile && !tile.isClicked && gameState === 'over' ? (tile.val === expectedNum ? 'bg-green-500 text-white' : 'bg-red-500 text-white border-2 border-white') : ''}
+                            ${tile && !tile.isClicked && (gameState === 'hidden' || gameState === 'transition') ? 'bg-white cursor-pointer hover:bg-gray-100 hover:scale-105 shadow-sm border border-gray-200' : ''}
+                            ${tile && !tile.isClicked && gameState === 'playing' ? 'bg-white text-blue-700 cursor-pointer hover:bg-gray-100 hover:scale-105 shadow-sm border border-gray-200' : ''}
+                            ${tile && !tile.isClicked && gameState === 'over' ? (tile.val === expectedNum ? 'bg-emerald-500 text-white shadow-sm' : 'bg-red-500 text-white shadow-sm border-2 border-red-700') : ''}
                         `}
                     >
                         {/* Show numbers if not hidden, or if game is over so user sees where they failed */}
@@ -181,7 +181,7 @@ const ChimpTest = () => {
         {(gameState === 'menu' || gameState === 'over') && (
             <button 
                onClick={startGame}
-               className="mt-6 px-10 py-4 bg-[#ff1e00] rounded-full text-xl font-bold text-white shadow-lg hover:bg-[#e61b00] hover:scale-105 transition-all outline-none border border-transparent"
+               className="mt-6 px-10 py-4 bg-[#2563EB] rounded-full text-xl font-bold text-white shadow-md hover:bg-blue-700 hover:scale-105 transition-all outline-none border border-transparent"
             >
                {gameState === 'over' ? 'Try Again' : 'Start Training'}
             </button>

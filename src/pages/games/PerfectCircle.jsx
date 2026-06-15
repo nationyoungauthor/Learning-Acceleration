@@ -178,35 +178,35 @@ const PerfectCircle = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-[100px])] py-8 bg-black px-4  text-gray-100">
-      <div className="w-full max-w-2xl text-sm mb-6 text-gray-400 flex items-center space-x-2 mt-12 md:mt-0">
-        <Link to="/" className="hover:text-[#ff1e00] flex items-center transition-colors"><FaHome className="mr-1"/> Home</Link>
+    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-[100px])] py-8 bg-[#F8FAFC] px-4 font-sans text-[#0F172A]">
+      <div className="w-full max-w-3xl text-sm mb-6 text-[#64748B] flex items-center space-x-2 mt-12 md:mt-0">
+        <Link to="/" className="hover:text-[#2563EB] flex items-center transition-colors"><FaHome className="mr-1"/> Home</Link>
         <span>&gt;</span>
         <span>Games</span>
         <span>&gt;</span>
-        <span className="text-gray-200">Perfect Circle</span>
+        <span className="text-[#0F172A] font-semibold">Perfect Circle</span>
       </div>
 
-      <div className="w-full max-w-xl bg-zinc-900 rounded-2xl md:p-6 p-4 shadow-2xl shadow-gray-200/80 flex flex-col items-center justify-center relative overflow-hidden border border-gray-200 pb-10 min-h-[350px]">
+      <div className="w-full max-w-3xl bg-white rounded-2xl md:p-6 p-4 shadow-md flex flex-col items-center justify-center relative overflow-hidden border border-gray-200 pb-10 min-h-[350px]">
         
         <div className="w-full flex justify-between absolute top-4 left-0 px-6 z-10 pointer-events-none">
-            <div className="bg-black px-4 py-2 rounded-xl flex text-gray-200 flex-col font-bold self-start mt-2 md:mt-0 shadow-lg border border-white/5 pointer-events-auto">
-               <span className="text-yellow-400 text-sm flex items-center"><FaTrophy className="mr-1"/> Best: {highScore.toFixed(1)}%</span>
+            <div className="bg-[#F8FAFC] px-4 py-2 rounded-xl flex text-[#0F172A] flex-col font-bold self-start mt-2 md:mt-0 shadow-sm border border-gray-200 pointer-events-auto">
+               <span className="text-yellow-600 text-sm flex items-center"><FaTrophy className="mr-1"/> Best: {highScore.toFixed(1)}%</span>
             </div>
             
-            <div className="flex space-x-3 text-xl text-gray-300 mt-2 md:mt-0 pointer-events-auto">
-               <button className="w-12 h-12 flex items-center justify-center bg-zinc-900 rounded-full hover:bg-gray-100 transition-all text-gray-400 hover:text-[#ff1e00] border border-gray-200" title="Toggle Sound">
+            <div className="flex space-x-3 text-xl text-[#64748B] mt-2 md:mt-0 pointer-events-auto">
+               <button className="w-12 h-12 flex items-center justify-center bg-[#F8FAFC] rounded-full hover:bg-gray-100 transition-all text-[#64748B] hover:text-[#2563EB] border border-gray-200" title="Toggle Sound">
                   <FaVolumeUp />
                </button>
-               <button className="w-12 h-12 flex items-center justify-center bg-zinc-900 rounded-full hover:bg-gray-100 transition-all text-gray-400 hover:text-[#ff1e00] border border-gray-200" title="Fullscreen">
+               <button className="w-12 h-12 flex items-center justify-center bg-[#F8FAFC] rounded-full hover:bg-gray-100 transition-all text-[#64748B] hover:text-[#2563EB] border border-gray-200" title="Fullscreen">
                   <FaExpand />
                </button>
             </div>
         </div>
 
         <div className="text-center mt-[80px] md:mt-[70px] mb-4 min-h-[70px] px-2 md:px-12 w-full">
-           <h2 className="text-3xl md:text-4xl font-extrabold tracking-wide mb-3 drop-shadow-md text-gray-100 transition-opacity duration-300 ">{message}</h2>
-           <p className="text-base md:text-lg text-gray-400 font-medium whitespace-pre-line leading-relaxed mx-auto max-w-md">{subMessage}</p>
+           <h2 className="text-3xl md:text-5xl font-extrabold tracking-wide font-display mb-3 text-[#0F172A] transition-opacity duration-300">{message}</h2>
+           <p className="text-base md:text-xl text-[#64748B] font-medium whitespace-pre-line leading-relaxed mx-auto max-w-md drop-shadow-sm">{subMessage}</p>
         </div>
 
         {gameState === 'playing' && (
@@ -220,7 +220,7 @@ const PerfectCircle = () => {
               onTouchStart={startDrawing}
               onTouchMove={draw}
               onTouchEnd={stopDrawing}
-              className="bg-[#f8fafc] rounded-xl border border-blue-200 shadow-inner touch-none cursor-crosshair"
+              className="bg-gray-50 rounded-xl border-2 border-gray-300 shadow-inner touch-none cursor-crosshair"
               style={{ width: '400px', height: '400px' }}
             />
           </div>
@@ -228,14 +228,14 @@ const PerfectCircle = () => {
 
         {gameState === 'over' && (
           <div className="w-full max-w-sm flex flex-col items-center mt-4">
-             <div className="text-6xl md:text-7xl font-black mb-4 tracking-widest text-center text-blue-500 drop-shadow-md tabular-nums">
-                {score.toFixed(1)}<span className="text-4xl text-blue-300">%</span>
+             <div className="text-6xl md:text-7xl font-black mb-4 tracking-widest text-center text-blue-600 drop-shadow-sm tabular-nums">
+                {score.toFixed(1)}<span className="text-4xl text-blue-400">%</span>
              </div>
              
              {/* Visual Progress Bar */}
              <div className="w-full bg-gray-200 rounded-full h-3 mb-8 overflow-hidden relative shadow-inner">
                 <div 
-                  className="bg-gradient-to-r from-blue-400 to-[#00f2fe] h-3 rounded-full absolute left-0 transition-all duration-1000 ease-out" 
+                  className="bg-blue-500 h-3 rounded-full absolute left-0 transition-all duration-1000 ease-out" 
                   style={{ width: `${score}%` }}
                 ></div>
              </div>
@@ -245,7 +245,7 @@ const PerfectCircle = () => {
         {(gameState === 'menu' || gameState === 'over') && (
             <button 
                onClick={startGame}
-               className="mt-6 px-10 py-4 bg-[#ff1e00] rounded-full text-xl font-bold text-white shadow-lg hover:bg-[#e61b00] hover:scale-105 transition-all outline-none border border-transparent"
+               className="mt-6 px-10 py-4 bg-[#2563EB] rounded-full text-xl font-bold text-white shadow-md hover:bg-blue-700 hover:scale-105 transition-all outline-none border border-transparent"
             >
                {gameState === 'over' ? 'Try Again' : 'Start Training'}
             </button>

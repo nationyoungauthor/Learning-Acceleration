@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { FaPlay, FaTrophy, FaBookOpen, FaBrain } from 'react-icons/fa';
-import { FiLogOut } from 'react-icons/fi';
-import { RiLoginBoxLine } from 'react-icons/ri';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,72 +15,163 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Remove handleGamesScroll since we now have a dedicated page
+  const menuItems = [
+    { name: 'Home', path: '/' },
+    { name: 'Brain Games', path: '/games' },
+    { name: 'Quiz Zone', path: '/quiz-zone' },
+    { name: 'Leaderboard', path: '/highscores' },
+    { name: 'Dashboard', path: '/dashboard' },
+    { name: 'About', path: '/about' },
+  ];
+
+  const isActive = (path) => {
+    return location.pathname === path;
+  };
+
   return (
     <nav
-      className={`sticky top-0 z-50 transition-all duration-300 py-3 ${scrolled
-        ? 'bg-black/95 backdrop-blur-md shadow-lg border-b border-white/5'
-        : 'bg-black'
-        }`}
+      className={`sticky top-0 z-50 transition-all duration-300 bg-white ${
+        scrolled || isOpen
+          ? 'shadow-md border-b border-gray-100 py-3'
+          : 'border-b border-gray-100 py-4'
+      }`}
     >
       <div className="container mx-auto px-6 lg:px-12">
         <div className="flex items-center justify-between w-full">
-
-          {/* Logo & Branding */}
-          <Link to="/" className="group flex flex-col items-start relative hover:cursor-pointer z-10 mr-8">
-            <h1 className="text-xl md:text-2xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-indigo-400 to-purple-400 transition-all duration-500">
+          
+          {/* Logo (Left) */}
+          <Link to="/" className="flex items-center space-x-2.5 group z-20">
+            <span className="text-3xl group-hover:scale-110 transition-transform duration-300">🧠</span>
+            <span className="text-lg md:text-xl font-extrabold tracking-tight text-[#0F172A] group-hover:text-[#2563EB] transition-colors">
               Learning Acceleration
-            </h1>
-            <div className="flex items-center mt-[1px] space-x-1.5 opacity-80 group-hover:opacity-100 transition-opacity duration-300">
-              <span className="text-[0.6rem] font-medium uppercase tracking-[0.1em] text-gray-400">
-                - Powered by <span className="text-indigo-400 font-bold ml-0.5">Visdomwaves</span>
-              </span>
-            </div>
+            </span>
           </Link>
 
-          {/* Navigation Items (Right Side aligned like image) */}
-          <div className="hidden md:flex items-center justify-end flex-grow space-x-6 z-10 pointer-events-auto">
-
-            {/* Games Link (Solid Dark Grey Background) */}
-            <Link to="/" className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-[#252b36] hover:bg-[#2d3441] transition-colors border border-white/5 shadow-sm text-gray-200">
-              <FaPlay className="text-[10px]" />
-              <span className="text-sm font-semibold">Games</span>
-            </Link>
-
-            {/* High Scores */}
-            <Link to="/highscores" className="flex items-center space-x-2 px-2 py-2 text-gray-400 hover:text-white transition-colors group">
-              <FaTrophy className="text-sm opacity-80 group-hover:opacity-100" />
-              <span className="text-sm font-medium">High Scores</span>
-            </Link>
-
-            {/* Blog */}
-            {/* <Link to="/" className="flex items-center space-x-2 px-2 py-2 text-gray-400 hover:text-white transition-colors group">
-              <FaBookOpen className="text-sm opacity-80 group-hover:opacity-100" />
-              <span className="text-sm font-medium">Blog</span>
-            </Link> */}
-
-            {/* IQ Test (Green Border and Text) */}
-            <Link to="/iq-test" className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-[#142d22] border border-[#1b4331] hover:bg-[#1b3d2e] transition-colors text-[#4dd383]">
-              <FaBrain className="text-sm" />
-              <span className="text-sm font-bold">IQ Test</span>
-            </Link>
-
-            {/* Login (Purple Gradient) */}
-            <Link to="/login" className="flex items-center space-x-2 px-5 py-2 rounded-lg bg-gradient-to-r from-[#6b58ba] to-[#8063c4] hover:from-[#7565c9] hover:to-[#886dd1] transition-all shadow-[0_0_15px_rgba(107,88,186,0.3)] text-white hover:-translate-y-[1px]">
-              <RiLoginBoxLine className="text-lg" />
-              <span className="text-sm font-bold">Login</span>
-            </Link>
-
+          {/* Menu (Center) - Desktop */}
+          <div className="hidden lg:flex items-center space-x-1 xl:space-x-2">
+            {menuItems.map((item, index) => (
+              <Link
+                key={index}
+                to={item.path}
+                onClick={item.onClick}
+                className={`px-3 py-2 text-sm font-semibold rounded-lg transition-all ${
+                  isActive(item.path)
+                    ? 'text-[#2563EB] bg-blue-50/70'
+                    : 'text-[#64748B] hover:text-[#0F172A] hover:bg-gray-50'
+                }`}
+              >
+                {item.name}
+              </Link>
+            ))}
           </div>
 
-          {/* Mobile Menu Button (Hamburger) */}
-          <div className="md:hidden flex items-center">
-            <button className="text-gray-300 hover:text-white focus:outline-none transition-colors">
-              <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-              </svg>
+          {/* Right Side - Desktop */}
+          <div className="hidden lg:flex items-center space-x-4">
+            <Link
+              to="/login"
+              className={`text-sm font-bold transition-all px-3 py-2 rounded-lg ${
+                isActive('/login') ? 'text-[#2563EB]' : 'text-[#64748B] hover:text-[#0F172A]'
+              }`}
+            >
+              Login
+            </Link>
+            
+            <Link
+              to="/signup"
+              className={`text-sm font-bold transition-all px-3 py-2 rounded-lg ${
+                isActive('/signup') ? 'text-[#2563EB]' : 'text-[#64748B] hover:text-[#0F172A]'
+              }`}
+            >
+              Sign Up
+            </Link>
+
+            <Link
+              to="/games"
+              className="px-5 py-2.5 rounded-full bg-[#2563EB] hover:bg-blue-700 text-white font-bold text-sm shadow-[0_4px_12px_rgba(37,99,235,0.2)] hover:shadow-[0_4px_16px_rgba(37,99,235,0.3)] transition-all hover:-translate-y-0.5"
+            >
+              Start Training
+            </Link>
+          </div>
+
+          {/* Mobile Hamburger Menu Button */}
+          <div className="lg:hidden flex items-center z-20">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="text-[#0F172A] hover:text-[#2563EB] focus:outline-none transition-colors"
+              aria-label="Toggle menu"
+            >
+              {isOpen ? (
+                <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              ) : (
+                <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+              )}
             </button>
           </div>
 
+        </div>
+      </div>
+
+      {/* Mobile Drawer */}
+      <div
+        className={`lg:hidden fixed inset-x-0 top-[60px] bg-white border-b border-gray-200 transition-all duration-300 ease-in-out overflow-hidden z-10 ${
+          isOpen ? 'max-h-[500px] opacity-100 py-6' : 'max-h-0 opacity-0 py-0 border-none'
+        }`}
+      >
+        <div className="flex flex-col px-6 space-y-4">
+          <Link
+            to="/"
+            onClick={() => setIsOpen(false)}
+            className="text-[#0F172A] hover:text-[#2563EB] text-base font-bold py-2 border-b border-gray-100"
+          >
+            Home
+          </Link>
+          <Link
+            to="/games"
+            onClick={() => setIsOpen(false)}
+            className="text-[#0F172A] hover:text-[#2563EB] text-base font-bold py-2 border-b border-gray-100"
+          >
+            Games
+          </Link>
+          <Link
+            to="/quiz-zone"
+            onClick={() => setIsOpen(false)}
+            className="text-[#0F172A] hover:text-[#2563EB] text-base font-bold py-2 border-b border-gray-100"
+          >
+            Quiz Zone
+          </Link>
+          <Link
+            to="/highscores"
+            onClick={() => setIsOpen(false)}
+            className="text-[#0F172A] hover:text-[#2563EB] text-base font-bold py-2 border-b border-gray-100"
+          >
+            Leaderboard
+          </Link>
+          <Link
+            to="/dashboard"
+            onClick={() => setIsOpen(false)}
+            className="text-[#0F172A] hover:text-[#2563EB] text-base font-bold py-2 border-b border-gray-100"
+          >
+            Dashboard
+          </Link>
+          <Link
+            to="/about"
+            onClick={() => setIsOpen(false)}
+            className="text-[#0F172A] hover:text-[#2563EB] text-base font-bold py-2 border-b border-gray-100"
+          >
+            About
+          </Link>
+          <Link
+            to="/login"
+            onClick={() => setIsOpen(false)}
+            className="text-[#2563EB] hover:text-blue-700 text-base font-bold py-2"
+          >
+            Login
+          </Link>
         </div>
       </div>
     </nav>

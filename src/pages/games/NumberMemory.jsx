@@ -117,31 +117,31 @@ const NumberMemory = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-[100px])] py-8 bg-black px-4  text-gray-100">
+    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-[100px])] py-8 bg-[#F8FAFC] px-4 font-sans text-[#0F172A]">
       {/* Breadcrumbs */}
-      <div className="w-full max-w-3xl text-sm mb-6 text-gray-400 flex items-center space-x-2 mt-12 md:mt-0">
-        <Link to="/" className="hover:text-[#ff1e00] flex items-center transition-colors"><FaHome className="mr-1"/> Home</Link>
+      <div className="w-full max-w-3xl text-sm mb-6 text-[#64748B] flex items-center space-x-2 mt-12 md:mt-0">
+        <Link to="/" className="hover:text-[#2563EB] flex items-center transition-colors"><FaHome className="mr-1"/> Home</Link>
         <span>&gt;</span>
         <span>Games</span>
         <span>&gt;</span>
-        <span className="text-gray-200">Number Memory</span>
+        <span className="text-[#0F172A] font-semibold">Number Memory</span>
       </div>
 
       {/* Main Game Card */}
-      <div className="w-full max-w-3xl bg-zinc-900 rounded-2xl md:p-6 p-4 shadow-2xl shadow-gray-200/80 flex flex-col items-center justify-center relative overflow-hidden border border-gray-200 pb-10 min-h-[350px]">
+      <div className="w-full max-w-3xl bg-white rounded-2xl md:p-6 p-4 shadow-md flex flex-col items-center justify-center relative overflow-hidden border border-gray-200 pb-10 min-h-[350px]">
         
         {/* Top Bar inside Card */}
         <div className="w-full flex justify-between absolute top-4 left-0 px-6">
-            <div className="bg-black px-4 py-2 rounded-xl flex flex-col font-bold self-start mt-2 md:mt-0 shadow-lg border border-white/5">
-               <span className="text-lg">Level: {gameState === 'menu' ? '-' : level}</span>
-               <span className="text-pink-200 text-sm flex items-center"><FaTrophy className="mr-1"/> Best: {highScore}</span>
+            <div className="bg-[#F8FAFC] px-4 py-2 rounded-xl flex flex-col font-bold self-start mt-2 md:mt-0 shadow-sm border border-gray-200">
+               <span className="text-lg text-[#0F172A]">Level: {gameState === 'menu' ? '-' : level}</span>
+               <span className="text-yellow-600 text-sm flex items-center"><FaTrophy className="mr-1"/> Best: {highScore}</span>
             </div>
             
-            <div className="flex space-x-3 text-xl text-gray-300 mt-2 md:mt-0">
-               <button className="w-12 h-12 flex items-center justify-center bg-zinc-900 rounded-full hover:bg-gray-100 transition-all text-gray-400 hover:text-[#ff1e00] border border-gray-200" title="Toggle Sound">
+            <div className="flex space-x-3 text-xl text-[#64748B] mt-2 md:mt-0">
+               <button className="w-12 h-12 flex items-center justify-center bg-[#F8FAFC] rounded-full hover:bg-gray-100 transition-all text-[#64748B] hover:text-[#2563EB] border border-gray-200" title="Toggle Sound">
                   <FaVolumeUp />
                </button>
-               <button className="w-12 h-12 flex items-center justify-center bg-zinc-900 rounded-full hover:bg-gray-100 transition-all text-gray-400 hover:text-[#ff1e00] border border-gray-200" title="Fullscreen">
+               <button className="w-12 h-12 flex items-center justify-center bg-[#F8FAFC] rounded-full hover:bg-gray-100 transition-all text-[#64748B] hover:text-[#2563EB] border border-gray-200" title="Fullscreen">
                   <FaExpand />
                </button>
             </div>
@@ -149,17 +149,17 @@ const NumberMemory = () => {
 
         {/* Text Area */}
         <div className="text-center mt-[80px] md:mt-[70px] mb-6 min-h-[70px] px-2 md:px-12 w-full">
-           <h2 className="text-4xl md:text-6xl font-extrabold tracking-widest mb-3 drop-shadow-md text-gray-100 transition-opacity duration-300 ">
+           <h2 className="text-4xl md:text-6xl font-extrabold tracking-widest font-display mb-3 text-[#0F172A] transition-opacity duration-300">
                {gameState === 'showing' ? targetNumber : message}
            </h2>
-           <p className="text-base md:text-xl text-gray-400 font-medium whitespace-pre-line leading-relaxed mx-auto max-w-md drop-shadow-sm">{subMessage}</p>
+           <p className="text-base md:text-xl text-[#64748B] font-medium whitespace-pre-line leading-relaxed mx-auto max-w-md drop-shadow-sm">{subMessage}</p>
         </div>
 
         {/* Progress Bar (Only during 'showing') */}
         {gameState === 'showing' && (
-            <div className="w-full max-w-md h-3 bg-black/20 rounded-full overflow-hidden mt-8 border border-white/10 shadow-inner">
+            <div className="w-full max-w-md h-3 bg-gray-200 rounded-full overflow-hidden mt-8 border border-gray-300 shadow-inner">
                 <div 
-                    className="h-full bg-zinc-900 transition-all duration-75 ease-linear rounded-full shadow-[0_0_10px_rgba(255,255,255,0.8)]"
+                    className="h-full bg-blue-500 transition-all duration-75 ease-linear rounded-full shadow-sm"
                     style={{ width: `${progress}%` }}
                 ></div>
             </div>
@@ -174,7 +174,7 @@ const NumberMemory = () => {
                     value={userAnswer}
                     onChange={(e) => setUserAnswer(e.target.value)}
                     onKeyDown={handleKeyPress}
-                    className="w-full bg-black/20 border-b-4 border-white/50 focus:border-white text-center text-4xl text-white  py-4 outline-none transition-colors mb-8 shadow-inner"
+                    className="w-full bg-gray-50 border-b-4 border-gray-300 focus:border-blue-500 text-center text-4xl text-[#0F172A] py-4 outline-none transition-colors mb-8 shadow-inner rounded-t-xl"
                     autoFocus
                     autoComplete="off"
                 />
@@ -185,27 +185,27 @@ const NumberMemory = () => {
                         <button 
                             key={num}
                             onClick={() => handleNumpadClick(num.toString())}
-                            className="bg-black/20 hover:bg-black/40 text-white font-bold text-2xl py-4 rounded-xl border border-white/10 backdrop-blur-sm transition-all active:scale-95"
+                            className="bg-gray-100 hover:bg-gray-200 text-[#0F172A] font-bold text-2xl py-4 rounded-xl border border-gray-200 transition-all active:scale-95"
                         >
                             {num}
                         </button>
                     ))}
                     <button 
                         onClick={() => handleNumpadClick('back')}
-                        className="bg-red-500/30 hover:bg-red-500/50 text-white font-bold text-xl py-4 rounded-xl border border-white/10 backdrop-blur-sm transition-all active:scale-95 flex items-center justify-center"
+                        className="bg-red-100 hover:bg-red-200 text-red-600 font-bold text-xl py-4 rounded-xl border border-red-200 transition-all active:scale-95 flex items-center justify-center"
                     >
                         <FaBackspace />
                     </button>
                     <button 
                         onClick={() => handleNumpadClick('0')}
-                        className="bg-black/20 hover:bg-black/40 text-white font-bold text-2xl py-4 rounded-xl border border-white/10 backdrop-blur-sm transition-all active:scale-95"
+                        className="bg-gray-100 hover:bg-gray-200 text-[#0F172A] font-bold text-2xl py-4 rounded-xl border border-gray-200 transition-all active:scale-95"
                     >
                         0
                     </button>
                     <button 
                         onClick={handleSubmit}
                         disabled={userAnswer.length === 0}
-                        className={`font-bold text-xl py-4 rounded-xl border border-white/20 backdrop-blur-sm transition-all active:scale-95 ${userAnswer.length > 0 ? 'bg-zinc-900 text-pink-700 hover:bg-pink-100 shadow-[0_0_15px_rgba(255,255,255,0.5)]' : 'bg-white/30 text-white/50 cursor-not-allowed'}`}
+                        className={`font-bold text-xl py-4 rounded-xl border transition-all active:scale-95 ${userAnswer.length > 0 ? 'bg-blue-600 text-white border-blue-700 hover:bg-blue-700 shadow-md' : 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'}`}
                     >
                         OK
                     </button>
@@ -215,7 +215,7 @@ const NumberMemory = () => {
 
         {/* Transition / Correct Indicator */}
         {gameState === 'transition' && (
-             <div className="mt-8 px-12 py-4 bg-zinc-900 text-pink-600 rounded-full text-2xl font-black shadow-[0_0_30px_rgba(255,255,255,0.8)] animate-bounce">
+             <div className="mt-8 px-12 py-4 bg-emerald-100 text-emerald-700 rounded-full text-2xl font-black shadow-sm animate-bounce border border-emerald-200">
                 CORRECT
              </div>
         )}
@@ -224,7 +224,7 @@ const NumberMemory = () => {
         {(gameState === 'menu' || gameState === 'over') && (
             <button 
                onClick={startGame}
-               className="mt-6 px-10 py-4 bg-[#ff1e00] rounded-full text-xl font-bold text-white shadow-lg hover:bg-[#e61b00] hover:scale-105 transition-all outline-none border border-transparent"
+               className="mt-6 px-10 py-4 bg-[#2563EB] rounded-full text-xl font-bold text-white shadow-md hover:bg-blue-700 hover:scale-105 transition-all outline-none border border-transparent"
             >
                {gameState === 'over' ? 'Try Again' : 'Start Training'}
             </button>

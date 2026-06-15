@@ -63,47 +63,47 @@ const TimeEstimator = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-[100px])] py-8 bg-black px-4  text-gray-100">
-      <div className="w-full max-w-2xl text-sm mb-6 text-gray-400 flex items-center space-x-2 mt-12 md:mt-0">
-        <Link to="/" className="hover:text-[#ff1e00] flex items-center transition-colors"><FaHome className="mr-1"/> Home</Link>
+    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-[100px])] py-8 bg-[#F8FAFC] px-4 font-sans text-[#0F172A]">
+      <div className="w-full max-w-3xl text-sm mb-6 text-[#64748B] flex items-center space-x-2 mt-12 md:mt-0">
+        <Link to="/" className="hover:text-[#2563EB] flex items-center transition-colors"><FaHome className="mr-1"/> Home</Link>
         <span>&gt;</span>
         <span>Games</span>
         <span>&gt;</span>
-        <span className="text-gray-200">Time Estimator</span>
+        <span className="text-[#0F172A] font-semibold">Time Estimator</span>
       </div>
 
-      <div className="w-full max-w-xl bg-zinc-900 rounded-2xl md:p-6 p-4 shadow-2xl shadow-gray-200/80 flex flex-col items-center justify-center relative overflow-hidden border border-gray-200 pb-10 min-h-[350px]">
+      <div className="w-full max-w-3xl bg-white rounded-2xl md:p-6 p-4 shadow-md flex flex-col items-center justify-center relative overflow-hidden border border-gray-200 pb-10 min-h-[350px]">
         
         <div className="w-full flex justify-between absolute top-4 left-0 px-6">
-            <div className="bg-black px-4 py-2 rounded-xl flex text-gray-200 flex-col font-bold self-start mt-2 md:mt-0 shadow-lg border border-white/5">
-               <span className="text-yellow-400 text-sm flex items-center"><FaTrophy className="mr-1"/> Best: {highScore} pts</span>
+            <div className="bg-[#F8FAFC] px-4 py-2 rounded-xl flex text-[#0F172A] flex-col font-bold self-start mt-2 md:mt-0 shadow-sm border border-gray-200">
+               <span className="text-yellow-600 text-sm flex items-center"><FaTrophy className="mr-1"/> Best: {highScore} pts</span>
             </div>
             
-            <div className="flex space-x-3 text-xl text-gray-300 mt-2 md:mt-0">
-               <button className="w-12 h-12 flex items-center justify-center bg-zinc-900 rounded-full hover:bg-gray-100 transition-all text-gray-400 hover:text-[#ff1e00] border border-gray-200" title="Toggle Sound">
+            <div className="flex space-x-3 text-xl text-[#64748B] mt-2 md:mt-0">
+               <button className="w-12 h-12 flex items-center justify-center bg-[#F8FAFC] rounded-full hover:bg-gray-100 transition-all text-[#64748B] hover:text-[#2563EB] border border-gray-200" title="Toggle Sound">
                   <FaVolumeUp />
                </button>
-               <button className="w-12 h-12 flex items-center justify-center bg-zinc-900 rounded-full hover:bg-gray-100 transition-all text-gray-400 hover:text-[#ff1e00] border border-gray-200" title="Fullscreen">
+               <button className="w-12 h-12 flex items-center justify-center bg-[#F8FAFC] rounded-full hover:bg-gray-100 transition-all text-[#64748B] hover:text-[#2563EB] border border-gray-200" title="Fullscreen">
                   <FaExpand />
                </button>
             </div>
         </div>
 
         <div className="text-center mt-[80px] md:mt-[70px] mb-6 min-h-[70px] px-2 md:px-12 w-full">
-           <h2 className="text-3xl md:text-4xl font-extrabold tracking-wide mb-3 drop-shadow-md text-gray-100 transition-opacity duration-300 ">
+           <h2 className="text-3xl md:text-5xl font-extrabold tracking-wide font-display mb-3 text-[#0F172A] transition-opacity duration-300">
              {gameState === 'ready' ? `Target: ${(targetTime/1000).toFixed(1)} Seconds` : message}
            </h2>
-           <p className="text-base md:text-lg text-gray-400 font-medium whitespace-pre-line leading-relaxed mx-auto max-w-md">
+           <p className="text-base md:text-xl text-[#64748B] font-medium whitespace-pre-line leading-relaxed mx-auto max-w-md drop-shadow-sm">
              {gameState === 'ready' ? 'Click start and stop when you think the time has passed.' : subMessage}
            </p>
         </div>
 
         {gameState === 'playing' && (
           <div className="w-full max-w-sm flex flex-col items-center">
-             <div className="w-32 h-32 rounded-full border-8 border-orange-200 border-t-orange-500 animate-spin mb-8"></div>
+             <div className="w-32 h-32 rounded-full border-8 border-orange-100 border-t-orange-500 animate-spin mb-8 shadow-sm"></div>
              <button 
                 onClick={stopTimer}
-                className="bg-orange-500 hover:bg-orange-400 text-white font-bold rounded-xl px-12 py-4 transition-colors shadow-lg active:scale-95 text-xl"
+                className="bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl px-12 py-4 transition-colors shadow-md active:scale-95 text-xl"
               >
                 Stop
               </button>
@@ -112,10 +112,10 @@ const TimeEstimator = () => {
 
         {gameState === 'over' && (
           <div className="w-full max-w-sm flex flex-col items-center">
-             <div className="text-5xl md:text-6xl font-black mb-4 tracking-widest text-center text-orange-600 drop-shadow-md tabular-nums">
-                {score} <span className="text-2xl text-gray-500">pts</span>
+             <div className="text-5xl md:text-6xl font-black mb-4 tracking-widest text-center text-orange-600 drop-shadow-sm tabular-nums">
+                {score} <span className="text-2xl text-[#64748B]">pts</span>
              </div>
-             <div className="w-full bg-gray-200 rounded-full h-2.5 mb-8 overflow-hidden relative">
+             <div className="w-full bg-gray-200 rounded-full h-2.5 mb-8 overflow-hidden relative shadow-inner">
                 <div 
                   className="bg-orange-500 h-2.5 rounded-full absolute left-1/2 -translate-x-1/2 transition-all duration-500" 
                   style={{ width: `${Math.max(2, score)}%` }}
@@ -127,7 +127,7 @@ const TimeEstimator = () => {
         {(gameState === 'menu' || gameState === 'over') && (
             <button 
                onClick={initGame}
-               className="mt-2 px-10 py-4 bg-[#ff1e00] rounded-full text-xl font-bold text-white shadow-lg hover:bg-[#e61b00] hover:scale-105 transition-all outline-none border border-transparent"
+               className="mt-6 px-10 py-4 bg-[#2563EB] rounded-full text-xl font-bold text-white shadow-md hover:bg-blue-700 hover:scale-105 transition-all outline-none border border-transparent"
             >
                {gameState === 'over' ? 'Play Again' : 'Start Training'}
             </button>
@@ -136,7 +136,7 @@ const TimeEstimator = () => {
         {gameState === 'ready' && (
             <button 
                onClick={startGame}
-               className="mt-2 px-10 py-4 bg-blue-500 rounded-full text-xl font-bold text-white shadow-lg hover:bg-blue-600 hover:scale-105 transition-all outline-none border border-transparent"
+               className="mt-6 px-10 py-4 bg-[#2563EB] rounded-full text-xl font-bold text-white shadow-md hover:bg-blue-700 hover:scale-105 transition-all outline-none border border-transparent"
             >
                Start Timer
             </button>

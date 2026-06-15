@@ -144,31 +144,31 @@ const MemoryMatch = () => {
   const cols = cards.length <= 4 ? 2 : cards.length <= 8 ? 4 : 4;
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-[100px])] py-8 bg-black px-4  text-gray-100">
+    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-[100px])] py-8 bg-[#F8FAFC] px-4 font-sans text-[#0F172A]">
       {/* Breadcrumbs */}
-      <div className="w-full max-w-3xl text-sm mb-6 text-gray-400 flex items-center space-x-2 mt-12 md:mt-0">
-        <Link to="/" className="hover:text-[#ff1e00] flex items-center transition-colors"><FaHome className="mr-1"/> Home</Link>
+      <div className="w-full max-w-3xl text-sm mb-6 text-[#64748B] flex items-center space-x-2 mt-12 md:mt-0">
+        <Link to="/" className="hover:text-[#2563EB] flex items-center transition-colors"><FaHome className="mr-1"/> Home</Link>
         <span>&gt;</span>
         <span>Games</span>
         <span>&gt;</span>
-        <span className="text-gray-200">Memory Match</span>
+        <span className="text-[#0F172A] font-semibold">Memory Match</span>
       </div>
 
       {/* Main Game Card */}
-      <div className="w-full max-w-3xl bg-zinc-900 rounded-2xl md:p-6 p-4 shadow-2xl shadow-gray-200/80 flex flex-col items-center justify-center relative overflow-hidden border border-gray-200 pb-10 min-h-[450px]">
+      <div className="w-full max-w-3xl bg-white rounded-2xl md:p-6 p-4 shadow-md flex flex-col items-center justify-center relative overflow-hidden border border-gray-200 pb-10 min-h-[450px]">
         
         {/* Top Bar inside Card */}
         <div className="w-full flex justify-between absolute top-4 left-0 px-6">
-            <div className="bg-black px-4 py-2 rounded-xl flex flex-col font-bold self-start mt-2 md:mt-0 shadow-lg border border-white/5">
-               <span className="text-lg">Level: {gameState === 'menu' ? '-' : level}</span>
-               <span className="text-gray-400 text-sm flex items-center"><FaTrophy className="mr-1"/> Best: {highScore}</span>
+            <div className="bg-[#F8FAFC] px-4 py-2 rounded-xl flex flex-col font-bold self-start mt-2 md:mt-0 shadow-sm border border-gray-200">
+               <span className="text-lg text-[#0F172A]">Level: {gameState === 'menu' ? '-' : level}</span>
+               <span className="text-yellow-600 text-sm flex items-center"><FaTrophy className="mr-1"/> Best: {highScore}</span>
             </div>
             
-            <div className="flex space-x-3 text-xl text-gray-300 mt-2 md:mt-0">
-               <button className="w-12 h-12 flex items-center justify-center bg-zinc-900 rounded-full hover:bg-gray-100 transition-all text-gray-400 hover:text-[#ff1e00] border border-gray-200" title="Toggle Sound">
+            <div className="flex space-x-3 text-xl text-[#64748B] mt-2 md:mt-0">
+               <button className="w-12 h-12 flex items-center justify-center bg-[#F8FAFC] rounded-full hover:bg-gray-100 transition-all text-[#64748B] hover:text-[#2563EB] border border-gray-200" title="Toggle Sound">
                   <FaVolumeUp />
                </button>
-               <button className="w-12 h-12 flex items-center justify-center bg-zinc-900 rounded-full hover:bg-gray-100 transition-all text-gray-400 hover:text-[#ff1e00] border border-gray-200" title="Fullscreen">
+               <button className="w-12 h-12 flex items-center justify-center bg-[#F8FAFC] rounded-full hover:bg-gray-100 transition-all text-[#64748B] hover:text-[#2563EB] border border-gray-200" title="Fullscreen">
                   <FaExpand />
                </button>
             </div>
@@ -176,10 +176,10 @@ const MemoryMatch = () => {
 
         {/* Text Area */}
         <div className="text-center mt-[80px] md:mt-[70px] mb-6 min-h-[70px] px-2 md:px-12 w-full">
-           <h2 className="text-3xl md:text-5xl font-extrabold tracking-wide mb-3 drop-shadow-md text-gray-100 transition-opacity duration-300 ">
+           <h2 className="text-3xl md:text-5xl font-extrabold tracking-wide font-display mb-3 text-[#0F172A] transition-opacity duration-300">
                {message}
            </h2>
-           <p className="text-base md:text-xl text-gray-400 font-medium whitespace-pre-line leading-relaxed mx-auto max-w-md drop-shadow-sm">{subMessage}</p>
+           <p className="text-base md:text-xl text-[#64748B] font-medium whitespace-pre-line leading-relaxed mx-auto max-w-md drop-shadow-sm">{subMessage}</p>
         </div>
 
         {/* Grid Area */}
@@ -196,11 +196,11 @@ const MemoryMatch = () => {
                         >
                             <div className={`w-full h-full absolute transition-transform duration-500 [transform-style:preserve-3d] ${isFlipped ? '[transform:rotateY(180deg)]' : ''}`}>
                                 {/* Front (Hidden) */}
-                                <div className={`absolute w-full h-full rounded-xl bg-black/20 border border-white/10 backdrop-blur-sm flex items-center justify-center [backface-visibility:hidden] ${gameState === 'playing' ? 'hover:bg-black/30' : ''}`}>
-                                    <span className="text-purple-300/30 text-2xl font-bold">?</span>
+                                <div className={`absolute w-full h-full rounded-xl bg-blue-100 border border-blue-200 flex items-center justify-center [backface-visibility:hidden] ${gameState === 'playing' ? 'hover:bg-blue-200' : ''}`}>
+                                    <span className="text-blue-400 text-2xl font-bold">?</span>
                                 </div>
                                 {/* Back (Revealed) */}
-                                <div className="absolute w-full h-full rounded-xl bg-zinc-900 text-purple-700 flex items-center justify-center shadow-[0_0_20px_rgba(255,255,255,0.8)] [transform:rotateY(180deg)] [backface-visibility:hidden]">
+                                <div className="absolute w-full h-full rounded-xl bg-white border border-gray-200 text-blue-600 flex items-center justify-center shadow-md [transform:rotateY(180deg)] [backface-visibility:hidden]">
                                     <Icon className="text-3xl md:text-4xl" />
                                 </div>
                             </div>
@@ -214,7 +214,7 @@ const MemoryMatch = () => {
         {(gameState === 'menu' || gameState === 'over') && (
             <button 
                onClick={startGame}
-               className="mt-6 px-10 py-4 bg-[#ff1e00] rounded-full text-xl font-bold text-white shadow-lg hover:bg-[#e61b00] hover:scale-105 transition-all outline-none border border-transparent"
+               className="mt-6 px-10 py-4 bg-[#2563EB] rounded-full text-xl font-bold text-white shadow-md hover:bg-blue-700 hover:scale-105 transition-all outline-none border border-transparent"
             >
                {gameState === 'over' ? 'Try Again' : 'Start Training'}
             </button>

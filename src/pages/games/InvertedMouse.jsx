@@ -108,51 +108,51 @@ const InvertedMouse = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-[100px])] py-8 bg-black px-4  text-gray-100">
-      <div className="w-full max-w-2xl text-sm mb-6 text-gray-400 flex items-center space-x-2 mt-12 md:mt-0">
-        <Link to="/" className="hover:text-[#ff1e00] flex items-center transition-colors"><FaHome className="mr-1"/> Home</Link>
+    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-[100px])] py-8 bg-[#F8FAFC] px-4 font-sans text-[#0F172A]">
+      <div className="w-full max-w-3xl text-sm mb-6 text-[#64748B] flex items-center space-x-2 mt-12 md:mt-0">
+        <Link to="/" className="hover:text-[#2563EB] flex items-center transition-colors"><FaHome className="mr-1"/> Home</Link>
         <span>&gt;</span>
         <span>Games</span>
         <span>&gt;</span>
-        <span className="text-gray-200">Inverted Mouse</span>
+        <span className="text-[#0F172A] font-semibold">Inverted Mouse</span>
       </div>
 
-      <div className="w-full max-w-xl bg-zinc-900 rounded-2xl md:p-6 p-4 shadow-2xl shadow-gray-200/80 flex flex-col items-center justify-center relative overflow-hidden border border-gray-200 pb-10 min-h-[350px]">
+      <div className="w-full max-w-3xl bg-white rounded-2xl md:p-6 p-4 shadow-md flex flex-col items-center justify-center relative overflow-hidden border border-gray-200 pb-10 min-h-[350px]">
         
         <div className="w-full flex justify-between absolute top-4 left-0 px-6">
-            <div className="bg-black px-4 py-2 rounded-xl flex text-gray-200 flex-col font-bold self-start mt-2 md:mt-0 shadow-lg border border-white/5">
+            <div className="bg-[#F8FAFC] px-4 py-2 rounded-xl flex text-[#0F172A] flex-col font-bold self-start mt-2 md:mt-0 shadow-sm border border-gray-200">
                {gameState === 'playing' ? (
                  <span className="text-lg">Score: {score}</span>
                ) : (
-                 <span className="text-yellow-400 text-sm flex items-center"><FaTrophy className="mr-1"/> Best: {highScore}</span>
+                 <span className="text-yellow-600 text-sm flex items-center"><FaTrophy className="mr-1"/> Best: {highScore}</span>
                )}
             </div>
             
-            <div className="flex space-x-3 text-xl text-gray-300 mt-2 md:mt-0">
+            <div className="flex space-x-3 text-xl text-[#64748B] mt-2 md:mt-0">
                {gameState === 'playing' && (
-                 <div className="bg-red-100 text-red-600 px-4 py-2 rounded-xl font-bold flex items-center mr-2 shadow-sm border border-red-200">
+                 <div className="bg-red-50 text-red-600 px-4 py-2 rounded-xl font-bold flex items-center mr-2 shadow-sm border border-red-200">
                     {timeLeft}s
                  </div>
                )}
-               <button className="w-12 h-12 flex items-center justify-center bg-zinc-900 rounded-full hover:bg-gray-100 transition-all text-gray-400 hover:text-[#ff1e00] border border-gray-200" title="Toggle Sound">
+               <button className="w-12 h-12 flex items-center justify-center bg-[#F8FAFC] rounded-full hover:bg-gray-100 transition-all text-[#64748B] hover:text-[#2563EB] border border-gray-200" title="Toggle Sound">
                   <FaVolumeUp />
                </button>
-               <button className="w-12 h-12 flex items-center justify-center bg-zinc-900 rounded-full hover:bg-gray-100 transition-all text-gray-400 hover:text-[#ff1e00] border border-gray-200" title="Fullscreen">
+               <button className="w-12 h-12 flex items-center justify-center bg-[#F8FAFC] rounded-full hover:bg-gray-100 transition-all text-[#64748B] hover:text-[#2563EB] border border-gray-200" title="Fullscreen">
                   <FaExpand />
                </button>
             </div>
         </div>
 
         <div className="text-center mt-[80px] md:mt-[70px] mb-4 min-h-[70px] px-2 md:px-12 w-full">
-           <h2 className="text-3xl md:text-4xl font-extrabold tracking-wide mb-3 drop-shadow-md text-gray-100 transition-opacity duration-300 ">{message}</h2>
-           <p className="text-base md:text-lg text-gray-400 font-medium whitespace-pre-line leading-relaxed mx-auto max-w-md">{subMessage}</p>
+           <h2 className="text-3xl md:text-5xl font-extrabold tracking-wide font-display mb-3 text-[#0F172A] transition-opacity duration-300">{message}</h2>
+           <p className="text-base md:text-xl text-[#64748B] font-medium whitespace-pre-line leading-relaxed mx-auto max-w-md drop-shadow-sm">{subMessage}</p>
         </div>
 
         {gameState === 'playing' && (
           <div 
             ref={containerRef}
             onMouseMove={handleMouseMove}
-            className="w-full max-w-[500px] h-[400px] bg-[#0f172a] rounded-xl border-4 border-slate-700 relative overflow-hidden cursor-none shadow-inner mx-auto touch-none"
+            className="w-full max-w-[500px] h-[400px] bg-[#0F172A] rounded-xl border-4 border-slate-700 relative overflow-hidden cursor-none shadow-inner mx-auto touch-none"
           >
              {/* Target Circle */}
              <div 
@@ -164,18 +164,18 @@ const InvertedMouse = () => {
              
              {/* Inverted Custom Cursor */}
              <div 
-               className="absolute w-4 h-4 bg-zinc-900 rounded-full shadow-[0_0_10px_rgba(255,255,255,0.8)] pointer-events-none transform -translate-x-1/2 -translate-y-1/2 z-10"
+               className="absolute w-4 h-4 bg-white rounded-full shadow-[0_0_10px_rgba(255,255,255,0.8)] pointer-events-none transform -translate-x-1/2 -translate-y-1/2 z-10"
                style={{ left: cursorPos.x, top: cursorPos.y }}
              >
-                <div className="absolute top-1/2 left-1/2 w-8 h-8 border-2 border-white/50 rounded-full transform -translate-x-1/2 -translate-y-1/2"></div>
+                <div className="absolute top-1/2 left-1/2 w-8 h-8 border-2 border-white/80 rounded-full transform -translate-x-1/2 -translate-y-1/2"></div>
              </div>
           </div>
         )}
 
         {gameState === 'over' && (
           <div className="w-full max-w-sm flex flex-col items-center mt-4">
-             <div className="text-5xl md:text-6xl font-black mb-4 tracking-widest text-center text-teal-600 drop-shadow-md">
-                {score} <span className="text-2xl text-gray-500">targets</span>
+             <div className="text-5xl md:text-6xl font-black mb-4 tracking-widest text-center text-teal-600 drop-shadow-sm">
+                {score} <span className="text-2xl text-[#64748B]">targets</span>
              </div>
           </div>
         )}
@@ -183,7 +183,7 @@ const InvertedMouse = () => {
         {(gameState === 'menu' || gameState === 'over') && (
             <button 
                onClick={startGame}
-               className="mt-6 px-10 py-4 bg-[#ff1e00] rounded-full text-xl font-bold text-white shadow-lg hover:bg-[#e61b00] hover:scale-105 transition-all outline-none border border-transparent"
+               className="mt-6 px-10 py-4 bg-[#2563EB] rounded-full text-xl font-bold text-white shadow-md hover:bg-blue-700 hover:scale-105 transition-all outline-none border border-transparent"
             >
                {gameState === 'over' ? 'Play Again' : 'Start Training'}
             </button>
