@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { 
-  FaPlay, FaTrophy, FaLightbulb, FaBrain, FaListOl, FaBolt, 
-  FaKeyboard, FaCrosshairs, FaPuzzlePiece, FaPalette, FaStopwatch, 
-  FaClock, FaMousePointer, FaCircle, FaGraduationCap, FaChartLine, 
-  FaRobot, FaMagic, FaCheckCircle, FaStar, FaFire 
+import {
+  FaPlay, FaTrophy, FaLightbulb, FaBrain, FaListOl, FaBolt,
+  FaKeyboard, FaCrosshairs, FaPuzzlePiece, FaPalette, FaStopwatch,
+  FaClock, FaMousePointer, FaCircle, FaGraduationCap, FaChartLine,
+  FaRobot, FaMagic, FaCheckCircle, FaStar, FaFire
 } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import HeroFuturistic from '../components/ui/HeroFuturistic';
 
 const games = [
   {
@@ -99,48 +100,7 @@ const Home = () => {
     <div className="flex flex-col flex-grow bg-[#F8FAFC] text-[#0F172A] font-sans pb-16">
 
       {/* Hero Section */}
-      <section className="relative flex flex-col items-center justify-center min-h-[85vh] text-center px-6 overflow-hidden bg-white border-b border-slate-100 py-16">
-        {/* Subtle grid background */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px] pointer-events-none"></div>
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-[#2563EB]/5 blur-3xl pointer-events-none"></div>
-        <div className="absolute bottom-1/4 right-10 w-96 h-96 rounded-full bg-[#7C3AED]/5 blur-3xl pointer-events-none"></div>
-
-        <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center">
-          {/* Top Tagline Badge */}
-          <div className="inline-flex items-center space-x-2.5 px-4.5 py-2 rounded-full bg-blue-50 border border-blue-100 text-[#2563EB] text-xs font-bold uppercase tracking-wider mb-6 shadow-sm">
-            <span>🧠 Learning Acceleration Platform</span>
-          </div>
-
-          {/* Heading */}
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-[#0F172A] mb-6 leading-tight max-w-3xl">
-            Boost Memory, Focus & IQ Through <span className="text-[#2563EB]">Fun Brain Games</span>
-          </h1>
-
-          {/* Subtitle */}
-          <p className="text-[#64748B] text-base md:text-lg leading-relaxed mb-10 max-w-2xl font-medium">
-            Train your brain with scientifically designed memory games, logic challenges, speed tests and adaptive quizzes built for students.
-          </p>
-
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full max-w-md">
-            <Link
-              to="/games"
-              className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-[#2563EB] hover:bg-blue-700 text-white font-bold text-sm shadow-[0_4px_12px_rgba(37,99,235,0.2)] hover:shadow-[0_4px_16px_rgba(37,99,235,0.3)] transition-all hover:-translate-y-0.5 cursor-pointer flex items-center justify-center gap-2"
-            >
-              <FaPlay className="text-[10px]" />
-              <span>Start Training</span>
-            </Link>
-
-            <Link
-              to="/assessment"
-              className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-white border border-slate-200 text-slate-700 hover:text-[#7C3AED] hover:border-[#7C3AED] font-bold text-sm shadow-sm transition-all hover:-translate-y-0.5 flex items-center justify-center gap-2"
-            >
-              <FaTrophy className="text-sm text-purple-500" />
-              <span>Take Brain Assessment</span>
-            </Link>
-          </div>
-        </div>
-      </section>
+      <HeroFuturistic />
 
       {/* Statistics Section */}
       <section className="py-12 bg-slate-50/50 border-b border-slate-100 px-6 lg:px-12">
@@ -206,10 +166,10 @@ const Home = () => {
             >
               {/* Image Area */}
               <div className="h-44 bg-slate-50 flex items-center justify-center overflow-hidden relative border-b border-slate-100">
-                <img 
-                  src={game.img} 
-                  alt={game.title} 
-                  className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100" 
+                <img
+                  src={game.img}
+                  alt={game.title}
+                  className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"
                   onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1606326608606-aa0b62935f2b?auto=format&fit=crop&q=80&w=400" }}
                 />
               </div>
@@ -239,7 +199,7 @@ const Home = () => {
       {/* Age-Based Learning Paths Section */}
       <section className="py-16 bg-slate-50/50 border-y border-slate-100 px-6 lg:px-12">
         <div className="max-w-6xl mx-auto">
-          
+
           <div className="text-center mb-12">
             <h2 className="text-3xl font-extrabold text-[#0F172A] tracking-tight">Custom Age Learning Paths</h2>
             <p className="text-sm text-[#64748B] mt-2 max-w-md mx-auto">Adaptive cognitive exercises calibrated specifically for each growth milestone.</p>
@@ -252,11 +212,10 @@ const Home = () => {
                 <button
                   key={idx}
                   onClick={() => setActiveAgeTab(idx)}
-                  className={`w-full text-left p-4.5 rounded-2xl border font-bold text-sm transition-all flex justify-between items-center ${
-                    activeAgeTab === idx 
-                      ? 'border-[#2563EB] bg-white text-[#2563EB] shadow-sm' 
-                      : 'border-transparent bg-transparent text-[#64748B] hover:text-[#0F172A]'
-                  }`}
+                  className={`w-full text-left p-4.5 rounded-2xl border font-bold text-sm transition-all flex justify-between items-center ${activeAgeTab === idx
+                    ? 'border-[#2563EB] bg-white text-[#2563EB] shadow-sm'
+                    : 'border-transparent bg-transparent text-[#64748B] hover:text-[#0F172A]'
+                    }`}
                 >
                   <span>{path.group}</span>
                   <span className={`w-2 h-2 rounded-full ${activeAgeTab === idx ? 'bg-[#2563EB]' : 'bg-transparent'}`}></span>
@@ -277,7 +236,7 @@ const Home = () => {
                 <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-2.5">Trained Skills</span>
                 <div className="flex flex-wrap gap-2">
                   {agePaths[activeAgeTab].skills.map((skill, sIdx) => (
-                    <span 
+                    <span
                       key={sIdx}
                       className="inline-block text-[10px] font-bold px-3 py-1 bg-slate-50 border border-slate-200/60 rounded-full text-slate-600"
                     >
@@ -301,7 +260,7 @@ const Home = () => {
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {quizCats.map((cat, idx) => (
-            <Link 
+            <Link
               to="/quiz-zone"
               key={idx}
               className={`p-5 rounded-3xl border shadow-sm hover:shadow hover:scale-[1.01] transition-all flex items-center gap-3.5 group cursor-pointer ${cat.color}`}
@@ -316,7 +275,7 @@ const Home = () => {
       {/* Brain Assessment & Dashboard preview */}
       <section className="py-16 bg-white px-6 lg:px-12 border-b border-slate-100">
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-          
+
           {/* Assessment Info */}
           <div>
             <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-purple-50 border border-purple-100 text-[#7C3AED] text-xs font-semibold mb-4">
@@ -329,7 +288,7 @@ const Home = () => {
             <p className="text-sm text-[#64748B] leading-relaxed mb-6">
               Our 4-pillar assessment dashboard gauges memory retention thresholds, speed calculation index, pattern logic connectivity, and focus inhibition ranges.
             </p>
-            
+
             <div className="space-y-3.5 mb-8">
               {[
                 "10-minute diagnostic challenge",
@@ -343,7 +302,7 @@ const Home = () => {
               ))}
             </div>
 
-            <Link 
+            <Link
               to="/assessment"
               className="inline-block px-7 py-3.5 bg-[#2563EB] hover:bg-blue-700 text-white font-bold text-xs rounded-2xl shadow-sm transition-all"
             >
