@@ -5,10 +5,17 @@ export default function ScrollToTop() {
   const { pathname } = useLocation();
 
   useEffect(() => {
+    // Disable automatic scroll restoration by the browser
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+  }, []);
+
+  useEffect(() => {
     window.scrollTo({
       top: 0,
       left: 0,
-      behavior: 'instant' // Or 'smooth' depending on preference, but instant is better for page loads
+      behavior: 'smooth'
     });
   }, [pathname]);
 
