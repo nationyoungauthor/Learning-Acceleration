@@ -3,10 +3,14 @@ import {
   FaPlay, FaTrophy, FaLightbulb, FaBrain, FaListOl, FaBolt,
   FaKeyboard, FaCrosshairs, FaPuzzlePiece, FaPalette, FaStopwatch,
   FaClock, FaMousePointer, FaCircle, FaGraduationCap, FaChartLine,
-  FaRobot, FaMagic, FaCheckCircle, FaStar, FaFire
+  FaRobot, FaMagic, FaCheckCircle, FaStar, FaFire, FaArrowRight
 } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import FeaturedGamesSection from '../components/sections/FeaturedGamesSection';
+import BrainDashboardSection from '../components/sections/BrainDashboardSection';
+
 import HeroFuturistic from '../components/ui/HeroFuturistic';
+import ProgressCircle from '../components/ProgressCircle';
 
 const games = [
   {
@@ -15,7 +19,12 @@ const games = [
     path: '/games/visual-memory',
     icon: <FaLightbulb className="text-red-500 text-2xl" />,
     desc: 'Remember patterns of tiles and recall them with increasing difficulty levels.',
-    img: '/gameImage/visualMemory.svg'
+    img: '/gameImage/visualMemory.svg',
+    category: 'Memory Training',
+    difficulty: 'Beginner',
+    skill: 'Memory',
+    accent: '#2563EB',
+    bestScore: null,
   },
   {
     id: 'number-memory',
@@ -23,22 +32,30 @@ const games = [
     path: '/games/number-memory',
     icon: <span className="text-pink-500 font-bold text-2xl">1/9</span>,
     desc: 'Memorize and recall increasingly longer number sequences to test memory capacity.',
-    img: '/gameImage/NumberMemory2.png'
+    img: '/gameImage/NumberMemory2.png',
+    category: 'Memory Training',
+    difficulty: 'Intermediate',
+    skill: 'Memory',
+    accent: '#4F46E5',
+    bestScore: null,
   },
   {
     id: 'chimp-test',
     title: 'Chimp Test',
     path: '/games/chimp-test',
-    icon: <FaBrain className="text-red-500 text-3xl drop-shadow-md" />,
-    desc: 'Remember numbers and click them in ascending order briefly.',
-    img: '/gameImage/chimpTest.png'
+    icon: <FaBrain className="text-purple-500 text-2xl" />,
+    desc: 'Challenge short-term memory and concentration with numbered sequences.',
+    img: '/gameImage/chimpTest.svg',
+    category: 'Cognitive Training',
+    difficulty: 'Advanced',
+    skill: 'Focus & Memory',
+    accent: '#7C3AED',
+    bestScore: null,
   },
   {
     id: 'pattern-logic',
     title: 'Pattern Logic',
     path: '/games/pattern-logic',
-    icon: <FaBrain className="text-purple-500 text-2xl" />,
-    desc: 'Find the next number in sequences by identifying underlying patterns.',
     img: '/gameImage/patternLogic.svg'
   },
   {
@@ -103,106 +120,165 @@ const Home = () => {
       <HeroFuturistic />
 
       {/* Statistics Section */}
-      <section className="py-12 bg-slate-50/50 border-b border-slate-100 px-6 lg:px-12">
-        <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
-          {[
-            { value: '10,000+', desc: 'Questions' },
-            { value: '50+', desc: 'Brain Games' },
-            { value: '15', desc: 'Learning Categories' },
-            { value: 'Personalized', desc: 'Progress Tracking' }
-          ].map((stat, idx) => (
-            <div key={idx} className="bg-white border border-slate-100 p-6 rounded-3xl shadow-sm text-center">
-              <span className="text-2xl font-black text-[#2563EB] block">{stat.value}</span>
-              <span className="text-xs font-bold text-[#64748B] mt-1 block uppercase tracking-wider">{stat.desc}</span>
-            </div>
-          ))}
+      <section className="relative py-24 bg-white px-6 lg:px-12">
+        {/* Decorative background */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <svg className="w-64 h-64 text-[#E5E7EB] -top-12 left-1/2 -translate-x-1/2 opacity-30" fill="none" viewBox="0 0 200 200">
+            <circle cx="100" cy="100" r="80" stroke="currentColor" strokeWidth="1" />
+          </svg>
+        </div>
+        <div className="relative max-w-6xl mx-auto text-center mb-12">
+          <h2 className="text-4xl font-extrabold text-[#0F172A] tracking-tight">
+            Trusted By Thousands of Young Learners
+          </h2>
+          <p className="mt-4 text-lg text-[#64748B] max-w-2xl mx-auto">
+            Helping students improve memory, focus, IQ, logical thinking, and learning speed through engaging brain games and adaptive quizzes.
+          </p>
+        </div>
+        <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* Card 1 */}
+          <div className="bg-white border border-[#E2E8F0] rounded-[24px] p-8 text-center transition-all hover:-translate-y-1 hover:shadow-xl hover:border-[#2563EB]">
+            <div className="text-5xl mb-4">📚</div>
+            <span className="block text-3xl font-bold text-[#2563EB]">10,000+</span>
+            <h3 className="mt-2 text-xl font-semibold text-[#0F172A]">Quiz Questions</h3>
+            <p className="mt-2 text-sm text-[#64748B]">
+              Adaptive questions across multiple subjects and difficulty levels.
+            </p>
+          </div>
+          {/* Card 2 */}
+          <div className="bg-white border border-[#E2E8F0] rounded-[24px] p-8 text-center transition-all hover:-translate-y-1 hover:shadow-xl hover:border-[#2563EB]">
+            <div className="text-5xl mb-4">🧠</div>
+            <span className="block text-3xl font-bold text-[#2563EB]">50+</span>
+            <h3 className="mt-2 text-xl font-semibold text-[#0F172A]">Brain Games</h3>
+            <p className="mt-2 text-sm text-[#64748B]">
+              Memory, focus, logic, reaction speed, and problem‑solving challenges.
+            </p>
+          </div>
+          {/* Card 3 */}
+          <div className="bg-white border border-[#E2E8F0] rounded-[24px] p-8 text-center transition-all hover:-translate-y-1 hover:shadow-xl hover:border-[#2563EB]">
+            <div className="text-5xl mb-4">🎯</div>
+            <span className="block text-3xl font-bold text-[#2563EB]">15+</span>
+            <h3 className="mt-2 text-xl font-semibold text-[#0F172A]">Learning Categories</h3>
+            <p className="mt-2 text-sm text-[#64748B]">
+              English, Maths, Science, GK, History, Reasoning, Computer &amp; more.
+            </p>
+          </div>
+          {/* Card 4 */}
+          <div className="bg-white border border-[#E2E8F0] rounded-[24px] p-8 text-center transition-all hover:-translate-y-1 hover:shadow-xl hover:border-[#2563EB]">
+            <div className="text-5xl mb-4">📈</div>
+            <span className="block text-3xl font-bold text-[#2563EB]">Personalized</span>
+            <h3 className="mt-2 text-xl font-semibold text-[#0F172A]">Progress Tracking</h3>
+            <p className="mt-2 text-sm text-[#64748B]">
+              Monitor IQ, memory, focus scores, streaks and achievements.
+            </p>
+          </div>
         </div>
       </section>
 
       {/* Brain Skills Section */}
-      <section className="py-16 px-6 lg:px-12 max-w-6xl mx-auto w-full">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-extrabold text-[#0F172A] tracking-tight">Focus Core Brain Skills</h2>
-          <p className="text-sm text-[#64748B] mt-2 max-w-md mx-auto">Discover the 6 cognitive node vectors trained by our adaptive platform.</p>
+      <section className="relative py-24 bg-[#F8FAFC] px-6 lg:px-12">
+        {/* Decorative floating icons */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <svg className="w-64 h-64 text-[#E5E7EB] -top-12 left-1/2 -translate-x-1/2 opacity-30" fill="none" viewBox="0 0 200 200">
+            <circle cx="100" cy="100" r="80" stroke="currentColor" strokeWidth="1" />
+          </svg>
         </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-6 gap-6">
+        <div className="relative max-w-6xl mx-auto text-center mb-12">
+          <span className="inline-block mb-2 text-3xl">🧠</span>
+          <h2 className="text-4xl font-extrabold text-[#0F172A] tracking-tight">
+            Train Every Part of Your Brain
+          </h2>
+          <p className="mt-4 text-lg text-[#64748B] max-w-2xl mx-auto">
+            Strengthen memory, focus, logical thinking, processing speed, and learning ability through scientifically designed brain‑training activities.
+          </p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {[
-            { name: 'Memory', icon: '💾', desc: 'Information hold' },
-            { name: 'Focus', icon: '🎯', desc: 'Concentration' },
-            { name: 'Processing Speed', icon: '⚡', desc: 'Fast calculation' },
-            { name: 'Observation', icon: '👁️', desc: 'Visual details' },
-            { name: 'Learning Ability', icon: '🎓', desc: 'Information assimilation' },
-            { name: 'Problem Solving', icon: '🧩', desc: 'Structural logic' }
+            {
+              name: 'Memory',
+              icon: '🧠',
+              desc: 'Improve recall ability, retention, and long‑term memory.',
+              skills: ['Visual Recall', 'Short‑Term', 'Long‑Term'],
+              percent: 92,
+              accent: '#2563EB',
+            },
+            {
+              name: 'Focus',
+              icon: '🎯',
+              desc: 'Enhance concentration and reduce distractions.',
+              skills: ['Concentration', 'Attention Control', 'Mental Discipline'],
+              percent: 88,
+              accent: '#7C3AED',
+            },
+            {
+              name: 'Processing Speed',
+              icon: '⚡',
+              desc: 'Train faster information processing and reaction time.',
+              skills: ['Fast Thinking', 'Quick Decisions', 'Reaction Time'],
+              percent: 85,
+              accent: '#F59E0B',
+            },
+            {
+              name: 'Observation',
+              icon: '🔍',
+              desc: 'Develop attention to detail and pattern recognition.',
+              skills: ['Pattern Recognition', 'Visual Analysis', 'Detail Focus'],
+              percent: 90,
+              accent: '#10B981',
+            },
+            {
+              name: 'Learning Ability',
+              icon: '📚',
+              desc: 'Boost learning efficiency and academic performance.',
+              skills: ['Learning Speed', 'Info Retention', 'Academic Growth'],
+              percent: 87,
+              accent: '#6366F1',
+            },
+            {
+              name: 'Problem Solving',
+              icon: '🧩',
+              desc: 'Build logical reasoning and critical thinking.',
+              skills: ['Critical Thinking', 'Logical Reasoning', 'Decision Making'],
+              percent: 89,
+              accent: '#F43F5E',
+            },
           ].map((skill, idx) => (
-            <div key={idx} className="bg-white border border-slate-100 hover:border-blue-200 p-5 rounded-3xl shadow-sm hover:shadow transition-all text-center flex flex-col items-center">
-              <span className="text-3xl mb-3">{skill.icon}</span>
-              <h4 className="text-sm font-bold text-[#0F172A] leading-tight mb-1">{skill.name}</h4>
-              <span className="text-[10px] text-[#64748B] font-semibold">{skill.desc}</span>
+            <div
+              key={idx}
+              className="bg-white border border-[#E2E8F0] rounded-[24px] p-8 text-center transition-all hover:-translate-y-1 hover:shadow-xl hover:border-[#2563EB]"
+            >
+              <div className="text-5xl mb-4">{skill.icon}</div>
+              <h3 className="mt-2 text-xl font-semibold text-[#0F172A]">{skill.name}</h3>
+              <p className="mt-2 text-sm text-[#64748B]">{skill.desc}</p>
+              <div className="flex justify-center gap-2 my-3">
+                {skill.skills.map((tag, i) => (
+                  <span
+                    key={i}
+                    className="inline-block px-2 py-0.5 text-xs font-medium bg-[#F8FAFC] border border-[#E2E8F0] rounded-full text-[#64748B]"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+              <ProgressCircle percentage={skill.percent} color={skill.accent} />
+              <Link to="/games" className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-[#2563EB] hover:underline cursor-pointer">
+                Explore Training <FaArrowRight />
+              </Link>
             </div>
           ))}
         </div>
       </section>
 
       {/* Featured Games Section */}
-      <section id="games-section" className="py-16 px-6 lg:px-12 max-w-6xl mx-auto w-full">
-        <div className="mb-12 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div>
-            <h2 className="text-3xl font-extrabold text-[#0F172A] tracking-tight">Featured Brain Games</h2>
-            <p className="text-sm text-[#64748B] mt-1">Challenge your mind with scientific memory and logical matrices.</p>
-          </div>
-          <Link to="/games" className="text-sm font-bold text-[#2563EB] hover:underline flex items-center gap-1">
-            <span>View All 50+ Games</span>
-            <span>→</span>
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {games.map((game, idx) => (
-            <Link
-              to={game.path}
-              key={idx}
-              className="group bg-white rounded-3xl border border-slate-100 hover:border-blue-200 overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col"
-            >
-              {/* Image Area */}
-              <div className="h-44 bg-slate-50 flex items-center justify-center overflow-hidden relative border-b border-slate-100">
-                <img
-                  src={game.img}
-                  alt={game.title}
-                  className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"
-                  onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1606326608606-aa0b62935f2b?auto=format&fit=crop&q=80&w=400" }}
-                />
-              </div>
-
-              {/* Card Body */}
-              <div className="p-6 flex flex-col flex-grow justify-between">
-                <div className="flex items-center gap-3.5 mb-3.5">
-                  <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center shadow-inner">
-                    {game.icon}
-                  </div>
-                  <h3 className="text-base font-bold text-[#0F172A]">{game.title}</h3>
-                </div>
-                <p className="text-xs text-[#64748B] leading-relaxed mb-6">
-                  {game.desc}
-                </p>
-                <div className="mt-auto">
-                  <div className="w-full py-3 bg-slate-50 group-hover:bg-[#2563EB] group-hover:text-white rounded-xl text-xs font-bold text-slate-700 text-center transition-all border border-transparent shadow-sm">
-                    Start Training
-                  </div>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
+      <FeaturedGamesSection games={games} />
 
       {/* Age-Based Learning Paths Section */}
       <section className="py-16 bg-slate-50/50 border-y border-slate-100 px-6 lg:px-12">
         <div className="max-w-6xl mx-auto">
 
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-extrabold text-[#0F172A] tracking-tight">Custom Age Learning Paths</h2>
-            <p className="text-sm text-[#64748B] mt-2 max-w-md mx-auto">Adaptive cognitive exercises calibrated specifically for each growth milestone.</p>
+            <h2 className="text-4xl font-extrabold text-[#0F172A] tracking-tight">Custom Age Learning Paths</h2>
+            <p className="text-base text-[#64748B] mt-2 max-w-md mx-auto">Adaptive cognitive exercises calibrated specifically for each growth milestone.</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-center">
@@ -226,19 +302,19 @@ const Home = () => {
             {/* Right card details */}
             <div className="lg:col-span-3 bg-white border border-slate-100 rounded-3xl p-8 shadow-sm h-64 flex flex-col justify-between">
               <div>
-                <h3 className="text-lg font-bold text-[#0F172A] mb-3">{agePaths[activeAgeTab].group} Cognitive Core</h3>
-                <p className="text-xs text-[#64748B] leading-relaxed mb-6">
+                <h3 className="text-2xl font-bold text-[#0F172A] mb-3">{agePaths[activeAgeTab].group} Cognitive Core</h3>
+                <p className="text-base text-[#64748B] leading-relaxed mb-6">
                   {agePaths[activeAgeTab].desc}
                 </p>
               </div>
 
               <div>
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-2.5">Trained Skills</span>
+                <span className="text-sm font-bold text-slate-400 uppercase tracking-widest block mb-2.5">Trained Skills</span>
                 <div className="flex flex-wrap gap-2">
                   {agePaths[activeAgeTab].skills.map((skill, sIdx) => (
                     <span
                       key={sIdx}
-                      className="inline-block text-[10px] font-bold px-3 py-1 bg-slate-50 border border-slate-200/60 rounded-full text-slate-600"
+                      className="inline-block text-sm font-bold px-3 py-1 bg-slate-50 border border-slate-200/60 rounded-full text-slate-600"
                     >
                       {skill}
                     </span>
@@ -273,77 +349,7 @@ const Home = () => {
       </section>
 
       {/* Brain Assessment & Dashboard preview */}
-      <section className="py-16 bg-white px-6 lg:px-12 border-b border-slate-100">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-
-          {/* Assessment Info */}
-          <div>
-            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-purple-50 border border-purple-100 text-[#7C3AED] text-xs font-semibold mb-4">
-              <FaGraduationCap />
-              <span>Diagnostic System</span>
-            </div>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-[#0F172A] tracking-tight mb-4">
-              Get Your Complete Cognitive Profile Breakdown
-            </h2>
-            <p className="text-sm text-[#64748B] leading-relaxed mb-6">
-              Our 4-pillar assessment dashboard gauges memory retention thresholds, speed calculation index, pattern logic connectivity, and focus inhibition ranges.
-            </p>
-
-            <div className="space-y-3.5 mb-8">
-              {[
-                "10-minute diagnostic challenge",
-                "Compares scores with peer age brackets",
-                "Unlock customized study advice cards"
-              ].map((bullet, idx) => (
-                <div key={idx} className="flex items-center gap-2.5 text-xs text-[#0F172A] font-semibold">
-                  <FaCheckCircle className="text-emerald-500" />
-                  <span>{bullet}</span>
-                </div>
-              ))}
-            </div>
-
-            <Link
-              to="/assessment"
-              className="inline-block px-7 py-3.5 bg-[#2563EB] hover:bg-blue-700 text-white font-bold text-xs rounded-2xl shadow-sm transition-all"
-            >
-              Start Brain Assessment
-            </Link>
-          </div>
-
-          {/* Dashboard Preview Widget */}
-          <div className="bg-[#F8FAFC] border border-slate-200/50 p-6.5 rounded-3xl shadow-sm">
-            <h4 className="font-bold text-xs text-slate-500 uppercase tracking-widest mb-4">Workspace Preview</h4>
-            <div className="grid grid-cols-2 gap-4 mb-4">
-              <div className="bg-white border border-slate-100 rounded-2xl p-4">
-                <span className="text-[10px] font-bold text-slate-400 block">IQ INDEX</span>
-                <span className="text-xl font-black text-blue-600 mt-1 block">118</span>
-              </div>
-              <div className="bg-white border border-slate-100 rounded-2xl p-4">
-                <span className="text-[10px] font-bold text-slate-400 block">MEMORY PROFILE</span>
-                <span className="text-xl font-black text-purple-600 mt-1 block">82%</span>
-              </div>
-            </div>
-            <div className="grid grid-cols-3 gap-3">
-              <div className="bg-white border border-slate-100 rounded-xl p-3 text-center">
-                <span className="text-[8px] font-bold text-slate-400 block">ACCURACY</span>
-                <span className="text-xs font-black text-[#10B981] mt-0.5 block">94%</span>
-              </div>
-              <div className="bg-white border border-slate-100 rounded-xl p-3 text-center">
-                <span className="text-[8px] font-bold text-slate-400 block">DAILY STREAK</span>
-                <span className="text-xs font-black text-[#F59E0B] mt-0.5 block flex items-center justify-center gap-0.5">
-                  <FaFire className="text-[10px]" />
-                  <span>5 Days</span>
-                </span>
-              </div>
-              <div className="bg-white border border-slate-100 rounded-xl p-3 text-center">
-                <span className="text-[8px] font-bold text-slate-400 block">GLOBAL RANK</span>
-                <span className="text-xs font-black text-[#7C3AED] mt-0.5 block">#124</span>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </section>
+      <BrainDashboardSection />
 
       {/* AI Features & Gamification Details Section */}
       <section className="py-16 px-6 lg:px-12 max-w-6xl mx-auto w-full">
