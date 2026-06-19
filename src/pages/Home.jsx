@@ -114,13 +114,14 @@ const Home = () => {
   const [activeAgeTab, setActiveAgeTab] = useState(0);
 
   return (
-    <div className="flex flex-col flex-grow bg-[#F8FAFC] text-[#0F172A] font-sans pb-16">
+    <div className="flex flex-col flex-grow bg-[#F8FAFC] text-[#0F172A] font-sans pb-0">
 
       {/* Hero Section */}
       <HeroFuturistic />
 
       {/* Statistics Section */}
-      <section className="relative py-24 bg-white px-6 lg:px-12">
+      <section className="relative py-12 bg-[#F8FAFC] px-6 lg:px-12">
+
         {/* Decorative background */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <svg className="w-64 h-64 text-[#E5E7EB] -top-12 left-1/2 -translate-x-1/2 opacity-30" fill="none" viewBox="0 0 200 200">
@@ -176,7 +177,7 @@ const Home = () => {
       </section>
 
       {/* Brain Skills Section */}
-      <section className="relative py-24 bg-[#F8FAFC] px-6 lg:px-12">
+      <section className="relative py-12 bg-[#F3F4F6] px-6 lg:px-12">
         {/* Decorative floating icons */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <svg className="w-64 h-64 text-[#E5E7EB] -top-12 left-1/2 -translate-x-1/2 opacity-30" fill="none" viewBox="0 0 200 200">
@@ -273,10 +274,10 @@ const Home = () => {
       <FeaturedGamesSection games={games} />
 
       {/* Age-Based Learning Paths Section */}
-      <section className="py-16 bg-slate-50/50 border-y border-slate-100 px-6 lg:px-12">
+      <section className="relative py-24 bg-[#F8FAFC] px-6 lg:px-12">
         <div className="max-w-6xl mx-auto">
 
-          <div className="text-center mb-12">
+          <div className="text-center mb-4">
             <h2 className="text-4xl font-extrabold text-[#0F172A] tracking-tight">Custom Age Learning Paths</h2>
             <p className="text-base text-[#64748B] mt-2 max-w-md mx-auto">Adaptive cognitive exercises calibrated specifically for each growth milestone.</p>
           </div>
@@ -300,7 +301,7 @@ const Home = () => {
             </div>
 
             {/* Right card details */}
-            <div className="lg:col-span-3 bg-white border border-slate-100 rounded-3xl p-8 shadow-sm h-64 flex flex-col justify-between">
+            <div className="lg:col-span-3 bg-[#F0F9FF] border border-[#E2E8F0] rounded-[24px] p-8 text-center transition-all hover:-translate-y-1 hover:shadow-xl hover:border-[#2563EB]">
               <div>
                 <h3 className="text-2xl font-bold text-[#0F172A] mb-3">{agePaths[activeAgeTab].group} Cognitive Core</h3>
                 <p className="text-base text-[#64748B] leading-relaxed mb-6">
@@ -314,7 +315,7 @@ const Home = () => {
                   {agePaths[activeAgeTab].skills.map((skill, sIdx) => (
                     <span
                       key={sIdx}
-                      className="inline-block text-sm font-bold px-3 py-1 bg-slate-50 border border-slate-200/60 rounded-full text-slate-600"
+                      className="inline-block text-sm px-3 py-1 bg-[#FAF5FF] border-2 border-[#E2E8F0] rounded-full text-black shadow-md"
                     >
                       {skill}
                     </span>
@@ -328,21 +329,26 @@ const Home = () => {
       </section>
 
       {/* Quiz Categories Section */}
-      <section className="py-16 px-6 lg:px-12 max-w-6xl mx-auto w-full border-b border-slate-100">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-extrabold text-[#0F172A] tracking-tight">Quiz Zone Subjects</h2>
-          <p className="text-sm text-[#64748B] mt-2 max-w-md mx-auto">Boost academic recall speed across core syllabus and reasoning areas.</p>
+      <section className="relative py-12 bg-[#EFF6FF] px-6 lg:px-12">
+        <div className="max-w-6xl mx-auto text-center mb-12">
+          <h2 className="text-3xl font-extrabold text-[#0F172A] tracking-tight">
+            Quiz Zone Subjects
+          </h2>
+          <p className="text-base text-[#64748B] mt-4 max-w-2xl mx-auto">
+            Boost academic recall speed across core syllabus and reasoning areas.
+          </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+
+        <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
           {quizCats.map((cat, idx) => (
             <Link
               to="/quiz-zone"
               key={idx}
-              className={`p-5 rounded-3xl border shadow-sm hover:shadow hover:scale-[1.01] transition-all flex items-center gap-3.5 group cursor-pointer ${cat.color}`}
+              className={`bg-[#F0F9FF] border border-[#E2E8F0] rounded-[12px] p-4 text-center transition-all hover:-translate-y-1 hover:shadow-xl hover:border-[#2563EB] ${cat.color}`}
             >
-              <span className="text-2xl group-hover:rotate-12 transition-transform">{cat.icon}</span>
-              <span className="text-xs font-bold text-[#0F172A]">{cat.name}</span>
+              <span className="text-xl group-hover:rotate-12 transition-transform" style={{ color: cat.color.split(' ')[0].replace('text-', '') }}>{cat.icon}</span>
+              <span className="text-base text-[#0F172A] mt-2 block">{cat.name}</span>
             </Link>
           ))}
         </div>
@@ -352,40 +358,42 @@ const Home = () => {
       <BrainDashboardSection />
 
       {/* AI Features & Gamification Details Section */}
-      <section className="py-16 px-6 lg:px-12 max-w-6xl mx-auto w-full">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-extrabold text-[#0F172A] tracking-tight">AI Cognitive Assistance</h2>
-          <p className="text-sm text-[#64748B] mt-2">Personal tutor tools and progress prediction engines.</p>
+      <section className="pt-8 pb-8 mb-12 bg-[#F8FAFC]">
+        <div className="text-center mb-5">
+          <h2 className="text-4xl font-extrabold text-[#0F172A] mb-10">
+            AI Cognitive Assistance
+          </h2>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Intelligent tutoring, targeted weakness building, and performance analytics to accelerate your learning journey.
+          </p>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white border border-slate-100 rounded-3xl p-6.5 shadow-sm">
-            <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center text-lg mb-4">
-              <FaRobot />
+        <div className="max-w-5xl mx-auto px-6 grid md:grid-cols-3 gap-8">
+          <div className="bg-white border border-[#E2E8F0] rounded-[24px] p-8 text-center transition-all hover:-translate-y-1 hover:shadow-xl hover:border-[#2563EB]">
+            <div className="w-14 h-14 rounded-2xl bg-blue-100 flex items-center justify-center mb-6">
+              <FaRobot className="text-blue-600 text-3xl" />
             </div>
-            <h4 className="font-bold text-[#0F172A] text-sm mb-2">AI Cognitive Tutor</h4>
-            <p className="text-xs text-[#64748B] leading-relaxed">
-              Ask your cognitive companion study strategies, mental memory methods, and pattern logic guidance.
+            <h4 className="text-xl font-bold text-gray-800 mb-2">AI Cognitive Tutor</h4>
+            <p className="text-base text-gray-600">
+              Personalized feedback loops and adaptive learning paths tailored to your speed.
             </p>
           </div>
-
-          <div className="bg-white border border-slate-100 rounded-3xl p-6.5 shadow-sm">
-            <div className="w-10 h-10 rounded-xl bg-purple-50 text-[#7C3AED] flex items-center justify-center text-lg mb-4">
-              <FaMagic />
+          <div className="bg-white border border-[#E2E8F0] rounded-[24px] p-8 text-center transition-all hover:-translate-y-1 hover:shadow-xl hover:border-[#2563EB]">
+            <div className="w-14 h-14 rounded-2xl bg-purple-100 flex items-center justify-center mb-6">
+              <FaMagic className="text-purple-600 text-3xl" />
             </div>
-            <h4 className="font-bold text-[#0F172A] text-sm mb-2">AI Weakness Builder</h4>
-            <p className="text-xs text-[#64748B] leading-relaxed">
-              Generates custom subject questions and testing problems targeted specifically to strengthen your lower stats.
+            <h4 className="text-xl font-bold text-gray-800 mb-2">Instant Analytics</h4>
+            
+            <p className="text-base text-gray-600">
+              Visualize growth with real‑time performance charts and cognitive breakthrough tracking.
             </p>
           </div>
-
-          <div className="bg-white border border-slate-100 rounded-3xl p-6.5 shadow-sm">
-            <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-lg mb-4">
-              <FaChartLine />
+          <div className="bg-white border border-[#E2E8F0] rounded-[24px] p-8 text-center transition-all hover:-translate-y-1 hover:shadow-xl hover:border-[#2563EB]">
+            <div className="w-14 h-14 rounded-2xl bg-emerald-100 flex items-center justify-center mb-6">
+              <FaChartLine className="text-emerald-600 text-3xl" />
             </div>
-            <h4 className="font-bold text-[#0F172A] text-sm mb-2">AI Performance Index</h4>
-            <p className="text-xs text-[#64748B] leading-relaxed">
-              Synthesizes real-time performance graphs and predicts study endurance indices for upcoming exams.
+            <h4 className="text-xl font-bold text-gray-800 mb-2">Gamified Goals</h4>
+            <p className="text-base text-gray-600">
+              Unlock daily achievements, maintain streaks, and climb the global leaderboard ranks.
             </p>
           </div>
         </div>

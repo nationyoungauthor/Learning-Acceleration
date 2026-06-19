@@ -100,11 +100,10 @@ const ScanLine = () => (
 // ─── Animated Word ─────────────────────────────────────────────────────────────
 const AnimatedWord = ({ word, delay, visible, accent }) => (
   <span
-    className={`inline-block transition-all duration-700 ${
-      visible
-        ? 'opacity-100 translate-y-0 blur-0'
-        : 'opacity-0 translate-y-8 blur-sm'
-    }`}
+    className={`inline-block transition-all duration-700 ${visible
+      ? 'opacity-100 translate-y-0 blur-0'
+      : 'opacity-0 translate-y-8 blur-sm'
+      }`}
     style={{ transitionDelay: `${delay}ms` }}
   >
     {accent ? (
@@ -223,9 +222,8 @@ const HeroFuturistic = () => {
 
         {/* Subtitle */}
         <p
-          className={`text-slate-400 text-base md:text-lg leading-relaxed mt-8 mb-10 max-w-2xl font-medium transition-all duration-1000 ${
-            ready ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-          }`}
+          className={`text-slate-400 text-base md:text-lg leading-relaxed mt-8 mb-10 max-w-2xl font-medium transition-all duration-1000 ${ready ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+            }`}
           style={{ transitionDelay: '900ms' }}
         >
           Train your brain with scientifically designed memory games, logic
@@ -234,9 +232,8 @@ const HeroFuturistic = () => {
 
         {/* CTA Buttons */}
         <div
-          className={`flex flex-col sm:flex-row items-center gap-4 transition-all duration-700 ${
-            btnVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-          }`}
+          className={`flex flex-col sm:flex-row items-center gap-4 transition-all duration-700 ${btnVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+            }`}
         >
           <Link
             to="/games"
@@ -261,9 +258,8 @@ const HeroFuturistic = () => {
 
         {/* Stats strip */}
         <div
-          className={`flex flex-wrap justify-center gap-8 mt-14 transition-all duration-700 ${
-            btnVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-          }`}
+          className={`flex flex-wrap justify-center gap-8 mt-14 transition-all duration-700 ${btnVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+            }`}
           style={{ transitionDelay: '200ms' }}
         >
           {[
@@ -283,20 +279,6 @@ const HeroFuturistic = () => {
           ))}
         </div>
       </div>
-
-      {/* Scroll indicator */}
-      <button
-        onClick={() => document.getElementById('games-section')?.scrollIntoView({ behavior: 'smooth' })}
-        className="explore-btn"
-      >
-        Scroll to explore
-        <span className="explore-arrow">
-          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" className="arrow-svg">
-            <path d="M11 5V17" stroke="rgba(255,255,255,0.5)" strokeWidth="2" strokeLinecap="round" />
-            <path d="M6 12L11 17L16 12" stroke="rgba(255,255,255,0.5)" strokeWidth="2" strokeLinecap="round" />
-          </svg>
-        </span>
-      </button>
     </div>
   );
 };

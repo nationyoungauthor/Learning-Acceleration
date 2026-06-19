@@ -29,9 +29,6 @@ const Footer = () => {
                 </span>
               </div>
             </Link>
-            <p className="text-xs text-slate-400 max-w-xs leading-relaxed mt-2">
-              Modern SaaS EdTech cognitive training platform for students. Scientifically designed games and puzzles to sharpen performance.
-            </p>
           </div>
 
           {/* Column 2: Quick Links */}
