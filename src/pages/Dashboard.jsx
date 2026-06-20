@@ -73,26 +73,30 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] py-12 px-6 lg:px-12">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-slate-50 py-12 px-6 lg:px-12 relative overflow-hidden">
+      {/* Background Shapes */}
+      <div className="fixed top-0 left-0 w-[400px] h-[400px] bg-[#61b2e4] rounded-br-[200px] z-0 transform -translate-x-20 -translate-y-20 opacity-80 pointer-events-none"></div>
+      <div className="fixed bottom-0 right-0 w-[500px] h-[500px] bg-[#2a68ad] rounded-tl-[300px] z-0 transform translate-x-20 translate-y-20 opacity-90 pointer-events-none"></div>
+
+      <div className="max-w-6xl mx-auto relative z-10">
         
         {/* Dashboard Header */}
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-10 gap-4">
           <div className="flex items-center space-x-4">
-            <div className="w-14 h-14 bg-gradient-to-tr from-[#2563EB] to-[#7C3AED] rounded-2xl flex items-center justify-center text-white text-2xl shadow-md">
+            <div className="w-14 h-14 bg-gradient-to-tr from-[#18609e] to-[#4281c7] rounded-2xl flex items-center justify-center text-white text-2xl shadow-md">
               <FaUserGraduate />
             </div>
             <div>
-              <h1 className="text-3xl font-extrabold text-[#0F172A] tracking-tight">Student Workspace</h1>
-              <p className="text-[#64748B] text-xs font-semibold mt-1">Accelerating cognitive learning pathways daily.</p>
+              <h1 className="text-3xl font-extrabold text-[#254f85] tracking-tight">Student Workspace</h1>
+              <p className="text-[#6495c6] text-xs font-semibold mt-1">Accelerating cognitive learning pathways daily.</p>
             </div>
           </div>
-          <div className="flex items-center space-x-3 bg-white p-2 rounded-2xl border border-slate-200/60 shadow-sm">
+          <div className="flex items-center space-x-3 bg-white p-2 rounded-2xl border border-[#d8e6f3] shadow-sm">
             <div className="flex items-center space-x-1 px-3 py-1.5 bg-amber-50 text-[#F59E0B] rounded-xl text-xs font-bold border border-amber-100">
               <FaFire />
               <span>{streak} Day Streak</span>
             </div>
-            <div className="flex items-center space-x-1 px-3 py-1.5 bg-purple-50 text-[#7C3AED] rounded-xl text-xs font-bold border border-purple-100">
+            <div className="flex items-center space-x-1 px-3 py-1.5 bg-blue-50 text-[#18609e] rounded-xl text-xs font-bold border border-[#d8e6f3]">
               <FaTrophy />
               <span>Rank #124</span>
             </div>
@@ -102,19 +106,19 @@ const Dashboard = () => {
         {/* Top Analytics Widgets */}
         <div className="grid grid-cols-2 md:grid-cols-6 gap-6 mb-10">
           {[
-            { label: 'IQ Index', value: '118', change: 'Genius Level', color: 'text-blue-600', bg: 'bg-blue-50 border-blue-100' },
+            { label: 'IQ Index', value: '118', change: 'Genius Level', color: 'text-[#18609e]', bg: 'bg-blue-50 border-[#d8e6f3]' },
             { label: 'Memory Score', value: '82%', change: '+4% this week', color: 'text-purple-600', bg: 'bg-purple-50 border-purple-100' },
             { label: 'Accuracy Rate', value: '94%', change: 'Near Perfect', color: 'text-emerald-600', bg: 'bg-emerald-50 border-emerald-100' },
             { label: 'Focus Score', value: '78', change: 'High Concentration', color: 'text-cyan-600', bg: 'bg-cyan-50 border-cyan-100' },
             { label: 'Level', value: `Lv. ${userLevel}`, change: `${userXp} XP Points`, color: 'text-rose-600', bg: 'bg-rose-50 border-rose-100' },
             { label: 'Daily Rank', value: 'Top 5%', change: 'Top Tier Student', color: 'text-amber-600', bg: 'bg-amber-50 border-amber-100' }
           ].map((widget, idx) => (
-            <div key={idx} className={`bg-white border p-5 rounded-3xl shadow-sm hover:shadow transition-shadow flex flex-col justify-between`}>
-              <span className="text-[10px] font-bold text-[#64748B] uppercase tracking-wider">{widget.label}</span>
+            <div key={idx} className={`bg-white border border-[#d8e6f3] p-5 rounded-3xl shadow-[0_4px_20px_rgba(8,_112,_184,_0.05)] hover:shadow-[0_20px_50px_rgba(8,_112,_184,_0.1)] transition-all duration-300 flex flex-col justify-between`}>
+              <span className="text-[10px] font-bold text-[#6495c6] uppercase tracking-wider">{widget.label}</span>
               <div className="my-3">
                 <span className={`text-2xl font-black ${widget.color}`}>{widget.value}</span>
               </div>
-              <span className="text-[10px] font-bold text-slate-400">{widget.change}</span>
+              <span className="text-[10px] font-bold text-[#4281c7]">{widget.change}</span>
             </div>
           ))}
         </div>
@@ -123,38 +127,38 @@ const Dashboard = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10">
           
           {/* XP Progress & Level Details */}
-          <div className="bg-white border border-slate-100 p-8 rounded-3xl shadow-sm flex flex-col justify-between">
+          <div className="bg-white border border-[#d8e6f3] p-8 rounded-3xl shadow-[0_20px_50px_rgba(8,_112,_184,_0.1)] flex flex-col justify-between">
             <div>
-              <h3 className="text-lg font-bold text-[#0F172A] mb-2">XP Progression</h3>
-              <p className="text-xs text-[#64748B] leading-relaxed mb-6">Complete quizzes and play memory games to gain XP and rise in rankings.</p>
+              <h3 className="text-lg font-bold text-[#254f85] mb-2">XP Progression</h3>
+              <p className="text-xs text-[#6495c6] leading-relaxed mb-6">Complete quizzes and play memory games to gain XP and rise in rankings.</p>
             </div>
             
             <div>
-              <div className="flex justify-between text-xs font-bold text-slate-500 mb-2">
+              <div className="flex justify-between text-xs font-bold text-[#6495c6] mb-2">
                 <span>Level {userLevel}</span>
                 <span>{userXp} / {nextLevelXp} XP</span>
               </div>
-              <div className="w-full bg-slate-100 h-3 rounded-full overflow-hidden p-[2px]">
+              <div className="w-full bg-[#d8e6f3] h-3 rounded-full overflow-hidden p-[2px] shadow-inner">
                 <div 
-                  className="bg-gradient-to-r from-blue-500 to-indigo-600 h-full rounded-full transition-all duration-500"
+                  className="bg-gradient-to-r from-[#61b2e4] to-[#18609e] h-full rounded-full transition-all duration-500"
                   style={{ width: `${levelProgress}%` }}
                 ></div>
               </div>
             </div>
 
-            <div className="border-t border-slate-100 pt-6 mt-6">
-              <span className="text-xs font-bold text-[#0F172A] uppercase tracking-wider block mb-3">Earned Badges</span>
+            <div className="border-t border-[#d8e6f3] pt-6 mt-6">
+              <span className="text-xs font-bold text-[#254f85] uppercase tracking-wider block mb-3">Earned Badges</span>
               <div className="flex gap-3">
-                <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-sm shadow-sm" title="Memory Master">
+                <div className="w-10 h-10 rounded-full bg-blue-50 text-[#18609e] flex items-center justify-center text-sm shadow-sm border border-[#d8e6f3]" title="Memory Master">
                   <FaMedal />
                 </div>
-                <div className="w-10 h-10 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center text-sm shadow-sm" title="Math Wizard">
+                <div className="w-10 h-10 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center text-sm shadow-sm border border-purple-200" title="Math Wizard">
                   <FaMagic />
                 </div>
-                <div className="w-10 h-10 rounded-full bg-amber-100 text-[#F59E0B] flex items-center justify-center text-sm shadow-sm" title="Active Streak">
+                <div className="w-10 h-10 rounded-full bg-amber-100 text-[#F59E0B] flex items-center justify-center text-sm shadow-sm border border-amber-200" title="Active Streak">
                   <FaFire />
                 </div>
-                <div className="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-sm shadow-sm" title="IQ Qualified">
+                <div className="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-sm shadow-sm border border-emerald-200" title="IQ Qualified">
                   <FaBrain />
                 </div>
               </div>
@@ -162,17 +166,17 @@ const Dashboard = () => {
           </div>
 
           {/* AI Features Preview Module */}
-          <div className="lg:col-span-2 bg-white border border-slate-100 p-8 rounded-3xl shadow-sm">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 mb-6 gap-4">
+          <div className="lg:col-span-2 bg-white border border-[#d8e6f3] p-8 rounded-3xl shadow-[0_20px_50px_rgba(8,_112,_184,_0.1)]">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-[#d8e6f3] mb-6 gap-4">
               <div>
-                <h3 className="text-lg font-bold text-[#0F172A] flex items-center gap-2">
-                  <FaRobot className="text-[#2563EB]" />
+                <h3 className="text-lg font-bold text-[#254f85] flex items-center gap-2">
+                  <FaRobot className="text-[#18609e]" />
                   <span>AI Learning Core</span>
                 </h3>
-                <p className="text-xs text-[#64748B] mt-0.5">Custom tutoring, question builders, and metrics.</p>
+                <p className="text-xs text-[#6495c6] mt-0.5">Custom tutoring, question builders, and metrics.</p>
               </div>
               
-              <div className="flex bg-slate-100 p-1 rounded-xl border border-slate-200/40">
+              <div className="flex bg-slate-50 p-1 rounded-xl border border-[#d8e6f3]">
                 {[
                   { id: 'tutor', name: 'AI Tutor', icon: <FaRobot /> },
                   { id: 'generator', name: 'Generator', icon: <FaMagic /> },
@@ -181,10 +185,10 @@ const Dashboard = () => {
                   <button
                     key={tab.id}
                     onClick={() => setActiveAiTab(tab.id)}
-                    className={`flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold rounded-lg transition-all capitalize ${
+                    className={`cursor-pointer flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold rounded-lg transition-all capitalize ${
                       activeAiTab === tab.id 
-                        ? 'bg-[#2563EB] text-white shadow' 
-                        : 'text-slate-500 hover:text-slate-900'
+                        ? 'bg-[#18609e] text-white shadow' 
+                        : 'text-[#6495c6] hover:text-[#254f85]'
                     }`}
                   >
                     {tab.icon}
@@ -196,14 +200,14 @@ const Dashboard = () => {
 
             {/* AI Tutor Chat Tab */}
             {activeAiTab === 'tutor' && (
-              <div className="flex flex-col h-64 justify-between bg-slate-50 rounded-2xl p-4 border border-slate-100">
+              <div className="flex flex-col h-64 justify-between bg-slate-50 rounded-2xl p-4 border border-[#d8e6f3]">
                 <div className="overflow-y-auto space-y-3.5 pr-2 max-h-[190px] flex-grow text-xs">
                   {chatHistory.map((chat, idx) => (
                     <div key={idx} className={`flex ${chat.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
                       <div className={`max-w-[80%] rounded-2xl px-4 py-2.5 font-medium leading-relaxed ${
                         chat.sender === 'user' 
-                          ? 'bg-[#2563EB] text-white rounded-tr-none' 
-                          : 'bg-white text-slate-800 border border-slate-200/60 rounded-tl-none shadow-sm'
+                          ? 'bg-[#18609e] text-white rounded-tr-none' 
+                          : 'bg-white text-[#334155] border border-[#d8e6f3] rounded-tl-none shadow-sm'
                       }`}>
                         {chat.text}
                       </div>
@@ -211,8 +215,8 @@ const Dashboard = () => {
                   ))}
                   {aiLoading && (
                     <div className="flex justify-start">
-                      <div className="bg-white border border-slate-200/60 text-slate-500 rounded-2xl px-4 py-2.5 rounded-tl-none shadow-sm flex items-center gap-2">
-                        <FaSpinner className="animate-spin text-blue-500" />
+                      <div className="bg-white border border-[#d8e6f3] text-[#6495c6] rounded-2xl px-4 py-2.5 rounded-tl-none shadow-sm flex items-center gap-2">
+                        <FaSpinner className="animate-spin text-[#61b2e4]" />
                         <span>AI Tutor is thinking...</span>
                       </div>
                     </div>
@@ -225,9 +229,9 @@ const Dashboard = () => {
                     value={chatInput}
                     onChange={(e) => setChatInput(e.target.value)}
                     placeholder="Ask about spatial logic or study curves..." 
-                    className="flex-grow bg-white border border-slate-200 px-4 py-2 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    className="flex-grow bg-white border border-[#d8e6f3] px-4 py-2 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-[#61b2e4] text-[#334155]"
                   />
-                  <button type="submit" className="p-2.5 bg-[#2563EB] hover:bg-blue-700 text-white rounded-xl shadow transition-colors">
+                  <button type="submit" className="cursor-pointer p-2.5 bg-[#18609e] hover:bg-[#145084] text-white rounded-xl shadow transition-colors">
                     <FaPaperPlane className="text-xs" />
                   </button>
                 </form>
@@ -236,14 +240,14 @@ const Dashboard = () => {
 
             {/* AI Question Generator Tab */}
             {activeAiTab === 'generator' && (
-              <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100 h-64 flex flex-col justify-between">
+              <div className="bg-slate-50 rounded-2xl p-6 border border-[#d8e6f3] h-64 flex flex-col justify-between">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">Subject</label>
+                    <label className="block text-[10px] font-bold text-[#6495c6] uppercase tracking-widest mb-1.5">Subject</label>
                     <select 
                       value={genSubject}
                       onChange={(e) => setGenSubject(e.target.value)}
-                      className="w-full px-3 py-2 text-xs bg-white border border-slate-200 rounded-xl outline-none"
+                      className="cursor-pointer w-full px-3 py-2 text-xs text-[#334155] bg-white border border-[#d8e6f3] rounded-xl outline-none"
                     >
                       <option>Maths</option>
                       <option>Science</option>
@@ -251,11 +255,11 @@ const Dashboard = () => {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">Age Focus</label>
+                    <label className="block text-[10px] font-bold text-[#6495c6] uppercase tracking-widest mb-1.5">Age Focus</label>
                     <select 
                       value={genDifficulty}
                       onChange={(e) => setGenDifficulty(e.target.value)}
-                      className="w-full px-3 py-2 text-xs bg-white border border-slate-200 rounded-xl outline-none"
+                      className="cursor-pointer w-full px-3 py-2 text-xs text-[#334155] bg-white border border-[#d8e6f3] rounded-xl outline-none"
                     >
                       <option>Easy (Age 5-7)</option>
                       <option>Medium (Age 8-13)</option>
@@ -264,14 +268,14 @@ const Dashboard = () => {
                   </div>
                 </div>
 
-                <div className="bg-white border border-slate-200/50 rounded-xl p-3.5 my-3 flex-grow overflow-y-auto max-h-[85px] flex items-center justify-center">
+                <div className="bg-white border border-[#d8e6f3] rounded-xl p-3.5 my-3 flex-grow overflow-y-auto max-h-[85px] flex items-center justify-center">
                   {aiLoading ? (
-                    <div className="flex items-center gap-2 text-xs text-slate-500">
-                      <FaSpinner className="animate-spin text-blue-500" />
+                    <div className="flex items-center gap-2 text-xs text-[#6495c6]">
+                      <FaSpinner className="animate-spin text-[#61b2e4]" />
                       <span>Synthesizing custom questions...</span>
                     </div>
                   ) : (
-                    <p className="text-xs font-semibold text-slate-700 text-center italic">
+                    <p className="text-xs font-semibold text-[#254f85] text-center italic">
                       {generatedQuest || "Select details and press synthesize below to generate your custom weakness quiz."}
                     </p>
                   )}
@@ -279,7 +283,7 @@ const Dashboard = () => {
 
                 <button 
                   onClick={generateQuestion}
-                  className="w-full py-3 bg-[#2563EB] hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-sm transition-colors flex items-center justify-center gap-2"
+                  className="cursor-pointer w-full py-3 bg-[#18609e] hover:bg-[#145084] text-white text-xs font-bold rounded-xl shadow-sm transition-colors flex items-center justify-center gap-2"
                 >
                   <FaMagic />
                   <span>Synthesize AI Question</span>
@@ -289,29 +293,29 @@ const Dashboard = () => {
 
             {/* AI Performance Analysis Tab */}
             {activeAiTab === 'analysis' && (
-              <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100 h-64 flex flex-col justify-between text-xs">
+              <div className="bg-slate-50 rounded-2xl p-6 border border-[#d8e6f3] h-64 flex flex-col justify-between text-xs">
                 <div>
-                  <h4 className="font-bold text-slate-700 mb-3">Cognitive Node Analytics</h4>
-                  <p className="text-slate-500 text-[11px] leading-relaxed mb-4">AI analysis predicts your working memory retains verbal cues better than visual arrays. Speed math processing has improved by 14% over the last 5 days.</p>
+                  <h4 className="font-bold text-[#254f85] mb-3">Cognitive Node Analytics</h4>
+                  <p className="text-[#6495c6] text-[11px] leading-relaxed mb-4">AI analysis predicts your working memory retains verbal cues better than visual arrays. Speed math processing has improved by 14% over the last 5 days.</p>
                 </div>
                 
                 <div className="space-y-2.5">
                   <div>
-                    <div className="flex justify-between text-[10px] font-bold text-slate-400 mb-1">
+                    <div className="flex justify-between text-[10px] font-bold text-[#6495c6] mb-1">
                       <span>Visual Retentiveness</span>
                       <span>Strong (78%)</span>
                     </div>
-                    <div className="w-full bg-slate-200 h-1.5 rounded-full">
-                      <div className="bg-blue-500 h-1.5 rounded-full" style={{ width: '78%' }}></div>
+                    <div className="w-full bg-[#d8e6f3] h-1.5 rounded-full shadow-inner">
+                      <div className="bg-[#18609e] h-1.5 rounded-full" style={{ width: '78%' }}></div>
                     </div>
                   </div>
                   <div>
-                    <div className="flex justify-between text-[10px] font-bold text-slate-400 mb-1">
+                    <div className="flex justify-between text-[10px] font-bold text-[#6495c6] mb-1">
                       <span>Auditory Buffer</span>
                       <span>Optimal (85%)</span>
                     </div>
-                    <div className="w-full bg-slate-200 h-1.5 rounded-full">
-                      <div className="bg-purple-500 h-1.5 rounded-full" style={{ width: '85%' }}></div>
+                    <div className="w-full bg-[#d8e6f3] h-1.5 rounded-full shadow-inner">
+                      <div className="bg-[#61b2e4] h-1.5 rounded-full" style={{ width: '85%' }}></div>
                     </div>
                   </div>
                 </div>
