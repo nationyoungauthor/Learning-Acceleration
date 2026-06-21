@@ -45,15 +45,19 @@ const Games = () => {
     : allGames.filter(game => game.category === activeCategory);
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#F8FAFC] text-[#0F172A] font-sans pb-16 pt-8">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12 w-full">
+    <div className="flex flex-col min-h-screen bg-slate-50 relative overflow-hidden text-[#334155] font-sans pb-16 pt-8">
+      {/* Background Shapes */}
+      <div className="fixed top-0 left-0 w-[400px] h-[400px] bg-[#61b2e4] rounded-br-[200px] z-0 transform -translate-x-20 -translate-y-20 opacity-80 pointer-events-none"></div>
+      <div className="fixed bottom-0 right-0 w-[500px] h-[500px] bg-[#2a68ad] rounded-tl-[300px] z-0 transform translate-x-20 translate-y-20 opacity-90 pointer-events-none"></div>
+
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 w-full relative z-10">
         
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-[#0F172A] mb-4">
-            Brain Training <span className="text-[#2563EB]">Games</span>
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-[#254f85] mb-4">
+            Brain Training <span className="text-[#18609e]">Games</span>
           </h1>
-          <p className="text-base md:text-lg text-[#64748B] max-w-2xl mx-auto">
+          <p className="text-base md:text-lg text-[#6495c6] max-w-2xl mx-auto">
             Choose from our collection of scientifically designed games to improve your memory, focus, logical reasoning, and reflexes.
           </p>
         </div>
@@ -64,10 +68,10 @@ const Games = () => {
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all ${
+              className={`cursor-pointer px-6 py-2.5 rounded-full text-sm font-bold transition-all ${
                 activeCategory === cat
-                  ? 'bg-[#2563EB] text-white shadow-md'
-                  : 'bg-white text-[#64748B] border border-gray-200 hover:border-blue-200 hover:text-[#0F172A]'
+                  ? 'bg-[#18609e] text-white shadow-[0_4px_14px_rgba(24,96,158,0.39)]'
+                  : 'bg-white text-[#6495c6] border border-[#d8e6f3] hover:border-[#61b2e4] hover:text-[#254f85]'
               }`}
             >
               {cat}
@@ -81,25 +85,25 @@ const Games = () => {
             <Link
               to={game.path}
               key={game.id}
-              className="group bg-white rounded-2xl border border-gray-200 hover:border-blue-300 overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col h-full"
+              className="group bg-white rounded-3xl border border-[#d8e6f3] hover:border-[#18609e] overflow-hidden shadow-[0_4px_20px_rgba(8,_112,_184,_0.05)] hover:shadow-[0_20px_50px_rgba(8,_112,_184,_0.1)] transition-all duration-300 flex flex-col h-full z-10 relative"
             >
               <div className="p-6 flex flex-col flex-grow">
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-[#F8FAFC] flex items-center justify-center border border-gray-100 shadow-sm group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 rounded-xl bg-slate-50 flex items-center justify-center border border-slate-100 shadow-sm group-hover:scale-110 transition-transform">
                     {game.icon}
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-[#0F172A] leading-tight">{game.title}</h3>
-                    <span className="text-[10px] font-bold text-blue-600 uppercase tracking-wider">{game.category}</span>
+                    <h3 className="text-lg font-bold text-[#254f85] leading-tight">{game.title}</h3>
+                    <span className="text-[10px] font-bold text-[#4281c7] uppercase tracking-wider">{game.category}</span>
                   </div>
                 </div>
                 
-                <p className="text-sm text-[#64748B] mb-6 flex-grow leading-relaxed">
+                <p className="text-sm text-[#6495c6] mb-6 flex-grow leading-relaxed">
                   {game.desc}
                 </p>
                 
-                <div className="mt-auto pt-4 border-t border-gray-100">
-                  <div className="w-full py-2.5 bg-[#F8FAFC] group-hover:bg-[#2563EB] group-hover:text-white rounded-lg text-sm font-bold text-[#64748B] text-center transition-all border border-gray-200 group-hover:border-[#2563EB]">
+                <div className="mt-auto pt-4 border-t border-slate-100">
+                  <div className="w-full py-2.5 bg-slate-50 group-hover:bg-[#18609e] group-hover:text-white rounded-2xl text-sm font-bold text-[#6495c6] text-center transition-all border border-[#d8e6f3] group-hover:border-[#18609e]">
                     Play Now
                   </div>
                 </div>
@@ -109,7 +113,7 @@ const Games = () => {
         </div>
         
         {filteredGames.length === 0 && (
-          <div className="text-center py-20 text-[#64748B]">
+          <div className="text-center py-20 text-[#6495c6]">
             No games found for this category.
           </div>
         )}
