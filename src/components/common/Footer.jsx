@@ -39,16 +39,12 @@ const Footer = () => {
                 <Link to="/" className="text-xs text-slate-400 hover:text-blue-400 transition-colors">Home</Link>
               </li>
               <li>
-                <a 
-                  href="/#games-section" 
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleScrollToSection('games-section');
-                  }}
+                <Link 
+                  to="/games" 
                   className="text-xs text-slate-400 hover:text-blue-400 transition-colors cursor-pointer"
                 >
                   Games
-                </a>
+                </Link>
               </li>
               <li>
                 <Link to="/quiz-zone" className="text-xs text-slate-400 hover:text-blue-400 transition-colors">Quiz</Link>
@@ -67,52 +63,40 @@ const Footer = () => {
             <h4 className="text-xs font-bold text-white uppercase tracking-widest">Brain Skills</h4>
             <ul className="space-y-2.5">
               <li>
-                <a 
-                  href="/#games-section" 
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleScrollToSection('games-section');
-                  }}
+                <Link 
+                  to="/games"
+                  state={{ category: 'Memory' }}
                   className="text-xs text-slate-400 hover:text-blue-400 transition-colors cursor-pointer"
                 >
                   Memory
-                </a>
+                </Link>
               </li>
               <li>
-                <a 
-                  href="/#logic-games-section" 
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleScrollToSection('logic-games-section');
-                  }}
+                <Link 
+                  to="/games"
+                  state={{ category: 'Logic & Attention' }}
                   className="text-xs text-slate-400 hover:text-blue-400 transition-colors cursor-pointer"
                 >
                   Focus
-                </a>
+                </Link>
               </li>
               <li>
-                <a 
-                  href="/#logic-games-section" 
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleScrollToSection('logic-games-section');
-                  }}
+                <Link 
+                  to="/games"
+                  state={{ category: 'Logic & Attention' }}
                   className="text-xs text-slate-400 hover:text-blue-400 transition-colors cursor-pointer"
                 >
                   Logic
-                </a>
+                </Link>
               </li>
               <li>
-                <a 
-                  href="/#perception-games-section" 
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleScrollToSection('perception-games-section');
-                  }}
+                <Link 
+                  to="/games"
+                  state={{ category: 'Speed & Reflex' }}
                   className="text-xs text-slate-400 hover:text-blue-400 transition-colors cursor-pointer"
                 >
                   Speed
-                </a>
+                </Link>
               </li>
               <li>
                 <Link to="/iq-test" className="text-xs text-slate-400 hover:text-blue-400 transition-colors">IQ</Link>
@@ -125,16 +109,16 @@ const Footer = () => {
             <h4 className="text-xs font-bold text-white uppercase tracking-widest">Support</h4>
             <ul className="space-y-2.5">
               <li>
-                <a href="#contact" className="text-xs text-slate-400 hover:text-blue-400 transition-colors">Contact</a>
+                <Link to="/contact" className="text-xs text-slate-400 hover:text-blue-400 transition-colors">Contact</Link>
               </li>
               <li>
-                <a href="#privacy" className="text-xs text-slate-400 hover:text-blue-400 transition-colors">Privacy Policy</a>
+                <Link to="/privacy-policy" className="text-xs text-slate-400 hover:text-blue-400 transition-colors">Privacy Policy</Link>
               </li>
               <li>
-                <a href="#terms" className="text-xs text-slate-400 hover:text-blue-400 transition-colors">Terms & Conditions</a>
+                <Link to="/terms" className="text-xs text-slate-400 hover:text-blue-400 transition-colors">Terms & Conditions</Link>
               </li>
               <li>
-                <a href="#help" className="text-xs text-slate-400 hover:text-blue-400 transition-colors">Help Center</a>
+                <Link to="/help" className="text-xs text-slate-400 hover:text-blue-400 transition-colors">Help Center</Link>
               </li>
             </ul>
           </div>
