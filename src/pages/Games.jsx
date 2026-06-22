@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { 
   FaBrain, FaLightbulb, FaPuzzlePiece, FaKeyboard, 
   FaStopwatch, FaMousePointer, FaCircle, FaListOl, 
@@ -38,7 +38,14 @@ const allGames = [
 const categories = ['All', 'Memory', 'Logic & Attention', 'Speed & Reflex'];
 
 const Games = () => {
-  const [activeCategory, setActiveCategory] = useState('All');
+  const location = useLocation();
+  const [activeCategory, setActiveCategory] = useState(location.state?.category || 'All');
+
+  useEffect(() => {
+    if (location.state?.category) {
+      setActiveCategory(location.state.category);
+    }
+  }, [location.state]);
 
   const filteredGames = activeCategory === 'All' 
     ? allGames 

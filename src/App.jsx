@@ -37,6 +37,10 @@ import About from './pages/About'
 import Dashboard from './pages/Dashboard'
 import QuizZone from './pages/QuizZone'
 import BrainAssessment from './pages/BrainAssessment'
+import Contact from './pages/Contact'
+import PrivacyPolicy from './pages/PrivacyPolicy'
+import Terms from './pages/Terms'
+import HelpCenter from './pages/HelpCenter'
 
 import './App.css'
 
@@ -81,6 +85,10 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/quiz-zone" element={<QuizZone />} />
             <Route path="/assessment" element={<BrainAssessment />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/help" element={<HelpCenter />} />
           </Routes>
         </main>
         <Footer />
