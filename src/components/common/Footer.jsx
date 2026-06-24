@@ -19,7 +19,7 @@ const Footer = () => {
           {/* Column 1: Logo & Tagline */}
           <div className="flex flex-col space-y-4">
             <Link to="/" className="flex items-center space-x-2.5 group">
-              <span className="text-3xl group-hover:scale-110 transition-transform duration-300">🧠</span>
+              <img src="/gameImage/logo1.png" alt="Logo" className="w-10 h-10 object-contain group-hover:scale-110 transition-transform duration-300" />
               <div className="flex flex-col">
                 <span className="text-lg font-extrabold text-white tracking-tight group-hover:text-blue-400 transition-colors">
                   Learning Acceleration
@@ -126,9 +126,10 @@ const Footer = () => {
         </div>
 
         {/* Bottom Panel */}
-        <div className="border-t border-slate-800 pt-8 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500 font-medium">
-          <p>© 2026 Learning Acceleration. All Rights Reserved.</p>
-          <div className="flex space-x-4 mt-4 sm:mt-0">
+        <div className="border-t border-slate-800 pt-8 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500 font-medium w-full">
+          <p className="flex-1 text-center sm:text-left">© 2026 Learning Acceleration. All Rights Reserved.</p>
+          <a href="https://www.visdomwaves.com/" target="_blank" rel="noopener noreferrer" className="flex-1 text-center mt-4 sm:mt-0 hover:text-white transition-colors cursor-pointer">Powered by visdom waves</a>
+          <div className="flex-1 flex justify-center sm:justify-end space-x-4 mt-4 sm:mt-0">
             <a href="#" className="hover:text-white transition-colors">Twitter</a>
             <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
             <a href="#" className="hover:text-white transition-colors">Facebook</a>
