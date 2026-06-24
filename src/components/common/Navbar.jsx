@@ -42,7 +42,7 @@ const Navbar = () => {
             {/* Logo Section (Left) */}
             <div className="flex items-center space-x-3">
               <Link to="/" className="flex items-center space-x-2.5 group z-20">
-                <span className="text-3xl lg:text-4xl group-hover:scale-110 transition-transform duration-300">🧠</span>
+                <img src="/gameImage/logo1.png" alt="Logo" className="w-10 h-10 lg:w-12 lg:h-12 object-contain group-hover:scale-110 transition-transform duration-300" />
                 <div className="flex flex-col">
                   <span className="text-lg lg:text-xl font-bold tracking-tight leading-none font-poppins">
                     <span className="text-[#0F172A]">Learning</span>
@@ -127,7 +127,7 @@ const Navbar = () => {
         {/* Drawer Header */}
         <div className="flex items-center justify-between pb-6 border-b border-slate-100">
           <div className="flex items-center space-x-2">
-            <span className="text-2xl">🧠</span>
+            <img src="/gameImage/logo1.png" alt="Logo" className="w-8 h-8 object-contain" />
             <span className="text-sm font-bold text-[#0F172A]">Learning Acceleration</span>
           </div>
           <button
