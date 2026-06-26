@@ -82,8 +82,8 @@ const HighScores = () => {
 
         <div className="space-y-24">
           {scoreData.map((category, idx) => (
-            <div 
-              key={idx} 
+            <div
+              key={idx}
               className={`transition-all duration-1000 transform ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
               style={{ transitionDelay: `${(idx + 1) * 150}ms` }}
             >
@@ -100,8 +100,8 @@ const HighScores = () => {
                   const hasScore = score > 0;
                   const Icon = game.icon;
                   return (
-                    <div 
-                      key={gIdx} 
+                    <div
+                      key={gIdx}
                       className="group relative bg-white rounded-3xl p-6 border border-[#d8e6f3] transition-all duration-500 hover:-translate-y-2 shadow-[0_4px_20px_rgba(8,_112,_184,_0.05)] hover:shadow-[0_20px_50px_rgba(8,_112,_184,_0.1)] flex flex-col h-full"
                     >
                       <div className="flex items-start justify-between mb-8">
@@ -111,7 +111,7 @@ const HighScores = () => {
                           </div>
                           <h3 className="text-xl font-bold font-display text-[#254f85] leading-tight max-w-[120px]">{game.title}</h3>
                         </div>
-                        
+
                         {hasScore && (
                           <div className="flex flex-col items-end">
                             <span className="text-xs font-bold text-[#6495c6] uppercase tracking-wider mb-1">Best Score</span>
@@ -133,8 +133,8 @@ const HighScores = () => {
                             <FaTrophy className="mr-2" /> Recorded
                           </span>
                         )}
-                        
-                        <Link 
+
+                        <Link
                           to={game.path}
                           className="flex items-center space-x-2 px-5 py-2.5 rounded-full bg-slate-50 hover:bg-[#18609e] hover:text-white text-[#18609e] font-semibold text-sm transition-all border border-[#d8e6f3] hover:border-[#18609e]"
                         >

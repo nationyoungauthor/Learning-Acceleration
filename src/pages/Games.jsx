@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { 
-  FaBrain, FaLightbulb, FaPuzzlePiece, FaKeyboard, 
-  FaStopwatch, FaMousePointer, FaCircle, FaListOl, 
-  FaBolt, FaCrosshairs, FaPalette, FaSortNumericDown, 
+import {
+  FaBrain, FaLightbulb, FaPuzzlePiece, FaKeyboard,
+  FaStopwatch, FaMousePointer, FaCircle, FaListOl,
+  FaBolt, FaCrosshairs, FaPalette, FaSortNumericDown,
   FaLanguage, FaMagic, FaMemory, FaFont, FaCheckSquare,
   FaClock, FaArrowsAlt
 } from 'react-icons/fa';
@@ -47,8 +47,8 @@ const Games = () => {
     }
   }, [location.state]);
 
-  const filteredGames = activeCategory === 'All' 
-    ? allGames 
+  const filteredGames = activeCategory === 'All'
+    ? allGames
     : allGames.filter(game => game.category === activeCategory);
 
   return (
@@ -58,7 +58,7 @@ const Games = () => {
       <div className="fixed bottom-0 right-0 w-[500px] h-[500px] bg-[#2a68ad] rounded-tl-[300px] z-0 transform translate-x-20 translate-y-20 opacity-90 pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto px-6 lg:px-12 w-full relative z-10">
-        
+
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-[#254f85] mb-4">
@@ -75,11 +75,10 @@ const Games = () => {
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`cursor-pointer px-6 py-2.5 rounded-full text-sm font-bold transition-all ${
-                activeCategory === cat
+              className={`cursor-pointer px-6 py-2.5 rounded-full text-sm font-bold transition-all ${activeCategory === cat
                   ? 'bg-[#18609e] text-white shadow-[0_4px_14px_rgba(24,96,158,0.39)]'
                   : 'bg-white text-[#6495c6] border border-[#d8e6f3] hover:border-[#61b2e4] hover:text-[#254f85]'
-              }`}
+                }`}
             >
               {cat}
             </button>
@@ -104,11 +103,11 @@ const Games = () => {
                     <span className="text-[10px] font-bold text-[#4281c7] uppercase tracking-wider">{game.category}</span>
                   </div>
                 </div>
-                
+
                 <p className="text-sm text-[#6495c6] mb-6 flex-grow leading-relaxed">
                   {game.desc}
                 </p>
-                
+
                 <div className="mt-auto pt-4 border-t border-slate-100">
                   <div className="w-full py-2.5 bg-slate-50 group-hover:bg-[#18609e] group-hover:text-white rounded-2xl text-sm font-bold text-[#6495c6] text-center transition-all border border-[#d8e6f3] group-hover:border-[#18609e]">
                     Play Now
@@ -118,7 +117,7 @@ const Games = () => {
             </Link>
           ))}
         </div>
-        
+
         {filteredGames.length === 0 && (
           <div className="text-center py-20 text-[#6495c6]">
             No games found for this category.

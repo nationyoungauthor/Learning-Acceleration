@@ -29,7 +29,7 @@ const IQTest = () => {
   const handleStart = () => {
     // 1. Flatten all questions
     const allQuestions = iqLevels.flatMap(level => level.questions);
-    
+
     // 2. Shuffle questions
     const shuffled = shuffleArray(allQuestions).map(q => ({
       ...q,
@@ -73,10 +73,10 @@ const IQTest = () => {
 
   const handleAnswer = (option) => {
     if (isAnswered || !currentQuestion) return;
-    
+
     setSelectedOption(option);
     setIsAnswered(true);
-    
+
     if (option === currentQuestion.answer) {
       setScore((prev) => prev + 1);
     }
@@ -93,7 +93,7 @@ const IQTest = () => {
       const totalCorrectSoFar = score;
       const previousTotal = Object.values(levelScores).reduce((a, b) => a + b, 0);
       const stageScore = totalCorrectSoFar - previousTotal;
-      
+
       setLevelScores({ ...levelScores, [currentLevelIndex]: stageScore });
       setGameState('levelSummary');
     }
@@ -131,7 +131,7 @@ const IQTest = () => {
       <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-[#2a68ad] rounded-tl-[300px] z-0 transform translate-x-20 translate-y-20 opacity-90 pointer-events-none"></div>
 
       <div className="w-full max-w-3xl z-10 relative">
-        
+
         {/* START SCREEN */}
         {gameState === 'start' && (
           <div className="text-center space-y-8 animate-in fade-in duration-700 bg-white shadow-[0_20px_50px_rgba(8,_112,_184,_0.1)] rounded-3xl p-10 md:p-16 border border-slate-100">
@@ -151,7 +151,7 @@ const IQTest = () => {
                 </div>
               ))}
             </div>
-            <button 
+            <button
               onClick={handleStart}
               className="px-10 py-4 bg-[#18609e] hover:bg-[#145084] text-white font-bold text-xl rounded-full transition-all hover:shadow-lg flex items-center gap-3 mx-auto shadow-[0_4px_14px_rgba(24,96,158,0.39)] cursor-pointer"
             >
@@ -177,7 +177,7 @@ const IQTest = () => {
 
             {/* Progress Bar */}
             <div className="h-2 w-full bg-slate-200 rounded-full overflow-hidden shadow-inner">
-              <div 
+              <div
                 className="h-full bg-gradient-to-r from-[#61b2e4] to-[#18609e] transition-all duration-500"
                 style={{ width: `${((currentQuestionIndex + 1) / questionsPerStage) * 100}%` }}
               ></div>
@@ -187,7 +187,7 @@ const IQTest = () => {
             {currentQuestion && (
               <div className="p-8 md:p-12 rounded-3xl bg-white border border-slate-100 shadow-[0_20px_50px_rgba(8,_112,_184,_0.1)] relative overflow-hidden group">
                 {/* Timer Bar */}
-                <div 
+                <div
                   className={`absolute top-0 left-0 h-1 transition-all duration-1000 linear ${timeLeft < 10 ? 'bg-red-400' : 'bg-[#61b2e4]'}`}
                   style={{ width: `${(timeLeft / 30) * 100}%` }}
                 ></div>
@@ -219,7 +219,7 @@ const IQTest = () => {
 
                 {isAnswered && (
                   <div className="mt-8 flex justify-end animate-in fade-in slide-in-from-right-4 duration-300">
-                    <button 
+                    <button
                       onClick={handleNext}
                       className="cursor-pointer px-8 py-3 bg-[#18609e] text-white font-bold rounded-full hover:bg-[#145084] transition-colors flex items-center gap-2 shadow-[0_4px_14px_rgba(24,96,158,0.39)]"
                     >
@@ -229,11 +229,11 @@ const IQTest = () => {
                 )}
               </div>
             )}
-            
+
             <div className="flex justify-center mt-6">
-               <span className="text-xs text-[#6495c6] uppercase tracking-widest font-bold bg-white px-4 py-2 rounded-full shadow-sm border border-[#d8e6f3]">
-                 Total Correct: {score}
-               </span>
+              <span className="text-xs text-[#6495c6] uppercase tracking-widest font-bold bg-white px-4 py-2 rounded-full shadow-sm border border-[#d8e6f3]">
+                Total Correct: {score}
+              </span>
             </div>
           </div>
         )}
@@ -254,7 +254,7 @@ const IQTest = () => {
               <div className="text-6xl font-black text-[#18609e]">{levelScores[currentLevelIndex]} <span className="text-2xl text-[#a8c6e2]">/ {questionsPerStage}</span></div>
             </div>
 
-            <button 
+            <button
               onClick={nextLevel}
               className="cursor-pointer px-10 py-4 bg-[#18609e] hover:bg-[#145084] text-white font-bold text-xl rounded-full transition-all flex items-center gap-3 mx-auto shadow-[0_4px_14px_rgba(24,96,158,0.39)]"
             >
@@ -267,11 +267,11 @@ const IQTest = () => {
         {gameState === 'finalResult' && (
           <div className="text-center space-y-8 animate-in fade-in duration-1000 bg-white shadow-[0_20px_50px_rgba(8,_112,_184,_0.1)] rounded-3xl p-10 md:p-14 border border-slate-100">
             <div className="relative inline-block mt-4">
-               <div className="absolute inset-0 bg-blue-100 blur-3xl rounded-full"></div>
-               <div className="relative bg-white border-[6px] border-[#4281c7] rounded-full w-48 h-48 flex flex-col items-center justify-center mx-auto shadow-2xl">
-                  <span className="text-sm text-[#6495c6] font-bold uppercase tracking-widest mb-1">Your IQ</span>
-                  <span className="text-6xl font-black text-[#18609e]">{calculateIQ()}</span>
-               </div>
+              <div className="absolute inset-0 bg-blue-100 blur-3xl rounded-full"></div>
+              <div className="relative bg-white border-[6px] border-[#4281c7] rounded-full w-48 h-48 flex flex-col items-center justify-center mx-auto shadow-2xl">
+                <span className="text-sm text-[#6495c6] font-bold uppercase tracking-widest mb-1">Your IQ</span>
+                <span className="text-6xl font-black text-[#18609e]">{calculateIQ()}</span>
+              </div>
             </div>
 
             <div className="space-y-2 pt-4">
@@ -284,22 +284,22 @@ const IQTest = () => {
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4 py-8">
-               {Array.from({ length: 10 }).map((_, i) => (
-                 <div key={i} className="p-4 rounded-2xl bg-slate-50 border border-[#d8e6f3] shadow-sm">
-                   <div className="text-[10px] text-[#6495c6] uppercase font-bold mb-1">Stage {i + 1}</div>
-                   <div className="text-xl font-bold text-[#254f85]">{levelScores[i]}<span className="text-xs text-[#a8c6e2] ml-1">/ {questionsPerStage}</span></div>
-                 </div>
-               ))}
+              {Array.from({ length: 10 }).map((_, i) => (
+                <div key={i} className="p-4 rounded-2xl bg-slate-50 border border-[#d8e6f3] shadow-sm">
+                  <div className="text-[10px] text-[#6495c6] uppercase font-bold mb-1">Stage {i + 1}</div>
+                  <div className="text-xl font-bold text-[#254f85]">{levelScores[i]}<span className="text-xs text-[#a8c6e2] ml-1">/ {questionsPerStage}</span></div>
+                </div>
+              ))}
             </div>
 
             <div className="flex flex-col md:flex-row items-center justify-center gap-4">
-              <button 
+              <button
                 onClick={handleStart}
                 className="cursor-pointer w-full md:w-auto px-8 py-4 bg-[#18609e] text-white font-bold rounded-full hover:bg-[#145084] shadow-[0_4px_14px_rgba(24,96,158,0.39)] transition-all flex items-center justify-center gap-2"
               >
                 <FaRedo /> RETAKE TEST
               </button>
-              <button 
+              <button
                 onClick={() => window.location.href = '/'}
                 className="cursor-pointer w-full md:w-auto px-8 py-4 bg-white text-[#18609e] font-bold rounded-full hover:bg-blue-50 transition-all border border-[#18609e]"
               >
