@@ -143,7 +143,7 @@ const Contact = () => {
           </div>
 
           {/* Center Form */}
-          <form 
+          <form
             className="space-y-4 w-full max-w-[440px] z-20"
             onSubmit={(e) => {
               e.preventDefault();
@@ -163,8 +163,8 @@ const Contact = () => {
             </div>
 
             <div className="flex items-center justify-start gap-6 pt-2">
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 className="cursor-pointer px-12 py-[14px] bg-[#1ddb91] text-white rounded-xl font-medium text-[15px] hover:bg-[#19c783] transition-all shadow-md shadow-[#1ddb91]/30"
               >
                 Send
@@ -191,17 +191,17 @@ const Contact = () => {
             {/* Background decorations */}
             <div className="absolute -top-10 -right-10 w-32 h-32 bg-[#1ddb91]/20 rounded-full blur-xl"></div>
             <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-blue-400/20 rounded-full blur-xl"></div>
-            
+
             <div className="w-24 h-24 bg-gradient-to-br from-[#1ddb91] to-[#00b372] rounded-full flex items-center justify-center mx-auto mb-6 shadow-[0_10px_20px_-10px_rgba(29,219,145,0.8)] relative">
               <span className="text-5xl animate-bounce">🎉</span>
             </div>
-            
+
             <h3 className="text-3xl font-bold text-slate-800 mb-3">Message Sent!</h3>
             <p className="text-slate-500 mb-8 text-[15px] leading-relaxed relative z-10">
               Yay! Your message has been sent successfully. We will get back to you within 24 hours.
             </p>
-            
-            <button 
+
+            <button
               onClick={() => {
                 setShowModal(false);
                 window.location.reload();

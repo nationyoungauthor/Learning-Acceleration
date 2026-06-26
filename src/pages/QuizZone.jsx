@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { 
-  FaBook, FaCalculator, FaAtom, FaGlobe, FaHourglassHalf, 
-  FaHistory, FaLaptopCode, FaBrain, FaPlay, FaCheckCircle, 
-  FaTrophy, FaArrowRight 
+import {
+  FaBook, FaCalculator, FaAtom, FaGlobe, FaHourglassHalf,
+  FaHistory, FaLaptopCode, FaBrain, FaPlay, FaCheckCircle,
+  FaTrophy, FaArrowRight
 } from 'react-icons/fa';
 
 const categories = [
@@ -67,7 +67,7 @@ const QuizZone = () => {
   const handleNext = () => {
     const questions = quizQuestions[selectedCategory];
     const isCorrect = selectedAnswer === questions[currentQuestionIdx].correct;
-    
+
     if (isCorrect) {
       setScore(score + 1);
     }
@@ -80,7 +80,7 @@ const QuizZone = () => {
       const calculatedXp = finalScore * 20;
       setIsFinished(true);
       setXpGained(calculatedXp);
-      
+
       // Save streak / high scores locally
       const currentXp = parseInt(localStorage.getItem('user_xp') || '0');
       localStorage.setItem('user_xp', currentXp + calculatedXp);
@@ -101,7 +101,7 @@ const QuizZone = () => {
       <div className="fixed bottom-0 right-0 w-[500px] h-[500px] bg-[#2a68ad] rounded-tl-[300px] z-0 transform translate-x-20 translate-y-20 opacity-90 pointer-events-none"></div>
 
       <div className="max-w-6xl mx-auto relative z-10">
-        
+
         {/* Banner Section */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-[#18609e] text-xs font-semibold mb-4 shadow-sm">
@@ -131,7 +131,7 @@ const QuizZone = () => {
 
                 {/* Progress bar */}
                 <div className="w-full bg-[#d8e6f3] h-2 rounded-full mb-8 overflow-hidden shadow-inner">
-                  <div 
+                  <div
                     className="bg-gradient-to-r from-[#61b2e4] to-[#18609e] h-full rounded-full transition-all duration-300"
                     style={{ width: `${((currentQuestionIdx + 1) / quizQuestions[selectedCategory].length) * 100}%` }}
                   ></div>
@@ -148,11 +148,10 @@ const QuizZone = () => {
                     <button
                       key={idx}
                       onClick={() => handleAnswerClick(idx)}
-                      className={`cursor-pointer w-full text-left px-6 py-4.5 rounded-2xl border font-semibold text-sm transition-all duration-200 ${
-                        selectedAnswer === idx 
-                          ? 'border-[#18609e] bg-[#e0f2fe] text-[#18609e] shadow-md' 
+                      className={`cursor-pointer w-full text-left px-6 py-4.5 rounded-2xl border font-semibold text-sm transition-all duration-200 ${selectedAnswer === idx
+                          ? 'border-[#18609e] bg-[#e0f2fe] text-[#18609e] shadow-md'
                           : 'border-[#d8e6f3] bg-white text-[#334155] hover:bg-blue-50 hover:border-[#61b2e4]'
-                      }`}
+                        }`}
                     >
                       <span className="inline-block w-6 h-6 rounded-full bg-slate-100 text-[#6495c6] text-center text-xs font-bold mr-3.5 leading-6 align-middle">
                         {['A', 'B', 'C', 'D'][idx]}
@@ -167,11 +166,10 @@ const QuizZone = () => {
                   <button
                     onClick={handleNext}
                     disabled={selectedAnswer === null}
-                    className={`px-8 py-3.5 rounded-full text-sm font-bold shadow-[0_4px_14px_rgba(24,96,158,0.39)] transition-all flex items-center gap-2 ${
-                      selectedAnswer !== null 
-                        ? 'bg-[#18609e] hover:bg-[#145084] text-white cursor-pointer hover:-translate-y-0.5' 
+                    className={`px-8 py-3.5 rounded-full text-sm font-bold shadow-[0_4px_14px_rgba(24,96,158,0.39)] transition-all flex items-center gap-2 ${selectedAnswer !== null
+                        ? 'bg-[#18609e] hover:bg-[#145084] text-white cursor-pointer hover:-translate-y-0.5'
                         : 'bg-slate-200 text-slate-400 cursor-not-allowed shadow-none border border-[#d8e6f3]'
-                    }`}
+                      }`}
                   >
                     <span>Next Question</span>
                     <FaArrowRight />
@@ -221,7 +219,7 @@ const QuizZone = () => {
           /* Grid list of categories */
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {categories.map((cat, idx) => (
-              <div 
+              <div
                 key={idx}
                 className={`group bg-white rounded-3xl border border-[#d8e6f3] p-6 shadow-[0_4px_20px_rgba(8,_112,_184,_0.05)] hover:shadow-[0_20px_50px_rgba(8,_112,_184,_0.1)] transition-all duration-300 flex flex-col justify-between overflow-hidden relative z-10 ${cat.bg}`}
               >
@@ -234,7 +232,7 @@ const QuizZone = () => {
                     {cat.desc}
                   </p>
                 </div>
-                
+
                 <button
                   onClick={() => startQuiz(cat.name)}
                   className="cursor-pointer w-full py-3.5 bg-white hover:bg-[#18609e] hover:text-white border border-[#d8e6f3] hover:border-[#18609e] rounded-2xl text-xs font-bold text-[#334155] transition-all flex items-center justify-center gap-2 shadow-sm"
@@ -246,7 +244,7 @@ const QuizZone = () => {
             ))}
           </div>
         )}
-        
+
       </div>
     </div>
   );

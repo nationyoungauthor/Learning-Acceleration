@@ -57,25 +57,25 @@ const PrivacyPolicy = () => {
             <div className="relative w-[85%] aspect-square flex items-center justify-center">
               {/* Decorative Background Blobs */}
               <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full blur-3xl opacity-30 transform group-hover:scale-110 group-hover:opacity-50 transition-all duration-700"></div>
-              
+
               {/* Glassmorphism Backing Card */}
               <div className="absolute -inset-4 bg-gradient-to-tr from-white/60 to-white/20 rounded-[3rem] backdrop-blur-md border border-white/60 shadow-2xl transform rotate-3 group-hover:rotate-6 group-hover:scale-105 transition-all duration-700"></div>
-              
+
               {/* The Image */}
               <img
                 src="/gameImage/policy.jpg"
                 alt="Privacy Policy Illustration"
                 className="relative z-10 w-full h-full object-cover rounded-[2.5rem] shadow-[0_20px_50px_rgba(8,_112,_184,_0.2)] transform -rotate-3 group-hover:rotate-0 group-hover:scale-105 transition-all duration-700 ease-out border-[6px] border-white"
               />
-              
+
               {/* Floating Element 1 */}
               <div className="absolute -top-6 -right-6 w-16 h-16 bg-white rounded-2xl shadow-xl flex items-center justify-center transform rotate-12 group-hover:rotate-[30deg] group-hover:-translate-y-4 group-hover:scale-110 transition-all duration-500 ease-out border border-slate-50 z-20">
-                 <span className="text-2xl">🔒</span>
+                <span className="text-2xl">🔒</span>
               </div>
-              
+
               {/* Floating Element 2 */}
               <div className="absolute -bottom-6 -left-6 w-14 h-14 bg-white rounded-full shadow-xl flex items-center justify-center transform -rotate-12 group-hover:-rotate-[30deg] group-hover:translate-y-4 group-hover:scale-110 transition-all duration-500 ease-out border border-slate-50 z-20">
-                 <span className="text-xl">🛡️</span>
+                <span className="text-xl">🛡️</span>
               </div>
             </div>
           </div>

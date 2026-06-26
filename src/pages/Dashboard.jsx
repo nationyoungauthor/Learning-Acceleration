@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  FaBrain, FaTrophy, FaFire, FaGamepad, FaChartLine, 
+import {
+  FaBrain, FaTrophy, FaFire, FaGamepad, FaChartLine,
   FaGraduationCap, FaRobot, FaMagic, FaSlidersH, FaMedal,
-  FaPaperPlane, FaSpinner, FaLock, FaUserGraduate 
+  FaPaperPlane, FaSpinner, FaLock, FaUserGraduate
 } from 'react-icons/fa';
 
 const Dashboard = () => {
@@ -12,7 +12,7 @@ const Dashboard = () => {
     { sender: 'ai', text: "Hello! I am your AI Cognitive Companion. Ask me how to accelerate your memory or understand pattern reasoning!" }
   ]);
   const [aiLoading, setAiLoading] = useState(false);
-  
+
   // Custom generator states
   const [genSubject, setGenSubject] = useState('Maths');
   const [genDifficulty, setGenDifficulty] = useState('Medium');
@@ -79,7 +79,7 @@ const Dashboard = () => {
       <div className="fixed bottom-0 right-0 w-[500px] h-[500px] bg-[#2a68ad] rounded-tl-[300px] z-0 transform translate-x-20 translate-y-20 opacity-90 pointer-events-none"></div>
 
       <div className="max-w-6xl mx-auto relative z-10">
-        
+
         {/* Dashboard Header */}
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-10 gap-4">
           <div className="flex items-center space-x-4">
@@ -125,21 +125,21 @@ const Dashboard = () => {
 
         {/* Middle Section: Gamification & Stats details */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10">
-          
+
           {/* XP Progress & Level Details */}
           <div className="bg-white border border-[#d8e6f3] p-8 rounded-3xl shadow-[0_20px_50px_rgba(8,_112,_184,_0.1)] flex flex-col justify-between">
             <div>
               <h3 className="text-lg font-bold text-[#254f85] mb-2">XP Progression</h3>
               <p className="text-xs text-[#6495c6] leading-relaxed mb-6">Complete quizzes and play memory games to gain XP and rise in rankings.</p>
             </div>
-            
+
             <div>
               <div className="flex justify-between text-xs font-bold text-[#6495c6] mb-2">
                 <span>Level {userLevel}</span>
                 <span>{userXp} / {nextLevelXp} XP</span>
               </div>
               <div className="w-full bg-[#d8e6f3] h-3 rounded-full overflow-hidden p-[2px] shadow-inner">
-                <div 
+                <div
                   className="bg-gradient-to-r from-[#61b2e4] to-[#18609e] h-full rounded-full transition-all duration-500"
                   style={{ width: `${levelProgress}%` }}
                 ></div>
@@ -175,7 +175,7 @@ const Dashboard = () => {
                 </h3>
                 <p className="text-xs text-[#6495c6] mt-0.5">Custom tutoring, question builders, and metrics.</p>
               </div>
-              
+
               <div className="flex bg-slate-50 p-1 rounded-xl border border-[#d8e6f3]">
                 {[
                   { id: 'tutor', name: 'AI Tutor', icon: <FaRobot /> },
@@ -185,11 +185,10 @@ const Dashboard = () => {
                   <button
                     key={tab.id}
                     onClick={() => setActiveAiTab(tab.id)}
-                    className={`cursor-pointer flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold rounded-lg transition-all capitalize ${
-                      activeAiTab === tab.id 
-                        ? 'bg-[#18609e] text-white shadow' 
+                    className={`cursor-pointer flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold rounded-lg transition-all capitalize ${activeAiTab === tab.id
+                        ? 'bg-[#18609e] text-white shadow'
                         : 'text-[#6495c6] hover:text-[#254f85]'
-                    }`}
+                      }`}
                   >
                     {tab.icon}
                     <span>{tab.name}</span>
@@ -204,11 +203,10 @@ const Dashboard = () => {
                 <div className="overflow-y-auto space-y-3.5 pr-2 max-h-[190px] flex-grow text-xs">
                   {chatHistory.map((chat, idx) => (
                     <div key={idx} className={`flex ${chat.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                      <div className={`max-w-[80%] rounded-2xl px-4 py-2.5 font-medium leading-relaxed ${
-                        chat.sender === 'user' 
-                          ? 'bg-[#18609e] text-white rounded-tr-none' 
+                      <div className={`max-w-[80%] rounded-2xl px-4 py-2.5 font-medium leading-relaxed ${chat.sender === 'user'
+                          ? 'bg-[#18609e] text-white rounded-tr-none'
                           : 'bg-white text-[#334155] border border-[#d8e6f3] rounded-tl-none shadow-sm'
-                      }`}>
+                        }`}>
                         {chat.text}
                       </div>
                     </div>
@@ -224,11 +222,11 @@ const Dashboard = () => {
                 </div>
 
                 <form onSubmit={sendChat} className="flex gap-2 mt-4">
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     value={chatInput}
                     onChange={(e) => setChatInput(e.target.value)}
-                    placeholder="Ask about spatial logic or study curves..." 
+                    placeholder="Ask about spatial logic or study curves..."
                     className="flex-grow bg-white border border-[#d8e6f3] px-4 py-2 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-[#61b2e4] text-[#334155]"
                   />
                   <button type="submit" className="cursor-pointer p-2.5 bg-[#18609e] hover:bg-[#145084] text-white rounded-xl shadow transition-colors">
@@ -244,7 +242,7 @@ const Dashboard = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-[10px] font-bold text-[#6495c6] uppercase tracking-widest mb-1.5">Subject</label>
-                    <select 
+                    <select
                       value={genSubject}
                       onChange={(e) => setGenSubject(e.target.value)}
                       className="cursor-pointer w-full px-3 py-2 text-xs text-[#334155] bg-white border border-[#d8e6f3] rounded-xl outline-none"
@@ -256,7 +254,7 @@ const Dashboard = () => {
                   </div>
                   <div>
                     <label className="block text-[10px] font-bold text-[#6495c6] uppercase tracking-widest mb-1.5">Age Focus</label>
-                    <select 
+                    <select
                       value={genDifficulty}
                       onChange={(e) => setGenDifficulty(e.target.value)}
                       className="cursor-pointer w-full px-3 py-2 text-xs text-[#334155] bg-white border border-[#d8e6f3] rounded-xl outline-none"
@@ -281,7 +279,7 @@ const Dashboard = () => {
                   )}
                 </div>
 
-                <button 
+                <button
                   onClick={generateQuestion}
                   className="cursor-pointer w-full py-3 bg-[#18609e] hover:bg-[#145084] text-white text-xs font-bold rounded-xl shadow-sm transition-colors flex items-center justify-center gap-2"
                 >
@@ -298,7 +296,7 @@ const Dashboard = () => {
                   <h4 className="font-bold text-[#254f85] mb-3">Cognitive Node Analytics</h4>
                   <p className="text-[#6495c6] text-[11px] leading-relaxed mb-4">AI analysis predicts your working memory retains verbal cues better than visual arrays. Speed math processing has improved by 14% over the last 5 days.</p>
                 </div>
-                
+
                 <div className="space-y-2.5">
                   <div>
                     <div className="flex justify-between text-[10px] font-bold text-[#6495c6] mb-1">
