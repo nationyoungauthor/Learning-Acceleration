@@ -73,10 +73,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 py-12 px-6 lg:px-12 relative overflow-hidden">
-      {/* Background Shapes */}
-      <div className="fixed top-0 left-0 w-[400px] h-[400px] bg-[#61b2e4] rounded-br-[200px] z-0 transform -translate-x-20 -translate-y-20 opacity-80 pointer-events-none"></div>
-      <div className="fixed bottom-0 right-0 w-[500px] h-[500px] bg-[#2a68ad] rounded-tl-[300px] z-0 transform translate-x-20 translate-y-20 opacity-90 pointer-events-none"></div>
+    <div className="min-h-screen bg-white py-12 px-6 lg:px-12 relative overflow-hidden">
 
       <div className="max-w-6xl mx-auto relative z-10">
 

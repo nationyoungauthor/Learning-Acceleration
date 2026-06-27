@@ -114,10 +114,8 @@ const Home = () => {
   const [activeAgeTab, setActiveAgeTab] = useState(0);
 
   return (
-    <div className="flex flex-col flex-grow bg-slate-50 relative overflow-hidden text-[#334155] font-sans pb-0">
-      {/* Background Shapes */}
-      <div className="fixed top-0 left-0 w-[400px] h-[400px] bg-[#61b2e4] rounded-br-[200px] z-0 transform -translate-x-20 -translate-y-20 opacity-80 pointer-events-none"></div>
-      <div className="fixed bottom-0 right-0 w-[500px] h-[500px] bg-[#2a68ad] rounded-tl-[300px] z-0 transform translate-x-20 translate-y-20 opacity-90 pointer-events-none"></div>
+    <div className="flex flex-col flex-grow bg-white relative overflow-hidden text-[#334155] font-sans pb-0">
+
 
       <div className="relative z-10">
         {/* Hero Section */}
@@ -126,12 +124,7 @@ const Home = () => {
         {/* Statistics Section */}
         <section className="relative py-12 bg-transparent px-6 lg:px-12">
 
-          {/* Decorative background */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            <svg className="w-64 h-64 text-[#E5E7EB] -top-12 left-1/2 -translate-x-1/2 opacity-30" fill="none" viewBox="0 0 200 200">
-              <circle cx="100" cy="100" r="80" stroke="currentColor" strokeWidth="1" />
-            </svg>
-          </div>
+
           <div className="relative max-w-6xl mx-auto text-center mb-12">
             <h2 className="text-4xl font-extrabold text-[#0F172A] tracking-tight">
               Trusted By Thousands of Young Learners
@@ -182,12 +175,7 @@ const Home = () => {
 
         {/* Brain Skills Section */}
         <section className="relative py-12 bg-transparent px-6 lg:px-12">
-          {/* Decorative floating icons */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            <svg className="w-64 h-64 text-[#E5E7EB] -top-12 left-1/2 -translate-x-1/2 opacity-30" fill="none" viewBox="0 0 200 200">
-              <circle cx="100" cy="100" r="80" stroke="currentColor" strokeWidth="1" />
-            </svg>
-          </div>
+
           <div className="relative max-w-6xl mx-auto text-center mb-12">
             <span className="inline-block mb-2 text-3xl">🧠</span>
             <h2 className="text-4xl font-extrabold text-[#0F172A] tracking-tight">

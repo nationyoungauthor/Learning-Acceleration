@@ -58,11 +58,7 @@ const Login = ({ initialIsSignUp = false }) => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 relative overflow-hidden flex items-center justify-center p-4">
-
-      {/* Background Shapes */}
-      <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-[#61b2e4] rounded-br-[200px] rounded-tl-none rounded-tr-none rounded-bl-none z-0 transform -translate-x-20 -translate-y-20 opacity-80"></div>
-      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-[#2a68ad] rounded-tl-[300px] rounded-tr-none rounded-br-none rounded-bl-none z-0 transform translate-x-20 translate-y-20 opacity-90"></div>
+    <div className="min-h-screen bg-white relative overflow-hidden flex items-center justify-center p-4">
 
       {/* Main Card */}
       <div className="bg-white shadow-[0_20px_50px_rgba(8,_112,_184,_0.15)] rounded-3xl w-full max-w-5xl flex z-10 overflow-hidden relative">

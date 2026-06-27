@@ -12,10 +12,7 @@ const Terms = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-slate-50 relative overflow-hidden text-[#334155] font-sans pb-16 pt-8">
-      {/* Background Shapes */}
-      <div className="fixed top-0 left-0 w-[400px] h-[400px] bg-[#61b2e4] rounded-br-[200px] z-0 transform -translate-x-20 -translate-y-20 opacity-80 pointer-events-none animate-pulse"></div>
-      <div className="fixed bottom-0 right-0 w-[500px] h-[500px] bg-[#2a68ad] rounded-tl-[300px] z-0 transform translate-x-20 translate-y-20 opacity-90 pointer-events-none animate-pulse" style={{ animationDelay: '1s' }}></div>
+    <div className="flex flex-col min-h-screen bg-white relative overflow-hidden text-[#334155] font-sans pb-16 pt-8">
 
       <div className="container mx-auto px-6 lg:px-12 relative z-10 pt-10 lg:pt-16">
 
