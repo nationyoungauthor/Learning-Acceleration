@@ -38,15 +38,15 @@ const SmallPlant = () => (
 );
 
 const CSSClock = () => (
-  <div className="absolute top-10 right-[10%] lg:right-[15%] w-20 h-20 lg:w-24 lg:h-24 rounded-full bg-white border border-slate-100 flex items-center justify-center shadow-sm opacity-80 z-10">
-    <div className="w-1 h-1 lg:w-1.5 lg:h-1.5 bg-slate-300 rounded-full absolute z-10"></div>
-    <div className="absolute w-[2px] h-6 lg:h-8 bg-slate-300 bottom-1/2 left-1/2 transform -translate-x-1/2 origin-bottom rotate-[60deg]"></div>
-    <div className="absolute w-[2px] h-4 lg:h-6 bg-slate-300 bottom-1/2 left-1/2 transform -translate-x-1/2 origin-bottom -rotate-[30deg]"></div>
+  <div className="absolute top-10 right-[10%] lg:right-[15%] w-20 h-20 lg:w-24 lg:h-24 rounded-full bg-gradient-to-tr from-pink-500 via-red-500 to-yellow-500 border-4 border-white flex items-center justify-center shadow-[0_10px_25px_-5px_rgba(239,68,68,0.5)] opacity-100 z-10 hover:scale-110 transition-transform">
+    <div className="w-1.5 h-1.5 lg:w-2 lg:h-2 bg-white rounded-full absolute z-10 shadow-sm"></div>
+    <div className="absolute w-[2px] lg:w-[3px] h-7 lg:h-9 bg-white bottom-1/2 left-1/2 transform -translate-x-1/2 origin-bottom rotate-[60deg] shadow-sm rounded-t-full"></div>
+    <div className="absolute w-[2px] lg:w-[3px] h-5 lg:h-7 bg-white bottom-1/2 left-1/2 transform -translate-x-1/2 origin-bottom -rotate-[30deg] shadow-sm rounded-t-full"></div>
 
-    <div className="absolute w-[2px] h-2 bg-slate-200 top-2 left-1/2 transform -translate-x-1/2"></div>
-    <div className="absolute w-[2px] h-2 bg-slate-200 bottom-2 left-1/2 transform -translate-x-1/2"></div>
-    <div className="absolute w-2 h-[2px] bg-slate-200 left-2 top-1/2 transform -translate-y-1/2"></div>
-    <div className="absolute w-2 h-[2px] bg-slate-200 right-2 top-1/2 transform -translate-y-1/2"></div>
+    <div className="absolute w-[2px] lg:w-[3px] h-2 lg:h-3 bg-white/90 top-1.5 lg:top-2 left-1/2 transform -translate-x-1/2 rounded-full"></div>
+    <div className="absolute w-[2px] lg:w-[3px] h-2 lg:h-3 bg-white/90 bottom-1.5 lg:bottom-2 left-1/2 transform -translate-x-1/2 rounded-full"></div>
+    <div className="absolute w-2 lg:w-3 h-[2px] lg:h-[3px] bg-white/90 left-1.5 lg:left-2 top-1/2 transform -translate-y-1/2 rounded-full"></div>
+    <div className="absolute w-2 lg:w-3 h-[2px] lg:h-[3px] bg-white/90 right-1.5 lg:right-2 top-1/2 transform -translate-y-1/2 rounded-full"></div>
   </div>
 );
 
@@ -70,21 +70,13 @@ const Contact = () => {
   const [showModal, setShowModal] = useState(false);
 
   return (
-    <div className="flex flex-col min-h-screen bg-slate-50 relative overflow-hidden text-[#334155] font-sans">
-      {/* Background Shapes from previous design */}
-      <div className="fixed top-0 left-0 w-[400px] h-[400px] bg-[#61b2e4] rounded-br-[200px] z-0 transform -translate-x-20 -translate-y-20 opacity-80 pointer-events-none"></div>
-      <div className="fixed bottom-0 right-0 w-[500px] h-[500px] bg-[#2a68ad] rounded-tl-[300px] z-0 transform translate-x-20 translate-y-20 opacity-90 pointer-events-none"></div>
-
-      {/* The curved white floor from the image */}
-      <div className="absolute bottom-0 left-0 w-full h-[15%] bg-white rounded-t-[50%] scale-x-[1.2] origin-bottom z-0"></div>
-
-      <FloatingShapes />
+    <div className="flex flex-col min-h-screen bg-white relative overflow-hidden text-[#334155] font-sans">
       <CSSClock />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-12 w-full relative z-20 pt-16 flex flex-col items-center flex-1">
 
         {/* Header */}
-        <h1 className="text-3xl md:text-[40px] font-semibold tracking-tight text-[#2d3748] mb-4 text-center">
+        <h1 className="text-3xl md:text-[40px] font-semibold tracking-tight text-blue-500 mb-4 text-center">
           Contact Us
         </h1>
         <p className="text-sm md:text-[15px] text-slate-600 text-center mb-12 leading-relaxed">
@@ -121,8 +113,8 @@ const Contact = () => {
                   </div>
                   {/* White shoes */}
                   <div className="flex gap-1 mt-0">
-                    <div className="w-4 h-1.5 lg:w-5 lg:h-2 bg-white rounded-full"></div>
-                    <div className="w-4 h-1.5 lg:w-5 lg:h-2 bg-white rounded-full"></div>
+                    <div className="w-4 h-1.5 lg:w-5 lg:h-2 bg-blue-500 rounded-full"></div>
+                    <div className="w-4 h-1.5 lg:w-5 lg:h-2 bg-blue-500 rounded-full"></div>
                   </div>
                 </div>
                 {/* Woman */}
@@ -144,33 +136,38 @@ const Contact = () => {
 
           {/* Center Form */}
           <form
-            className="space-y-4 w-full max-w-[440px] z-20"
+            className="space-y-5 w-full max-w-[440px] z-20 bg-white p-8 rounded-3xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] border border-slate-100"
             onSubmit={(e) => {
               e.preventDefault();
               setShowModal(true);
             }}
           >
-            <div>
-              <input type="text" required className="w-full px-5 py-4 rounded-xl bg-white border-0 focus:outline-none focus:ring-2 focus:ring-[#00df8a]/30 transition-all text-[15px] text-slate-600 placeholder-slate-600 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)]" placeholder="Name" />
+            <div className="text-center mb-6">
+              <h3 className="text-2xl font-bold text-slate-800">Send a Message</h3>
+              <p className="text-sm text-slate-500 mt-1">We'd love to hear from you!</p>
             </div>
 
             <div>
-              <input type="email" required className="w-full px-5 py-4 rounded-xl bg-white border-0 focus:outline-none focus:ring-2 focus:ring-[#00df8a]/30 transition-all text-[15px] text-slate-600 placeholder-slate-600 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)]" placeholder="Email" />
+              <input type="text" required className="w-full px-5 py-3.5 rounded-xl bg-slate-50 border border-slate-200 hover:border-slate-300 focus:bg-white focus:outline-none focus:border-[#00df8a] focus:ring-4 focus:ring-[#00df8a]/10 transition-all text-[15px] text-slate-700 placeholder-slate-400" placeholder="Your Name" />
             </div>
 
             <div>
-              <textarea rows="4" required className="w-full px-5 py-4 rounded-xl bg-white border-0 focus:outline-none focus:ring-2 focus:ring-[#00df8a]/30 transition-all resize-none text-[15px] text-slate-600 placeholder-slate-600 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)]" placeholder="Message"></textarea>
+              <input type="email" required className="w-full px-5 py-3.5 rounded-xl bg-slate-50 border border-slate-200 hover:border-slate-300 focus:bg-white focus:outline-none focus:border-[#00df8a] focus:ring-4 focus:ring-[#00df8a]/10 transition-all text-[15px] text-slate-700 placeholder-slate-400" placeholder="Email Address" />
             </div>
 
-            <div className="flex items-center justify-start gap-6 pt-2">
+            <div>
+              <textarea rows="4" required className="w-full px-5 py-3.5 rounded-xl bg-slate-50 border border-slate-200 hover:border-slate-300 focus:bg-white focus:outline-none focus:border-[#00df8a] focus:ring-4 focus:ring-[#00df8a]/10 transition-all resize-none text-[15px] text-slate-700 placeholder-slate-400" placeholder="How can we help?"></textarea>
+            </div>
+
+            <div className="flex items-center justify-between gap-4 pt-4">
+              <button type="button" className="cursor-pointer w-full py-[14px] bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl font-semibold text-[15px] transition-all hover:-translate-y-0.5">
+                Cancel
+              </button>
               <button
                 type="submit"
-                className="cursor-pointer px-12 py-[14px] bg-[#1ddb91] text-white rounded-xl font-medium text-[15px] hover:bg-[#19c783] transition-all shadow-md shadow-[#1ddb91]/30"
+                className="cursor-pointer w-full py-[14px] bg-[#1ddb91] hover:bg-[#15c581] text-white rounded-xl font-semibold text-[15px] transition-all shadow-[0_8px_20px_-6px_rgba(29,219,145,0.4)] hover:-translate-y-0.5"
               >
-                Send
-              </button>
-              <button type="button" className="cursor-pointer px-6 py-[14px] bg-slate-100 hover:bg-slate-200 rounded-xl text-[#475569] font-medium text-[15px] hover:text-[#1e293b] transition-all">
-                Cancel
+                Send Message
               </button>
             </div>
           </form>

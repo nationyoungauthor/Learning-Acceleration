@@ -43,7 +43,7 @@ const BrainAssessment = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] py-16 px-6 lg:px-12">
+    <div className="min-h-screen bg-white py-16 px-6 lg:px-12">
       <div className="max-w-4xl mx-auto">
         
         {/* Assessment Banner */}

@@ -69,11 +69,7 @@ const Progress = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-black text-gray-100 overflow-hidden pb-16">
-      {/* Visual background accents */}
-      <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-indigo-900/10 via-transparent to-transparent pointer-events-none z-0"></div>
-      <div className="absolute top-1/4 right-0 w-96 h-96 rounded-full bg-blue-500/5 blur-3xl pointer-events-none z-0"></div>
-      <div className="absolute bottom-1/4 left-0 w-96 h-96 rounded-full bg-purple-500/5 blur-3xl pointer-events-none z-0"></div>
+    <div className="relative min-h-screen bg-white text-gray-800 overflow-hidden pb-16">
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 pt-12">
         {/* Header */}

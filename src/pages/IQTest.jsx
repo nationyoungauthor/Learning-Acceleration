@@ -125,10 +125,7 @@ const IQTest = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 relative overflow-hidden flex flex-col items-center pt-24 pb-12 px-4">
-      {/* Background Shapes */}
-      <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-[#61b2e4] rounded-br-[200px] z-0 transform -translate-x-20 -translate-y-20 opacity-80 pointer-events-none"></div>
-      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-[#2a68ad] rounded-tl-[300px] z-0 transform translate-x-20 translate-y-20 opacity-90 pointer-events-none"></div>
+    <div className="min-h-screen bg-white relative overflow-hidden flex flex-col items-center pt-24 pb-12 px-4">
 
       <div className="w-full max-w-3xl z-10 relative">
 

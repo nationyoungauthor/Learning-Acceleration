@@ -12,7 +12,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-[#0F172A] border-t border-slate-800 text-[#64748B] text-sm py-16 mt-auto relative z-10">
+    <footer className="bg-gradient-to-r from-[#0F172A] via-[#1E3A8A] to-[#0B1B3D] border-t border-white/10 text-blue-100/80 text-sm py-16 mt-auto relative z-10">
       <div className="container mx-auto px-6 lg:px-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
           
@@ -126,7 +126,7 @@ const Footer = () => {
         </div>
 
         {/* Bottom Panel */}
-        <div className="border-t border-slate-800 pt-8 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500 font-medium w-full">
+        <div className="border-t border-white/10 pt-8 flex flex-col sm:flex-row items-center justify-between text-[11px] text-blue-100/70 font-medium w-full">
           <p className="flex-1 text-center sm:text-left">© 2026 Learning Acceleration. All Rights Reserved.</p>
           <a href="https://www.visdomwaves.com/" target="_blank" rel="noopener noreferrer" className="flex-1 text-center mt-4 sm:mt-0 hover:text-white transition-colors cursor-pointer">Powered by visdom waves</a>
           <div className="flex-1 flex justify-center sm:justify-end space-x-4 mt-4 sm:mt-0">

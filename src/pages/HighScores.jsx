@@ -62,10 +62,7 @@ const HighScores = () => {
   }, []);
 
   return (
-    <div className="relative flex flex-col min-h-screen bg-slate-50 overflow-hidden font-sans text-[#334155]">
-      {/* Background Shapes */}
-      <div className="fixed top-0 left-0 w-[400px] h-[400px] bg-[#61b2e4] rounded-br-[200px] z-0 transform -translate-x-20 -translate-y-20 opacity-80 pointer-events-none"></div>
-      <div className="fixed bottom-0 right-0 w-[500px] h-[500px] bg-[#2a68ad] rounded-tl-[300px] z-0 transform translate-x-20 translate-y-20 opacity-90 pointer-events-none"></div>
+    <div className="relative flex flex-col min-h-screen bg-white overflow-hidden font-sans text-[#334155]">
 
       <div className="relative z-10 py-16 px-4 md:px-8 max-w-7xl mx-auto w-full">
         <div className={`text-center mb-20 transition-all duration-1000 transform ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
