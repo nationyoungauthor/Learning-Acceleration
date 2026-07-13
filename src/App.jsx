@@ -31,6 +31,12 @@ import TimeEstimator from './pages/games/TimeEstimator'
 import InvertedMouse from './pages/games/InvertedMouse'
 import PerfectCircle from './pages/games/PerfectCircle'
 
+import AssociationLearning from './pages/games/AssociationLearning'
+import OddOneOut from './pages/games/OddOneOut'
+import SumFinder from './pages/games/SumFinder'
+import EmotionReading from './pages/games/EmotionReading'
+import ImpromptuPitch from './pages/games/ImpromptuPitch'
+
 import IQTest from './pages/IQTest'
 import Progress from './pages/Progress'
 import About from './pages/About'
@@ -78,6 +84,11 @@ function App() {
             <Route path="/games/time-estimator" element={<TimeEstimator />} />
             <Route path="/games/inverted-mouse" element={<InvertedMouse />} />
             <Route path="/games/perfect-circle" element={<PerfectCircle />} />
+            <Route path="/games/association-learning" element={<AssociationLearning />} />
+            <Route path="/games/odd-one-out" element={<OddOneOut />} />
+            <Route path="/games/sum-finder" element={<SumFinder />} />
+            <Route path="/games/emotion-reading" element={<EmotionReading />} />
+            <Route path="/games/impromptu-pitch" element={<ImpromptuPitch />} />
             <Route path="/iq-test" element={<IQTest />} />
             <Route path="/progress" element={<Progress />} />
             <Route path="/about" element={<About />} />

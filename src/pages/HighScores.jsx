@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FaTrophy, FaLightbulb, FaBrain, FaListOl, FaCrosshairs, FaPuzzlePiece, FaPalette, FaStopwatch, FaClock, FaMousePointer, FaCircle, FaChevronRight } from 'react-icons/fa';
+import { FaTrophy, FaLightbulb, FaBrain, FaListOl, FaCrosshairs, FaPuzzlePiece, FaPalette, FaStopwatch, FaClock, FaMousePointer, FaCircle, FaChevronRight, FaGraduationCap, FaEye, FaCalculator, FaSmile, FaMicrophone } from 'react-icons/fa';
 
 const scoreData = [
   {
@@ -41,6 +41,46 @@ const scoreData = [
       { id: 'timeEstimator', path: '/games/time-estimator', title: 'Time Estimator', key: 'timeEstimatorHighScore', icon: FaClock, color: 'text-amber-700', bg: 'bg-amber-100' },
       { id: 'invertedMouse', path: '/games/inverted-mouse', title: 'Inverted Mouse', key: 'invertedMouseHighScore', icon: FaMousePointer, color: 'text-cyan-600', bg: 'bg-cyan-100' },
       { id: 'perfectCircle', path: '/games/perfect-circle', title: 'Perfect Circle', key: 'perfectCircleHighScore', icon: FaCircle, color: 'text-indigo-500', bg: 'bg-indigo-100', unit: '%' }
+    ]
+  },
+  {
+    category: "Learning Skill",
+    desc: "Train association recall and retention speed",
+    gradient: "from-blue-500 to-indigo-600",
+    games: [
+      { id: 'associationLearning', path: '/games/association-learning', title: 'Association Learning', key: 'associationLearningHighScore', icon: FaGraduationCap, color: 'text-blue-600', bg: 'bg-blue-100' }
+    ]
+  },
+  {
+    category: "Observation Skill",
+    desc: "Train visual identification and attention to detail",
+    gradient: "from-emerald-500 to-teal-600",
+    games: [
+      { id: 'oddOneOut', path: '/games/odd-one-out', title: 'Odd One Out', key: 'oddOneOutHighScore', icon: FaEye, color: 'text-emerald-600', bg: 'bg-emerald-100' }
+    ]
+  },
+  {
+    category: "Problem Solving Skill",
+    desc: "Train analysis, decision making, and mental math",
+    gradient: "from-orange-500 to-amber-600",
+    games: [
+      { id: 'sumFinder', path: '/games/sum-finder', title: 'Sum Finder', key: 'sumFinderHighScore', icon: FaCalculator, color: 'text-orange-600', bg: 'bg-orange-100' }
+    ]
+  },
+  {
+    category: "Emotional Skill",
+    desc: "Train microexpression decoding and empathetic IQ",
+    gradient: "from-pink-500 to-rose-600",
+    games: [
+      { id: 'emotionReading', path: '/games/emotion-reading', title: 'Emotion Reading', key: 'emotionReadingHighScore', icon: FaSmile, color: 'text-pink-600', bg: 'bg-pink-100' }
+    ]
+  },
+  {
+    category: "Public Speaking Skills",
+    desc: "Train presentation flow, rhetoric, and filler control",
+    gradient: "from-violet-500 to-fuchsia-600",
+    games: [
+      { id: 'impromptuPitch', path: '/games/impromptu-pitch', title: 'Impromptu Pitch', key: 'impromptuPitchHighScore', icon: FaMicrophone, color: 'text-violet-600', bg: 'bg-violet-100' }
     ]
   }
 ];
