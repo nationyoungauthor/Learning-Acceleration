@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { 
   FaBrain, FaTrophy, FaFire, FaGamepad, FaChartLine, 
   FaGraduationCap, FaChevronRight, FaClock, FaCheckCircle, 
-  FaLightbulb, FaExchangeAlt 
+  FaLightbulb, FaExchangeAlt, FaEye, FaSmile, FaMicrophone, FaCalculator
 } from 'react-icons/fa';
 
 const scoreKeys = [
@@ -28,7 +28,13 @@ const scoreKeys = [
   { key: 'fiveSecondHighScore', title: '5-Second Test', category: 'Perception' },
   { key: 'timeEstimatorHighScore', title: 'Time Estimator', category: 'Perception' },
   { key: 'invertedMouseHighScore', title: 'Inverted Mouse', category: 'Perception' },
-  { key: 'perfectCircleHighScore', title: 'Perfect Circle', category: 'Perception', isPercent: true }
+  { key: 'perfectCircleHighScore', title: 'Perfect Circle', category: 'Perception', isPercent: true },
+  // New Skills
+  { key: 'associationLearningHighScore', title: 'Association Learning', category: 'Learning' },
+  { key: 'oddOneOutHighScore', title: 'Odd One Out', category: 'Observation' },
+  { key: 'sumFinderHighScore', title: 'Sum Finder', category: 'Problem Solving' },
+  { key: 'emotionReadingHighScore', title: 'Emotion Reading', category: 'Emotional' },
+  { key: 'impromptuPitchHighScore', title: 'Impromptu Pitch', category: 'Public Speaking' }
 ];
 
 const Progress = () => {
@@ -58,10 +64,95 @@ const Progress = () => {
   const memoryGames = scoreKeys.filter(g => g.category === 'Memory');
   const logicGames = scoreKeys.filter(g => g.category === 'Logic');
   const perceptionGames = scoreKeys.filter(g => g.category === 'Perception');
+  const learningGames = scoreKeys.filter(g => g.category === 'Learning');
+  const observationGames = scoreKeys.filter(g => g.category === 'Observation');
+  const problemSolvingGames = scoreKeys.filter(g => g.category === 'Problem Solving');
+  const emotionalGames = scoreKeys.filter(g => g.category === 'Emotional');
+  const publicSpeakingGames = scoreKeys.filter(g => g.category === 'Public Speaking');
 
   const memoryPlayed = memoryGames.filter(g => scores[g.key] !== undefined).length;
   const logicPlayed = logicGames.filter(g => scores[g.key] !== undefined).length;
   const perceptionPlayed = perceptionGames.filter(g => scores[g.key] !== undefined).length;
+  const learningPlayed = learningGames.filter(g => scores[g.key] !== undefined).length;
+  const observationPlayed = observationGames.filter(g => scores[g.key] !== undefined).length;
+  const problemSolvingPlayed = problemSolvingGames.filter(g => scores[g.key] !== undefined).length;
+  const emotionalPlayed = emotionalGames.filter(g => scores[g.key] !== undefined).length;
+  const publicSpeakingPlayed = publicSpeakingGames.filter(g => scores[g.key] !== undefined).length;
+
+  const breakdownPillars = [
+    {
+      title: "Working Memory",
+      desc: "Critical for holding information in mind during study sessions, problem solving, and reading comprehension.",
+      played: memoryPlayed,
+      total: memoryGames.length,
+      color: "bg-blue-500",
+      bg: "bg-blue-500/10 text-blue-400",
+      icon: <FaLightbulb />
+    },
+    {
+      title: "Logic & Reasoning",
+      desc: "Enhances math problem speed, pattern detection, vocabulary organization, and analytical thinking in tests.",
+      played: logicPlayed,
+      total: logicGames.length,
+      color: "bg-purple-500",
+      bg: "bg-purple-500/10 text-purple-400",
+      icon: <FaBrain />
+    },
+    {
+      title: "Perception & Speed",
+      desc: "Trains time awareness, hand-eye motor execution, precision controls, and visual target tracking under pressure.",
+      played: perceptionPlayed,
+      total: perceptionGames.length,
+      color: "bg-teal-500",
+      bg: "bg-teal-500/10 text-teal-400",
+      icon: <FaChartLine />
+    },
+    {
+      title: "Learning Skill",
+      desc: "Improves active recall, semantic associations, speed reading, and knowledge retention efficiency.",
+      played: learningPlayed,
+      total: learningGames.length,
+      color: "bg-blue-600",
+      bg: "bg-blue-600/10 text-blue-400",
+      icon: <FaGraduationCap />
+    },
+    {
+      title: "Observation Skill",
+      desc: "Enhances visual acuity, search efficiency, spatial awareness, and identification of subtle details.",
+      played: observationPlayed,
+      total: observationGames.length,
+      color: "bg-emerald-500",
+      bg: "bg-emerald-500/10 text-emerald-400",
+      icon: <FaEye />
+    },
+    {
+      title: "Problem Solving",
+      desc: "Strengthens analytical pathfinding, equation solving, mental arithmetic, and logical puzzle reasoning.",
+      played: problemSolvingPlayed,
+      total: problemSolvingGames.length,
+      color: "bg-orange-500",
+      bg: "bg-orange-500/10 text-orange-400",
+      icon: <FaCalculator />
+    },
+    {
+      title: "Emotional Skill",
+      desc: "Develops empathetic comprehension, facial cues reading, social communication, and situational reactivity.",
+      played: emotionalPlayed,
+      total: emotionalGames.length,
+      color: "bg-pink-500",
+      bg: "bg-pink-500/10 text-pink-400",
+      icon: <FaSmile />
+    },
+    {
+      title: "Public Speaking",
+      desc: "Optimizes presentation timing, structural rhetorical flow, filler word minimization, and impromptu pitch.",
+      played: publicSpeakingPlayed,
+      total: publicSpeakingGames.length,
+      color: "bg-violet-500",
+      bg: "bg-violet-500/10 text-violet-400",
+      icon: <FaMicrophone />
+    }
+  ];
 
   const getFilteredGames = () => {
     if (activeTab === 'all') return scoreKeys;
@@ -75,19 +166,19 @@ const Progress = () => {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
           <div>
-            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-semibold mb-4">
+            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 text-xs font-semibold mb-4">
               <FaGraduationCap />
               <span>Student Dashboard</span>
             </div>
-            <h1 className="text-4xl md:text-5xl font-black tracking-tight text-white mb-2">
-              Your Cognitive <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">Progress</span>
+            <h1 className="text-4xl md:text-5xl font-black tracking-tight text-[#254f85] mb-2 font-display">
+              Your Cognitive <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Progress</span>
             </h1>
-            <p className="text-gray-400 text-base max-w-xl">
+            <p className="text-gray-500 text-base max-w-xl">
               Track your daily training metrics, see performance in cognitive areas, and level up your memory, speed, and logic.
             </p>
           </div>
           <div className="flex items-center space-x-3">
-            <Link to="/" className="px-5 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 font-bold text-sm text-white transition-all shadow-[0_0_15px_rgba(99,102,241,0.4)] flex items-center gap-2">
+            <Link to="/games" className="px-5 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 font-bold text-sm text-white transition-all shadow-[0_0_15px_rgba(99,102,241,0.4)] flex items-center gap-2">
               <FaGamepad />
               <span>Train More Games</span>
             </Link>
@@ -97,17 +188,17 @@ const Progress = () => {
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
           {/* Brain Index Card */}
-          <div className="md:col-span-2 bg-gradient-to-br from-[#121620] to-[#0c0f16] border border-white/5 rounded-3xl p-6 relative overflow-hidden group">
+          <div className="md:col-span-2 bg-[#F8FAFC] border border-[#d8e6f3] rounded-3xl p-6 relative overflow-hidden group">
             <div className="absolute top-0 right-0 -mr-6 -mt-6 w-32 h-32 rounded-full bg-blue-500/10 blur-2xl group-hover:bg-blue-500/20 transition-all duration-700"></div>
             
             <div className="flex justify-between items-start mb-4">
               <div>
-                <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Brain Fitness Score</p>
-                <h3 className="text-3xl font-black text-white mt-1">
-                  {brainScore > 0 ? brainScore : '---'} <span className="text-xs text-gray-500 font-bold">/ 1000</span>
+                <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Brain Fitness Score</p>
+                <h3 className="text-3xl font-black text-[#254f85] mt-1 font-display">
+                  {brainScore > 0 ? brainScore : '---'} <span className="text-xs text-gray-400 font-bold">/ 1000</span>
                 </h3>
               </div>
-              <div className="p-3 rounded-2xl bg-blue-500/10 text-blue-400">
+              <div className="p-3 rounded-2xl bg-blue-500/10 text-blue-500">
                 <FaBrain className="text-2xl animate-pulse" />
               </div>
             </div>
@@ -119,13 +210,13 @@ const Progress = () => {
                 <span>Expert (700)</span>
                 <span>Genius (1000)</span>
               </div>
-              <div className="w-full bg-[#1e2535] rounded-full h-3.5 overflow-hidden p-[2px]">
+              <div className="w-full bg-[#E2E8F0] rounded-full h-3.5 overflow-hidden p-[2px]">
                 <div 
                   className="bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 h-full rounded-full transition-all duration-1000"
                   style={{ width: `${brainScore > 0 ? (brainScore / 1000) * 100 : 0}%` }}
                 ></div>
               </div>
-              <p className="text-xs text-gray-400 mt-4 leading-relaxed">
+              <p className="text-xs text-gray-600 mt-4 leading-relaxed">
                 {brainScore > 0 
                   ? `🔥 Awesome! Your cognitive profile is stronger than ${Math.min(99, Math.floor((brainScore/1000)*120))}% of peer students.`
                   : 'Start training to generate your customized Brain Fitness Score!'
@@ -135,16 +226,16 @@ const Progress = () => {
           </div>
 
           {/* Daily Streak Card */}
-          <div className="bg-gradient-to-br from-[#121620] to-[#0c0f16] border border-white/5 rounded-3xl p-6 relative overflow-hidden group">
+          <div className="bg-[#F8FAFC] border border-[#d8e6f3] rounded-3xl p-6 relative overflow-hidden group">
             <div className="absolute top-0 right-0 -mr-6 -mt-6 w-24 h-24 rounded-full bg-orange-500/10 blur-2xl pointer-events-none"></div>
             <div className="flex justify-between items-start mb-6">
               <div>
-                <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Daily Streak</p>
-                <h3 className="text-4xl font-black text-white mt-2 flex items-baseline">
-                  {dailyStreak} <span className="text-lg font-bold text-orange-400 ml-1">Days</span>
+                <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Daily Streak</p>
+                <h3 className="text-4xl font-black text-[#254f85] mt-2 flex items-baseline font-display">
+                  {dailyStreak} <span className="text-lg font-bold text-orange-500 ml-1">Days</span>
                 </h3>
               </div>
-              <div className="p-3 rounded-2xl bg-orange-500/10 text-orange-400 group-hover:scale-110 transition-transform">
+              <div className="p-3 rounded-2xl bg-orange-500/10 text-orange-500 group-hover:scale-110 transition-transform">
                 <FaFire className="text-2xl" />
               </div>
             </div>
@@ -154,8 +245,8 @@ const Progress = () => {
                   key={day}
                   className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold ${
                     day <= dailyStreak 
-                      ? 'bg-orange-500 text-black shadow-[0_0_10px_rgba(249,115,22,0.4)]' 
-                      : 'bg-[#1a202c] text-gray-600'
+                      ? 'bg-orange-500 text-white shadow-[0_0_10px_rgba(249,115,22,0.4)]' 
+                      : 'bg-gray-200 text-gray-400'
                   }`}
                 >
                   {day === 7 ? 'S' : ['M', 'T', 'W', 'T', 'F', 'S'][day-1]}
@@ -166,20 +257,20 @@ const Progress = () => {
           </div>
 
           {/* Completed Exercises */}
-          <div className="bg-gradient-to-br from-[#121620] to-[#0c0f16] border border-white/5 rounded-3xl p-6 relative overflow-hidden group">
+          <div className="bg-[#F8FAFC] border border-[#d8e6f3] rounded-3xl p-6 relative overflow-hidden group">
             <div className="absolute top-0 right-0 -mr-6 -mt-6 w-24 h-24 rounded-full bg-purple-500/10 blur-2xl pointer-events-none"></div>
             <div className="flex justify-between items-start mb-6">
               <div>
-                <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Active Skills</p>
-                <h3 className="text-4xl font-black text-white mt-2">
-                  {gamesPlayed} <span className="text-lg font-bold text-purple-400">/ {scoreKeys.length}</span>
+                <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Active Skills</p>
+                <h3 className="text-4xl font-black text-[#254f85] mt-2 font-display">
+                  {gamesPlayed} <span className="text-lg font-bold text-purple-500">/ {scoreKeys.length}</span>
                 </h3>
               </div>
-              <div className="p-3 rounded-2xl bg-purple-500/10 text-purple-400">
+              <div className="p-3 rounded-2xl bg-purple-500/10 text-purple-500">
                 <FaGamepad className="text-2xl" />
               </div>
             </div>
-            <div className="w-full bg-[#1e2535] rounded-full h-2">
+            <div className="w-full bg-[#E2E8F0] rounded-full h-2">
               <div 
                 className="bg-purple-500 h-2 rounded-full"
                 style={{ width: `${(gamesPlayed / scoreKeys.length) * 100}%` }}
@@ -190,105 +281,53 @@ const Progress = () => {
         </div>
 
         {/* Cognitive Profile Breakdown */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-          {/* Memory Pillar */}
-          <div className="bg-[#11141c]/50 rounded-3xl p-6 border border-white/5 flex flex-col justify-between">
-            <div>
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="p-2.5 rounded-xl bg-blue-500/10 text-blue-400">
-                  <FaLightbulb />
+        <h3 className="text-2xl font-bold text-[#254f85] mb-6 font-display">Cognitive Pillar Breakdown</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
+          {breakdownPillars.map((pillar, idx) => (
+            <div key={idx} className="bg-white rounded-3xl p-6 border border-[#d8e6f3] hover:border-[#61b2e4] transition-all duration-300 flex flex-col justify-between shadow-[0_4px_20px_rgba(8,_112,_184,_0.03)] hover:shadow-[0_20px_40px_rgba(8,_112,_184,_0.08)]">
+              <div>
+                <div className="flex items-center space-x-3 mb-4">
+                  <div className={`p-2.5 rounded-xl ${pillar.bg}`}>
+                    {pillar.icon}
+                  </div>
+                  <h4 className="text-base font-bold text-[#254f85] font-display">{pillar.title}</h4>
                 </div>
-                <h4 className="text-lg font-bold text-white">Working Memory</h4>
+                <p className="text-xs text-gray-500 leading-relaxed mb-6">
+                  {pillar.desc}
+                </p>
               </div>
-              <p className="text-sm text-gray-400 leading-relaxed mb-6">
-                Critical for holding information in mind during study sessions, problem solving, and reading comprehension.
-              </p>
-            </div>
-            <div>
-              <div className="flex justify-between text-xs text-gray-500 mb-2 font-semibold">
-                <span>Games Played</span>
-                <span>{memoryPlayed} of {memoryGames.length}</span>
-              </div>
-              <div className="w-full bg-white/5 rounded-full h-2">
-                <div 
-                  className="bg-blue-500 h-2 rounded-full" 
-                  style={{ width: `${(memoryPlayed / memoryGames.length) * 100}%` }}
-                ></div>
-              </div>
-            </div>
-          </div>
-
-          {/* Logic Pillar */}
-          <div className="bg-[#11141c]/50 rounded-3xl p-6 border border-white/5 flex flex-col justify-between">
-            <div>
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="p-2.5 rounded-xl bg-purple-500/10 text-purple-400">
-                  <FaBrain />
+              <div>
+                <div className="flex justify-between text-[11px] text-gray-400 mb-2 font-bold">
+                  <span>Exercises Played</span>
+                  <span className="text-[#18609e]">{pillar.played} of {pillar.total}</span>
                 </div>
-                <h4 className="text-lg font-bold text-white">Logic & Reasoning</h4>
-              </div>
-              <p className="text-sm text-gray-400 leading-relaxed mb-6">
-                Enhances math problem speed, pattern detection, vocabulary organization, and analytical thinking in tests.
-              </p>
-            </div>
-            <div>
-              <div className="flex justify-between text-xs text-gray-500 mb-2 font-semibold">
-                <span>Games Played</span>
-                <span>{logicPlayed} of {logicGames.length}</span>
-              </div>
-              <div className="w-full bg-white/5 rounded-full h-2">
-                <div 
-                  className="bg-purple-500 h-2 rounded-full" 
-                  style={{ width: `${(logicPlayed / logicGames.length) * 100}%` }}
-                ></div>
-              </div>
-            </div>
-          </div>
-
-          {/* Perception Pillar */}
-          <div className="bg-[#11141c]/50 rounded-3xl p-6 border border-white/5 flex flex-col justify-between">
-            <div>
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="p-2.5 rounded-xl bg-teal-500/10 text-teal-400">
-                  <FaChartLine />
+                <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
+                  <div 
+                    className={`${pillar.color} h-1.5 rounded-full`} 
+                    style={{ width: `${pillar.total > 0 ? (pillar.played / pillar.total) * 100 : 0}%` }}
+                  ></div>
                 </div>
-                <h4 className="text-lg font-bold text-white">Perception & Speed</h4>
-              </div>
-              <p className="text-sm text-gray-400 leading-relaxed mb-6">
-                Trains time awareness, hand-eye motor execution, precision controls, and visual target tracking under pressure.
-              </p>
-            </div>
-            <div>
-              <div className="flex justify-between text-xs text-gray-500 mb-2 font-semibold">
-                <span>Games Played</span>
-                <span>{perceptionPlayed} of {perceptionGames.length}</span>
-              </div>
-              <div className="w-full bg-white/5 rounded-full h-2">
-                <div 
-                  className="bg-teal-500 h-2 rounded-full" 
-                  style={{ width: `${(perceptionPlayed / perceptionGames.length) * 100}%` }}
-                ></div>
               </div>
             </div>
-          </div>
+          ))}
         </div>
 
         {/* Detailed High Scores List */}
-        <div className="bg-[#0b0e14] border border-white/5 rounded-[2rem] p-6 md:p-8">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between pb-6 border-b border-white/5 mb-6 gap-4">
+        <div className="bg-[#1e293b] border border-[#334155] rounded-[2rem] p-6 md:p-8 shadow-xl">
+          <div className="flex flex-col xl:flex-row items-start xl:items-center justify-between pb-6 border-b border-[#334155] mb-6 gap-6">
             <div>
-              <h3 className="text-2xl font-bold text-white">Exercise History & Records</h3>
-              <p className="text-sm text-gray-400 mt-1">Review personal bests across memory, logic, and perception games.</p>
+              <h3 className="text-2xl font-bold text-white font-display">Exercise History & Records</h3>
+              <p className="text-sm text-slate-400 mt-1">Review personal bests across cognitive and soft-skills games.</p>
             </div>
-            <div className="flex bg-[#121622] p-1.5 rounded-xl border border-white/5 self-stretch md:self-auto">
-              {['all', 'memory', 'logic', 'perception'].map(tab => (
+            <div className="flex flex-wrap bg-[#0f172a] p-1.5 rounded-xl border border-[#334155] self-stretch xl:self-auto gap-1">
+              {['all', 'memory', 'logic', 'perception', 'learning', 'observation', 'problem solving', 'emotional', 'public speaking'].map(tab => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`flex-1 md:flex-none px-4 py-2 text-xs font-bold rounded-lg transition-all capitalize ${
+                  className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all capitalize whitespace-nowrap ${
                     activeTab === tab 
                       ? 'bg-indigo-600 text-white shadow' 
-                      : 'text-gray-400 hover:text-white'
+                      : 'text-slate-400 hover:text-white hover:bg-slate-800'
                   }`}
                 >
                   {tab}
@@ -303,23 +342,45 @@ const Progress = () => {
               const hasScore = score !== undefined;
               
               let scoreColor = "text-blue-400";
-              let pillBg = "bg-blue-400/10 border-blue-400/20";
+              let pillBg = "bg-blue-500/10 border-blue-500/20 text-blue-400";
               if (item.category === "Logic") {
                 scoreColor = "text-purple-400";
-                pillBg = "bg-purple-400/10 border-purple-400/20";
+                pillBg = "bg-purple-400/10 border-purple-400/20 text-purple-400";
               } else if (item.category === "Perception") {
                 scoreColor = "text-teal-400";
-                pillBg = "bg-teal-400/10 border-teal-400/20";
+                pillBg = "bg-teal-400/10 border-teal-400/20 text-teal-400";
+              } else if (item.category === "Learning") {
+                scoreColor = "text-sky-400";
+                pillBg = "bg-sky-400/10 border-sky-400/20 text-sky-400";
+              } else if (item.category === "Observation") {
+                scoreColor = "text-emerald-400";
+                pillBg = "bg-emerald-400/10 border-emerald-400/20 text-emerald-400";
+              } else if (item.category === "Problem Solving") {
+                scoreColor = "text-orange-400";
+                pillBg = "bg-orange-400/10 border-orange-400/20 text-orange-400";
+              } else if (item.category === "Emotional") {
+                scoreColor = "text-pink-400";
+                pillBg = "bg-pink-400/10 border-pink-400/20 text-pink-400";
+              } else if (item.category === "Public Speaking") {
+                scoreColor = "text-violet-400";
+                pillBg = "bg-violet-400/10 border-violet-400/20 text-violet-400";
               }
 
               return (
                 <div 
                   key={idx}
-                  className="bg-[#121620]/60 hover:bg-[#121620] border border-white/5 rounded-2xl p-4 flex items-center justify-between transition-all duration-300"
+                  className="bg-[#0f172a]/60 hover:bg-[#0f172a] border border-[#334155] rounded-2xl p-4 flex items-center justify-between transition-all duration-300"
                 >
                   <div className="flex items-center space-x-3.5">
                     <div className={`w-2 h-10 rounded-full ${
-                      item.category === 'Memory' ? 'bg-blue-500' : item.category === 'Logic' ? 'bg-purple-500' : 'bg-teal-500'
+                      item.category === 'Memory' ? 'bg-blue-500' : 
+                      item.category === 'Logic' ? 'bg-purple-500' : 
+                      item.category === 'Perception' ? 'bg-teal-500' :
+                      item.category === 'Learning' ? 'bg-sky-500' :
+                      item.category === 'Observation' ? 'bg-emerald-500' :
+                      item.category === 'Problem Solving' ? 'bg-orange-500' :
+                      item.category === 'Emotional' ? 'bg-pink-500' :
+                      'bg-violet-500'
                     }`}></div>
                     <div>
                       <h5 className="font-bold text-white text-sm">{item.title}</h5>
@@ -336,16 +397,16 @@ const Progress = () => {
                           <span className={`text-base font-black ${scoreColor}`}>
                             {score}
                           </span>
-                          {item.isTime && <span className="text-gray-500 text-xs font-bold ml-0.5">s</span>}
-                          {item.isPercent && <span className="text-gray-500 text-xs font-bold ml-0.5">%</span>}
+                          {item.isTime && <span className="text-slate-500 text-xs font-bold ml-0.5">s</span>}
+                          {item.isPercent && <span className="text-slate-500 text-xs font-bold ml-0.5">%</span>}
                         </div>
                       ) : (
-                        <span className="text-gray-600 text-xs italic font-medium">No score</span>
+                        <span className="text-slate-600 text-xs italic font-medium">No score</span>
                       )}
                     </div>
                     <Link 
-                      to={scoreKeys.find(g => g.key === item.key) ? `/` : '/'}
-                      className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-colors border border-white/5"
+                      to="/games"
+                      className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-colors border border-white/5"
                     >
                       <FaChevronRight className="text-xs" />
                     </Link>

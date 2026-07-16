@@ -5,7 +5,8 @@ import {
   FaStopwatch, FaMousePointer, FaCircle, FaListOl,
   FaBolt, FaCrosshairs, FaPalette, FaSortNumericDown,
   FaLanguage, FaMagic, FaMemory, FaFont, FaCheckSquare,
-  FaClock, FaArrowsAlt
+  FaClock, FaArrowsAlt, FaGraduationCap, FaEye, FaCalculator,
+  FaSmile, FaMicrophone
 } from 'react-icons/fa';
 
 const allGames = [
@@ -32,10 +33,27 @@ const allGames = [
   { id: '5-second-test', title: '5-Second Test', path: '/games/5-second-test', category: 'Speed & Reflex', icon: <FaStopwatch className="text-red-500 text-2xl" />, desc: 'Stop the timer at exactly 5 seconds.' },
   { id: 'time-estimator', title: 'Time Estimator', path: '/games/time-estimator', category: 'Speed & Reflex', icon: <FaClock className="text-orange-500 text-2xl" />, desc: 'Estimate durations accurately without counting.' },
   { id: 'inverted-mouse', title: 'Inverted Mouse', path: '/games/inverted-mouse', category: 'Speed & Reflex', icon: <FaMousePointer className="text-slate-500 text-2xl" />, desc: 'Move your cursor with fully reversed controls.' },
-  { id: 'perfect-circle', title: 'Perfect Circle', path: '/games/perfect-circle', category: 'Speed & Reflex', icon: <FaCircle className="text-blue-400 text-2xl" />, desc: 'Draw the most perfect circle you can.' }
+  { id: 'perfect-circle', title: 'Perfect Circle', path: '/games/perfect-circle', category: 'Speed & Reflex', icon: <FaCircle className="text-blue-400 text-2xl" />, desc: 'Draw the most perfect circle you can.' },
+
+  // New Skills
+  { id: 'association-learning', title: 'Association Learning', path: '/games/association-learning', category: 'Learning Skill', icon: <FaGraduationCap className="text-blue-600 text-2xl" />, desc: 'Memorize word associations and test your active recall.' },
+  { id: 'odd-one-out', title: 'Odd One Out', path: '/games/odd-one-out', category: 'Observation Skill', icon: <FaEye className="text-emerald-600 text-2xl" />, desc: 'Find the anomalous grid tile under time pressure.' },
+  { id: 'sum-finder', title: 'Sum Finder', path: '/games/sum-finder', category: 'Problem Solving Skill', icon: <FaCalculator className="text-orange-600 text-2xl" />, desc: 'Select grid cells that sum up to a target value.' },
+  { id: 'emotion-reading', title: 'Emotion Reading', path: '/games/emotion-reading', category: 'Emotional Skill', icon: <FaSmile className="text-pink-600 text-2xl" />, desc: 'Decode microexpressions and facial cues on stylized avatars.' },
+  { id: 'impromptu-pitch', title: 'Impromptu Pitch', path: '/games/impromptu-pitch', category: 'Public Speaking Skills', icon: <FaMicrophone className="text-violet-600 text-2xl" />, desc: 'Train structural speech flow, keywords, and minimize fillers.' }
 ];
 
-const categories = ['All', 'Memory', 'Logic & Attention', 'Speed & Reflex'];
+const categories = [
+  'All', 
+  'Memory', 
+  'Logic & Attention', 
+  'Speed & Reflex', 
+  'Learning Skill', 
+  'Observation Skill', 
+  'Problem Solving Skill', 
+  'Emotional Skill', 
+  'Public Speaking Skills'
+];
 
 const Games = () => {
   const location = useLocation();
