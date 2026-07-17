@@ -182,7 +182,7 @@ const PerfectCircle = () => {
       <div className="w-full max-w-3xl text-sm mb-6 text-[#64748B] flex items-center space-x-2 mt-12 md:mt-0">
         <Link to="/" className="hover:text-[#2563EB] flex items-center transition-colors"><FaHome className="mr-1"/> Home</Link>
         <span>&gt;</span>
-        <span>Games</span>
+        <Link to="/games" className="hover:text-[#2563EB] transition-colors">Games</Link>
         <span>&gt;</span>
         <span className="text-[#0F172A] font-semibold">Perfect Circle</span>
       </div>
