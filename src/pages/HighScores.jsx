@@ -102,33 +102,33 @@ const HighScores = () => {
   }, []);
 
   return (
-    <div className="relative flex flex-col min-h-screen bg-white overflow-hidden font-sans text-[#334155]">
+    <div className="relative flex flex-col min-h-screen bg-[#F8FAFC] overflow-hidden font-sans text-[#0F172A] pb-16">
 
       <div className="relative z-10 py-16 px-4 md:px-8 max-w-7xl mx-auto w-full">
-        <div className={`text-center mb-20 transition-all duration-1000 transform ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+        <div className={`text-center mb-16 transition-all duration-1000 transform ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <div className="inline-flex items-center justify-center p-4 rounded-full bg-blue-50 mb-6 border border-[#d8e6f3] shadow-sm">
             <FaTrophy className="text-5xl md:text-6xl text-[#18609e]" />
           </div>
-          <h1 className="text-5xl md:text-7xl font-black tracking-tighter font-display mb-6 text-[#254f85]">
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-[#254f85]">
             Hall of <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#61b2e4] to-[#18609e]">Fame</span>
           </h1>
-          <p className="text-[#6495c6] text-lg md:text-2xl max-w-3xl mx-auto font-medium leading-relaxed">
+          <p className="text-[#6495c6] text-base md:text-lg max-w-2xl mx-auto font-medium leading-relaxed">
             Your personal bests across all cognitive training exercises. Keep pushing your limits!
           </p>
         </div>
 
-        <div className="space-y-24">
+        <div className="space-y-16">
           {scoreData.map((category, idx) => (
             <div
               key={idx}
               className={`transition-all duration-1000 transform ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
               style={{ transitionDelay: `${(idx + 1) * 150}ms` }}
             >
-              <div className="mb-10 text-center md:text-left">
-                <h2 className={`text-3xl md:text-5xl font-extrabold font-display mb-3 tracking-tight text-transparent bg-clip-text bg-gradient-to-r ${category.gradient}`}>
+              <div className="mb-8 text-center md:text-left">
+                <h2 className={`text-2xl md:text-3xl font-extrabold mb-2 tracking-tight text-transparent bg-clip-text bg-gradient-to-r ${category.gradient}`}>
                   {category.category}
                 </h2>
-                <p className="text-[#6495c6] text-lg md:text-xl font-medium">{category.desc}</p>
+                <p className="text-[#6495c6] text-sm md:text-base font-medium">{category.desc}</p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
@@ -146,17 +146,17 @@ const HighScores = () => {
                           <div className={`p-4 rounded-2xl ${game.bg} ${game.color} transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3`}>
                             <Icon className="text-3xl" />
                           </div>
-                          <h3 className="text-xl font-bold font-display text-[#254f85] leading-tight max-w-[120px]">{game.title}</h3>
+                          <h3 className="text-lg font-bold text-[#254f85] leading-tight">{game.title}</h3>
                         </div>
 
                         {hasScore && (
                           <div className="flex flex-col items-end">
-                            <span className="text-xs font-bold text-[#6495c6] uppercase tracking-wider mb-1">Best Score</span>
+                            <span className="text-[10px] font-bold text-[#6495c6] uppercase tracking-wider mb-1">Best Score</span>
                             <div className="flex items-baseline">
-                              <span className={`text-3xl font-black ${game.color}`}>
+                              <span className={`text-2xl font-bold ${game.color}`}>
                                 {score}
                               </span>
-                              {game.unit && <span className="text-[#6495c6] ml-1 font-bold text-lg">{game.unit}</span>}
+                              {game.unit && <span className="text-[#6495c6] ml-0.5 font-bold text-sm">{game.unit}</span>}
                             </div>
                           </div>
                         )}
