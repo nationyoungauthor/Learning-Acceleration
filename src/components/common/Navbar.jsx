@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FiSun, FiMoon } from 'react-icons/fi';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(true);
   const location = useLocation();
 
   useEffect(() => {
@@ -79,7 +77,6 @@ const Navbar = () => {
 
             {/* Right Side Actions - Desktop */}
             <div className="hidden lg:flex items-center space-x-4">
-
               <Link
                 to="/signup"
                 className="px-5 py-2 text-sm font-semibold border border-blue-400 text-blue-400 bg-transparent rounded-full hover:bg-blue-400/10 active:scale-95 transition-all duration-200"
@@ -93,26 +90,6 @@ const Navbar = () => {
               >
                 Start Training
               </Link>
-
-               {/* Theme Toggle */}
-              <button
-                onClick={() => setIsDarkMode(!isDarkMode)}
-                className="relative flex items-center justify-between w-16 h-8 bg-white/10 rounded-full p-1 border border-white/20 transition-colors duration-300 focus:outline-none mr-2 hover:bg-white/20"
-                aria-label="Toggle Theme"
-              >
-                <span className="z-10 flex items-center justify-center w-1/2 h-full">
-                  <FiSun className={`w-4 h-4 transition-colors duration-300 ${!isDarkMode ? 'text-[#0F172A]' : 'text-slate-300'}`} />
-                </span>
-                <span className="z-10 flex items-center justify-center w-1/2 h-full">
-                  <FiMoon className={`w-4 h-4 transition-colors duration-300 ${isDarkMode ? 'text-[#0F172A]' : 'text-slate-300'}`} />
-                </span>
-                <div
-                  className={`absolute left-1 w-6 h-6 bg-white rounded-full shadow-md transform transition-transform duration-300 ease-in-out ${
-                    isDarkMode ? 'translate-x-8' : 'translate-x-0'
-                  }`}
-                />
-              </button>
-
             </div>
 
             {/* Mobile Hamburger Menu Button */}
@@ -183,7 +160,6 @@ const Navbar = () => {
 
         {/* Drawer Actions */}
         <div className="pt-6 border-t border-white/10 flex flex-col space-y-3">
-          
           <Link
             to="/signup"
             onClick={() => setIsOpen(false)}
