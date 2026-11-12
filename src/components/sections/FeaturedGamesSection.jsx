@@ -1,92 +1,135 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaRegClone } from 'react-icons/fa';
+import { FaRegClone, FaArrowRight } from 'react-icons/fa';
 
 /**
- * Featured Games Section – premium, card‑based layout.
+ * Featured Games Section – modern, high-impact card-based layout.
  * Props:
  *   games: Array of game objects with keys:
  *     id, title, path, icon, desc, img, category, difficulty, skill, accent, bestScore
  */
 const FeaturedGamesSection = ({ games }) => {
   return (
-    <section id="games-section" className="relative py-24 w-full z-10">
-      <div className="px-6 lg:px-12 max-w-6xl mx-auto">
-      
-        {/* Heading */}
-        <div className="mb-12 flex flex-col md:flex-row items-center justify-between gap-4">
+    <section id="games-section" className="relative py-16 sm:py-20 w-full z-10 overflow-hidden">
+      {/* Subtle Ambient Background Mesh */}
+      <div className="absolute inset-0 pointer-events-none -z-10 flex items-center justify-center overflow-hidden">
+        <div className="w-[850px] h-[400px] bg-gradient-to-r from-blue-400/10 via-indigo-400/10 to-purple-400/10 rounded-full blur-3xl transform translate-y-8" />
+      </div>
+
+      <div className="px-4 sm:px-6 lg:px-12 max-w-7xl mx-auto">
+        {/* Section Heading */}
+        <div className="mb-12 sm:mb-14 flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-slate-100 pb-8">
           <div>
-            <span className="inline-block bg-blue-50 text-[#18609e] border border-[#d8e6f3] px-3 py-1 rounded-full text-sm font-medium mb-2 shadow-sm">
-              🎮 Brain Training Games
-            </span>
-            <h2 className="text-3xl font-extrabold text-[#254f85] tracking-tight">
-              Train Your Brain Through Fun Challenges
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-blue-50 text-blue-700 border border-blue-200/80 shadow-2xs mb-3">
+              <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
+              <span>Interactive Cognitive Lab</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0F172A] tracking-tight font-poppins">
+              Train Your Brain Through{' '}
+              <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                Fun Challenges
+              </span>
             </h2>
-            <p className="text-sm text-[#6495c6] mt-1">
-              Improve memory, focus, logic, processing speed, and problem‑solving skills with interactive cognitive games designed for students.
+            <p className="mt-3 text-base sm:text-lg text-slate-600 max-w-2xl leading-relaxed">
+              Improve memory, focus, logic, processing speed, and problem‑solving skills with
+              interactive cognitive games designed for students.
             </p>
           </div>
+
           <Link
             to="/games"
-            className="text-sm font-bold text-[#18609e] hover:underline flex items-center gap-1"
+            className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold text-blue-600 bg-white hover:bg-gradient-to-r hover:from-blue-600 hover:to-indigo-600 hover:text-white border border-blue-200/90 shadow-2xs hover:shadow-md transition-all duration-300 flex-shrink-0 self-start md:self-auto"
           >
             <span>View All 50+ Games</span>
-            <span>→</span>
+            <FaArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-200" />
           </Link>
         </div>
 
         {/* Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {games.map((game) => (
             <Link
               to={game.path}
               key={game.id}
-              className="group bg-white rounded-3xl border border-[#d8e6f3] hover:border-[#18609e] overflow-hidden shadow-[0_4px_20px_rgba(8,_112,_184,_0.05)] hover:shadow-[0_20px_50px_rgba(8,_112,_184,_0.1)] transition-all duration-300 flex flex-col"
+              className="group relative bg-white/95 rounded-[26px] border border-slate-200/90 shadow-[0_4px_24px_-4px_rgba(15,23,42,0.06)] hover:border-blue-400 hover:shadow-[0_22px_45px_-12px_rgba(37,99,235,0.2)] hover:-translate-y-2 transition-all duration-300 flex flex-col overflow-hidden"
             >
-              {/* Image */}
-              <div className="h-44 bg-slate-50 flex items-center justify-center overflow-hidden border-b border-[#d8e6f3]">
+              {/* Top Banner Image with Floating Badges */}
+              <div className="h-48 sm:h-52 w-full overflow-hidden relative bg-slate-100 rounded-t-[26px] border-b border-slate-100">
                 <img
                   src={game.img}
                   alt={game.title}
-                  className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"
+                  className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500 opacity-95 group-hover:opacity-100"
                   onError={(e) => {
                     e.target.src =
                       'https://images.unsplash.com/photo-1606326608606-aa0b62935f2b?auto=format&fit=crop&q=80&w=400';
                   }}
                 />
+                {/* Subtle Gradient Shadow on bottom of image */}
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-transparent to-black/10 pointer-events-none" />
+
+                {/* Category Badge (Top Left) */}
+                <span className="absolute top-3.5 left-3.5 px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-white/95 backdrop-blur-md text-slate-800 shadow-sm border border-white/60">
+                  {game.category || 'Cognitive Training'}
+                </span>
+
+                {/* Difficulty Badge (Top Right) */}
+                <span
+                  className="absolute top-3.5 right-3.5 px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider text-white shadow-sm"
+                  style={{ backgroundColor: game.accent || '#2563EB' }}
+                >
+                  {game.difficulty || 'All Levels'}
+                </span>
               </div>
 
-              {/* Body */}
-              <div className="p-6 flex flex-col flex-grow justify-between">
+              {/* Card Body */}
+              <div className="p-6 sm:p-7 flex flex-col justify-between flex-grow">
                 <div>
-                  <div className="flex items-center gap-3.5 mb-3.5">
-                    <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center shadow-sm border border-slate-100">
-                      {game.icon || <FaRegClone className="text-gray-500" />}
+                  {/* Title & Icon Row */}
+                  <div className="flex items-center gap-3.5 mb-3">
+                    <div className="w-11 h-11 rounded-xl bg-slate-50 border border-slate-200/80 shadow-xs flex items-center justify-center group-hover:scale-110 group-hover:rotate-2 transition-all duration-300 flex-shrink-0">
+                      {game.icon || <FaRegClone className="text-blue-500 text-xl" />}
                     </div>
-                    <h3 className="text-base font-bold text-[#254f85]">{game.title}</h3>
+                    <h3 className="text-xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors duration-200 font-poppins">
+                      {game.title}
+                    </h3>
                   </div>
-                  <p className="text-xs text-[#6495c6] leading-relaxed mb-4">{game.desc}</p>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    <span
-                      className="px-2 py-0.5 text-xs font-medium rounded-full shadow-sm"
-                      style={{ backgroundColor: game.accent, color: '#ffffff' }}
-                    >
-                      {game.difficulty}
+
+                  {/* Description */}
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed line-clamp-2 mb-4 font-normal">
+                    {game.desc ||
+                      'Challenge your cognitive skills and accelerate your learning speed with this interactive brain game.'}
+                  </p>
+
+                  {/* Skill Badge & Best Score Row */}
+                  <div className="pt-3.5 border-t border-slate-100 flex items-center justify-between">
+                    <span className="inline-flex items-center text-xs font-semibold text-slate-700 bg-slate-50 border border-slate-200/80 px-3 py-1 rounded-full">
+                      {game.skill || 'Cognitive'}
                     </span>
-                    <span className="inline-block bg-slate-50 text-[#6495c6] border border-[#d8e6f3] px-2 py-0.5 text-xs rounded-full">
-                      {game.skill}
-                    </span>
-                  </div>
-                  <div className="text-sm text-[#254f85] font-medium mb-2">
-                    Best Score: {game.bestScore != null ? `${game.bestScore}%` : '---'}
+                    <div className="text-xs font-bold text-slate-500">
+                      Best:{' '}
+                      <span className="text-slate-900 font-extrabold">
+                        {game.bestScore != null ? `${game.bestScore}%` : '---'}
+                      </span>
+                    </div>
                   </div>
                 </div>
-                <div className="mt-auto">
-                  <button className="cursor-pointer w-full py-3 bg-slate-50 group-hover:bg-[#18609e] group-hover:text-white rounded-2xl text-xs font-bold text-[#6495c6] text-center transition-all border border-[#d8e6f3] group-hover:border-[#18609e] shadow-sm">
-                    Play Now
-                  </button>
+
+                {/* Action Play Button */}
+                <div className="mt-5 w-full py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-800 bg-slate-50 border border-slate-200/90 shadow-2xs group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-indigo-600 group-hover:text-white group-hover:border-transparent group-hover:shadow-md transition-all duration-300 flex items-center justify-center gap-2">
+                  <span>Play Now</span>
+                  <FaArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-200" />
                 </div>
               </div>
+
+              {/* Bottom Animated Gradient Accent Rail */}
+              <div
+                className="absolute bottom-0 left-0 right-0 h-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                style={{
+                  background: game.accent
+                    ? `linear-gradient(90deg, ${game.accent}, #6366F1)`
+                    : 'linear-gradient(90deg, #2563EB, #6366F1)',
+                }}
+              />
             </Link>
           ))}
         </div>

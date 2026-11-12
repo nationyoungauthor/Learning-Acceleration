@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 
 /**
- * Simple circular progress component.
+ * Modern circular progress gauge component.
  * Props:
  *   - percentage (0-100)
- *   - size (diameter in px, default 80)
- *   - strokeWidth (default 8)
- *   - color (tailwind color class, e.g., 'text-[#2563EB]')
+ *   - size (diameter in px, default 68)
+ *   - strokeWidth (default 6)
+ *   - color (hex color, e.g., '#2563EB')
  */
-const ProgressCircle = ({ percentage = 0, size = 80, strokeWidth = 8, color = '#2563EB' }) => {
+const ProgressCircle = ({ percentage = 0, size = 68, strokeWidth = 6, color = '#2563EB' }) => {
   const [offset, setOffset] = useState(0);
   const center = size / 2;
-  const radius = center - strokeWidth / 2;
+  const radius = center - strokeWidth / 2 - 2;
   const circumference = 2 * Math.PI * radius;
 
   useEffect(() => {
@@ -20,39 +20,39 @@ const ProgressCircle = ({ percentage = 0, size = 80, strokeWidth = 8, color = '#
   }, [percentage, circumference]);
 
   return (
-    <svg width={size} height={size} className="mx-auto">
-      <circle
-        cx={center}
-        cy={center}
-        r={radius}
-        stroke="#E5E7EB"
-        strokeWidth={strokeWidth}
-        fill="none"
-      />
-      <circle
-        cx={center}
-        cy={center}
-        r={radius}
-        stroke={color}
-        strokeWidth={strokeWidth}
-        fill="none"
-        strokeDasharray={circumference}
-        strokeDashoffset={offset}
-        className="transition-all duration-700 ease-out"
-        strokeLinecap="round"
-        transform={`rotate(-90 ${center} ${center})`}
-      />
-      <text
-        x="50%"
-        y="50%"
-        dy="0.3em"
-        textAnchor="middle"
-        className="fill-current text-sm font-medium"
-        style={{ fill: color }}
-      >
-        {`${percentage}%`}
-      </text>
-    </svg>
+    <div className="relative inline-flex items-center justify-center my-0.5">
+      <svg width={size} height={size} className="transform -rotate-90">
+        {/* Background Track */}
+        <circle
+          cx={center}
+          cy={center}
+          r={radius}
+          stroke="#E2E8F0"
+          strokeWidth={strokeWidth}
+          fill="none"
+          opacity={0.65}
+        />
+        {/* Animated Progress Arc */}
+        <circle
+          cx={center}
+          cy={center}
+          r={radius}
+          stroke={color}
+          strokeWidth={strokeWidth}
+          fill="none"
+          strokeDasharray={circumference}
+          strokeDashoffset={offset}
+          className="transition-all duration-1000 ease-out"
+          strokeLinecap="round"
+        />
+      </svg>
+      {/* Centered Percentage Score */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+        <span className="text-xs sm:text-sm font-extrabold text-slate-900 tracking-tight leading-none font-poppins">
+          {percentage}%
+        </span>
+      </div>
+    </div>
   );
 };
 
