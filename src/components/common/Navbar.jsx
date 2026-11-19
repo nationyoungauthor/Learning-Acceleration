@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FaPhoneAlt, FaFacebookF, FaInstagram, FaYoutube, FaLinkedinIn } from 'react-icons/fa';
-import { FiMail, FiUserPlus } from 'react-icons/fi';
+import { FiMail, FiUserPlus, FiLogOut, FiLogIn, FiUser } from 'react-icons/fi';
+import { useAuth } from '../../context/AuthContext';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, isAuthenticated, logout } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -144,22 +147,60 @@ const Navbar = () => {
               })}
             </div>
 
-            {/* Right Side: 3D Sign Up and Start Training Buttons */}
+            {/* Right Side: Auth State Dependent Controls */}
             <div className="hidden lg:flex items-center space-x-3">
-              <Link
-                to="/signup"
-                className="group flex items-center space-x-2 px-4 py-2 text-sm font-bold text-blue-600 bg-gradient-to-b from-white to-[#F0F5FF] border border-blue-200/90 rounded-full shadow-[0_3px_0_#93C5FD,0_4px_8px_rgba(37,99,235,0.08),inset_0_1px_1px_white] hover:-translate-y-1 hover:bg-gradient-to-b hover:from-blue-500 hover:to-blue-700 hover:text-white hover:border-blue-600 hover:shadow-[0_5px_0_#1E40AF,0_10px_20px_rgba(37,99,235,0.4),inset_0_1px_1px_rgba(255,255,255,0.4)] active:translate-y-0.5 active:shadow-[0_1px_0_#1E40AF] transition-all duration-200 select-none"
-              >
-                <FiUserPlus className="w-4 h-4 text-blue-600 group-hover:text-white transition-colors" />
-                <span>Sign Up</span>
-              </Link>
+              {isAuthenticated ? (
+                <>
+                  {/* Student Profile Pill */}
+                  <Link
+                    to="/dashboard"
+                    className="flex items-center space-x-2.5 px-3.5 py-1.5 rounded-full bg-white border border-blue-200/90 shadow-[0_2px_0_#BFDBFE] hover:-translate-y-0.5 transition-transform"
+                  >
+                    <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center text-xs font-black shadow-xs">
+                      {user?.name ? user.name.charAt(0).toUpperCase() : 'S'}
+                    </div>
+                    <div className="flex flex-col text-left">
+                      <span className="text-xs font-extrabold text-slate-900 leading-none">
+                        {user?.name || 'Student'}
+                      </span>
+                      <span className="text-[10px] text-blue-600 font-bold leading-none mt-0.5">
+                        {user?.class || 'Class 7th'}
+                      </span>
+                    </div>
+                  </Link>
 
-              <Link
-                to="/games"
-                className="flex items-center px-5 py-2 text-sm font-bold text-white bg-gradient-to-b from-blue-500 to-blue-600 border border-blue-500 rounded-full shadow-[0_3px_0_#1E40AF,0_4px_10px_rgba(37,99,235,0.35),inset_0_1px_1px_rgba(255,255,255,0.35)] hover:-translate-y-1 hover:from-blue-400 hover:to-blue-600 hover:shadow-[0_5px_0_#1E40AF,0_10px_20px_rgba(37,99,235,0.45),inset_0_1px_1px_rgba(255,255,255,0.45)] active:translate-y-0.5 active:shadow-[0_1px_0_#1E40AF] transition-all duration-200 select-none"
-              >
-                Start Training
-              </Link>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      logout();
+                      navigate('/login');
+                    }}
+                    className="cursor-pointer flex items-center space-x-1.5 px-3.5 py-2 text-xs font-bold text-rose-600 hover:text-rose-700 bg-white hover:bg-rose-50 border border-rose-200 rounded-full shadow-[0_2px_0_#FECDD3] active:translate-y-0.5 transition-all"
+                    title="Sign Out"
+                  >
+                    <FiLogOut className="w-3.5 h-3.5" />
+                    <span>Logout</span>
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    to="/login"
+                    className="flex items-center space-x-1.5 px-4 py-2 text-sm font-bold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 rounded-full shadow-[0_2px_0_#E2E8F0] active:translate-y-0.5 transition-all select-none"
+                  >
+                    <FiLogIn className="w-3.5 h-3.5 text-slate-500" />
+                    <span>Sign In</span>
+                  </Link>
+
+                  <Link
+                    to="/signup"
+                    className="group flex items-center space-x-2 px-4 py-2 text-sm font-bold text-white bg-gradient-to-b from-blue-500 to-blue-600 border border-blue-500 rounded-full shadow-[0_3px_0_#1E40AF,0_4px_10px_rgba(37,99,235,0.35)] hover:-translate-y-1 hover:from-blue-400 hover:to-blue-600 active:translate-y-0.5 active:shadow-[0_1px_0_#1E40AF] transition-all duration-200 select-none"
+                  >
+                    <FiUserPlus className="w-4 h-4" />
+                    <span>Sign Up</span>
+                  </Link>
+                </>
+              )}
             </div>
 
             {/* Mobile Hamburger Button */}
@@ -233,22 +274,56 @@ const Navbar = () => {
 
           {/* Action Buttons */}
           <div className="pt-4 border-t border-blue-200/60 flex flex-col space-y-2.5">
-            <Link
-              to="/signup"
-              onClick={() => setIsOpen(false)}
-              className="group flex items-center justify-center space-x-2 w-full py-2.5 text-sm font-bold text-blue-600 bg-white border border-blue-200 rounded-full shadow-[0_2px_0_#93C5FD] hover:bg-gradient-to-b hover:from-blue-500 hover:to-blue-700 hover:text-white hover:border-blue-600 transition-all"
-            >
-              <FiUserPlus className="w-4 h-4 text-blue-600 group-hover:text-white transition-colors" />
-              <span>Sign Up</span>
-            </Link>
+            {isAuthenticated ? (
+              <>
+                <div className="flex items-center space-x-2.5 p-3 rounded-2xl bg-white border border-blue-200/80 shadow-[0_2px_0_#BFDBFE]">
+                  <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center text-sm font-black shadow-xs">
+                    {user?.name ? user.name.charAt(0).toUpperCase() : 'S'}
+                  </div>
+                  <div className="flex flex-col text-left">
+                    <span className="text-sm font-extrabold text-slate-900 leading-none">
+                      {user?.name || 'Student'}
+                    </span>
+                    <span className="text-xs text-blue-600 font-bold leading-none mt-1">
+                      {user?.class || 'Class 7th'}
+                    </span>
+                  </div>
+                </div>
 
-            <Link
-              to="/games"
-              onClick={() => setIsOpen(false)}
-              className="w-full py-2.5 text-center text-sm font-bold text-white bg-gradient-to-b from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-600 rounded-full shadow-[0_3px_0_#1E40AF] transition-all"
-            >
-              Start Training
-            </Link>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsOpen(false);
+                    logout();
+                    navigate('/login');
+                  }}
+                  className="cursor-pointer flex items-center justify-center space-x-2 w-full py-2.5 text-sm font-bold text-rose-600 bg-white border border-rose-200 rounded-full shadow-[0_2px_0_#FECDD3] active:translate-y-0.5 transition-all"
+                >
+                  <FiLogOut className="w-4 h-4" />
+                  <span>Logout</span>
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center justify-center space-x-2 w-full py-2.5 text-sm font-bold text-slate-700 bg-white border border-slate-200 rounded-full shadow-[0_2px_0_#E2E8F0] active:translate-y-0.5 transition-all"
+                >
+                  <FiLogIn className="w-4 h-4 text-slate-500" />
+                  <span>Sign In</span>
+                </Link>
+
+                <Link
+                  to="/signup"
+                  onClick={() => setIsOpen(false)}
+                  className="group flex items-center justify-center space-x-2 w-full py-2.5 text-sm font-bold text-white bg-gradient-to-b from-blue-500 to-blue-600 rounded-full shadow-[0_3px_0_#1E40AF] active:translate-y-0.5 transition-all"
+                >
+                  <FiUserPlus className="w-4 h-4" />
+                  <span>Sign Up</span>
+                </Link>
+              </>
+            )}
           </div>
         </div>
 
