@@ -129,14 +129,14 @@ const Login = ({ initialIsSignUp = false }) => {
 
     try {
       if (isSignUp) {
-        const res = register(formData);
+        const res = await register(formData);
         if (!res.success) {
           setErrors({ general: res.message || 'Registration failed' });
           setIsSubmitting(false);
           return;
         }
       } else {
-        const res = login(formData.email, formData.password);
+        const res = await login(formData.email, formData.password);
         if (!res.success) {
           setErrors({ password: res.message || 'Sign in failed' });
           setIsSubmitting(false);

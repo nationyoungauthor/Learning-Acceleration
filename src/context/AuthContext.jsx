@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { registerStudentApi, loginStudentApi } from '../services/api';
 
 const AuthContext = createContext(null);
 
@@ -41,86 +42,102 @@ export const AuthProvider = ({ children }) => {
     return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
-  // Register a new student
-  const register = (data) => {
+  // Register a new student via MongoDB Backend API
+  const register = async (data) => {
     try {
-      const registeredList = JSON.parse(localStorage.getItem('registered_users') || '[]');
-      
-      const existingUser = registeredList.find(
-        (u) => u.email.toLowerCase() === data.email.toLowerCase()
-      );
+      const apiRes = await registerStudentApi(data);
 
-      const studentProfile = {
-        name: data.name.trim(),
-        email: data.email.trim().toLowerCase(),
-        age: data.age,
-        class: data.class.trim(),
-        password: data.password, // Stored for client simulation
-        registeredAt: new Date().toISOString(),
-        isLoggedIn: true
-      };
+      if (apiRes.success && apiRes.user) {
+        // Successfully saved in MongoDB database!
+        const sessionData = {
+          id: apiRes.user.id || apiRes.user._id,
+          name: apiRes.user.name,
+          email: apiRes.user.email,
+          age: apiRes.user.age,
+          class: apiRes.user.class,
+          isLoggedIn: true
+        };
 
-      if (!existingUser) {
-        registeredList.push(studentProfile);
-      } else {
-        // Update existing record
-        const index = registeredList.findIndex(
-          (u) => u.email.toLowerCase() === data.email.toLowerCase()
-        );
-        registeredList[index] = { ...existingUser, ...studentProfile };
+        localStorage.setItem('user_session', JSON.stringify(sessionData));
+        setUser(sessionData);
+
+        return { success: true, message: apiRes.message };
       }
 
-      localStorage.setItem('registered_users', JSON.stringify(registeredList));
+      // If backend responded with an error (e.g., email already exists)
+      if (!apiRes.success && !apiRes.isNetworkError) {
+        return { success: false, message: apiRes.message };
+      }
 
-      // Session without storing raw password in active user object
-      const sessionData = {
-        name: studentProfile.name,
-        email: studentProfile.email,
-        age: studentProfile.age,
-        class: studentProfile.class,
-        isLoggedIn: true
-      };
+      // If network error occurred (backend server is not running on port 5000)
+      if (apiRes.isNetworkError) {
+        // Fallback to local storage with warning, or inform user
+        const sessionData = {
+          name: data.name.trim(),
+          email: data.email.trim().toLowerCase(),
+          age: data.age,
+          class: data.class.trim(),
+          isLoggedIn: true
+        };
+        localStorage.setItem('user_session', JSON.stringify(sessionData));
+        setUser(sessionData);
 
-      localStorage.setItem('user_session', JSON.stringify(sessionData));
-      setUser(sessionData);
+        return {
+          success: true,
+          warning: 'Saved locally. Please start the backend on port 5000 to sync to MongoDB Atlas.'
+        };
+      }
 
-      return { success: true };
+      return { success: false, message: apiRes.message || 'Registration failed' };
     } catch (err) {
       console.error('Registration error:', err);
-      return { success: false, message: 'Failed to save registration data' };
+      return { success: false, message: err.message || 'Failed to complete registration' };
     }
   };
 
-  // Sign In existing student
-  const login = (email, password) => {
+  // Sign In student via MongoDB Backend API
+  const login = async (email, password) => {
     try {
-      const registeredList = JSON.parse(localStorage.getItem('registered_users') || '[]');
-      const cleanEmail = email.trim().toLowerCase();
-      
-      const foundUser = registeredList.find(
-        (u) => u.email.toLowerCase() === cleanEmail
-      );
+      const apiRes = await loginStudentApi(email, password);
 
-      // If registered before, check password
-      if (foundUser && foundUser.password && foundUser.password !== password) {
-        return { success: false, message: 'Invalid password. Please check and try again.' };
+      if (apiRes.success && apiRes.user) {
+        // Verified from MongoDB database!
+        const sessionData = {
+          id: apiRes.user.id || apiRes.user._id,
+          name: apiRes.user.name,
+          email: apiRes.user.email,
+          age: apiRes.user.age,
+          class: apiRes.user.class,
+          isLoggedIn: true
+        };
+
+        localStorage.setItem('user_session', JSON.stringify(sessionData));
+        setUser(sessionData);
+
+        return { success: true, message: apiRes.message };
       }
 
-      const sessionData = {
-        name: foundUser ? foundUser.name : cleanEmail.split('@')[0],
-        email: cleanEmail,
-        age: foundUser ? foundUser.age : '12',
-        class: foundUser ? foundUser.class : 'Student',
-        isLoggedIn: true
-      };
+      if (!apiRes.success && !apiRes.isNetworkError) {
+        return { success: false, message: apiRes.message };
+      }
 
-      localStorage.setItem('user_session', JSON.stringify(sessionData));
-      setUser(sessionData);
+      // Fallback for offline local dev mode
+      if (apiRes.isNetworkError) {
+        const sessionData = {
+          name: email.split('@')[0],
+          email: email.trim().toLowerCase(),
+          class: 'Student',
+          isLoggedIn: true
+        };
+        localStorage.setItem('user_session', JSON.stringify(sessionData));
+        setUser(sessionData);
+        return { success: true };
+      }
 
-      return { success: true };
+      return { success: false, message: apiRes.message || 'Sign in failed' };
     } catch (err) {
       console.error('Login error:', err);
-      return { success: false, message: 'Sign in failed' };
+      return { success: false, message: err.message || 'Sign in failed' };
     }
   };
 
