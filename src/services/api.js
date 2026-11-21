@@ -1,8 +1,8 @@
-// Learning Acceleration API Service
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+// Learning Acceleration API Service - Live Vercel Backend
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://learning-acceleration-backend.vercel.app/api';
 
 /**
- * Register a student into MongoDB database via backend API
+ * Register a student into MongoDB database via live backend API
  * @param {Object} studentData - { name, email, age, class, password }
  */
 export const registerStudentApi = async (studentData) => {
@@ -40,13 +40,13 @@ export const registerStudentApi = async (studentData) => {
     return {
       success: false,
       isNetworkError: true,
-      message: 'Could not connect to the backend server. Please make sure the backend is running on port 5000.'
+      message: 'Could not connect to the live backend server. Please check your internet connection.'
     };
   }
 };
 
 /**
- * Sign in student by checking credentials in MongoDB database
+ * Sign in student by checking credentials in live MongoDB database
  * @param {string} email 
  * @param {string} password 
  */
@@ -82,7 +82,7 @@ export const loginStudentApi = async (email, password) => {
     return {
       success: false,
       isNetworkError: true,
-      message: 'Could not connect to the backend server. Please make sure the backend is running on port 5000.'
+      message: 'Could not connect to the live backend server. Please check your internet connection.'
     };
   }
 };

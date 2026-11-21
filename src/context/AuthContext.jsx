@@ -42,13 +42,13 @@ export const AuthProvider = ({ children }) => {
     return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
-  // Register a new student via MongoDB Backend API
+  // Register a new student via Live MongoDB Backend API
   const register = async (data) => {
     try {
       const apiRes = await registerStudentApi(data);
 
       if (apiRes.success && apiRes.user) {
-        // Successfully saved in MongoDB database!
+        // Successfully saved in live MongoDB Atlas database!
         const sessionData = {
           id: apiRes.user.id || apiRes.user._id,
           name: apiRes.user.name,
@@ -64,44 +64,24 @@ export const AuthProvider = ({ children }) => {
         return { success: true, message: apiRes.message };
       }
 
-      // If backend responded with an error (e.g., email already exists)
-      if (!apiRes.success && !apiRes.isNetworkError) {
-        return { success: false, message: apiRes.message };
-      }
-
-      // If network error occurred (backend server is not running on port 5000)
-      if (apiRes.isNetworkError) {
-        // Fallback to local storage with warning, or inform user
-        const sessionData = {
-          name: data.name.trim(),
-          email: data.email.trim().toLowerCase(),
-          age: data.age,
-          class: data.class.trim(),
-          isLoggedIn: true
-        };
-        localStorage.setItem('user_session', JSON.stringify(sessionData));
-        setUser(sessionData);
-
-        return {
-          success: true,
-          warning: 'Saved locally. Please start the backend on port 5000 to sync to MongoDB Atlas.'
-        };
-      }
-
-      return { success: false, message: apiRes.message || 'Registration failed' };
+      // Return real backend/database error message to the student
+      return {
+        success: false,
+        message: apiRes.message || 'Registration failed in database'
+      };
     } catch (err) {
       console.error('Registration error:', err);
       return { success: false, message: err.message || 'Failed to complete registration' };
     }
   };
 
-  // Sign In student via MongoDB Backend API
+  // Sign In student via Live MongoDB Backend API
   const login = async (email, password) => {
     try {
       const apiRes = await loginStudentApi(email, password);
 
       if (apiRes.success && apiRes.user) {
-        // Verified from MongoDB database!
+        // Verified from live MongoDB Atlas database!
         const sessionData = {
           id: apiRes.user.id || apiRes.user._id,
           name: apiRes.user.name,
@@ -117,24 +97,10 @@ export const AuthProvider = ({ children }) => {
         return { success: true, message: apiRes.message };
       }
 
-      if (!apiRes.success && !apiRes.isNetworkError) {
-        return { success: false, message: apiRes.message };
-      }
-
-      // Fallback for offline local dev mode
-      if (apiRes.isNetworkError) {
-        const sessionData = {
-          name: email.split('@')[0],
-          email: email.trim().toLowerCase(),
-          class: 'Student',
-          isLoggedIn: true
-        };
-        localStorage.setItem('user_session', JSON.stringify(sessionData));
-        setUser(sessionData);
-        return { success: true };
-      }
-
-      return { success: false, message: apiRes.message || 'Sign in failed' };
+      return {
+        success: false,
+        message: apiRes.message || 'Invalid email or password'
+      };
     } catch (err) {
       console.error('Login error:', err);
       return { success: false, message: err.message || 'Sign in failed' };
