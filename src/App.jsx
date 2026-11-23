@@ -3,14 +3,20 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider } from './context/AuthContext'
 import ProtectedRoute from './components/common/ProtectedRoute'
 import ScrollToTop from './components/common/ScrollToTop'
-import Navbar from './components/common/Navbar'
-import Footer from './components/common/Footer'
 
+// Layouts
+import MainLayout from './layouts/MainLayout'
+import AuthLayout from './layouts/AuthLayout'
+
+// Authentication Pages
+import SignIn from './pages/SignIn'
+import SignUp from './pages/SignUp'
+
+// Application Pages
 import Home from './pages/Home'
 import HighScores from './pages/HighScores'
 import Games from './pages/Games'
 
-import Login from './pages/Login'
 import SequenceMemory from './pages/games/SequenceMemory'
 import VisualMemory from './pages/games/VisualMemory'
 import WordMemory from './pages/games/WordMemory'
@@ -57,88 +63,88 @@ function App() {
     <Router>
       <AuthProvider>
         <ScrollToTop />
-        <div className="flex flex-col min-h-screen bg-[#F8FAFC] text-[#0F172A]">
-          <Navbar />
-          <main className="flex-grow">
-            <Routes>
-              {/* Public Authentication Pages */}
-              <Route path="/login" element={<Login initialIsSignUp={false} />} />
-              <Route path="/signup" element={<Login initialIsSignUp={true} />} />
+        <Routes>
+          {/* Public Authentication Pages - Independent Layout without Main Navbar and Footer */}
+          <Route element={<AuthLayout />}>
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/login" element={<Navigate to="/signin" replace />} />
+          </Route>
 
-              {/* Core Landing & Protected Pages: User must register/sign in first */}
-              <Route
-                path="/"
-                element={
-                  <ProtectedRoute>
-                    <Home />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/highscores"
-                element={
-                  <ProtectedRoute>
-                    <HighScores />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/games"
-                element={
-                  <ProtectedRoute>
-                    <Games />
-                  </ProtectedRoute>
-                }
-              />
+          {/* Core Application Pages - Main Website Layout with Navbar and Footer */}
+          <Route element={<MainLayout />}>
+            {/* Core Landing & Protected Pages: User must register/sign in first */}
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <Home />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/highscores"
+              element={
+                <ProtectedRoute>
+                  <HighScores />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/games"
+              element={
+                <ProtectedRoute>
+                  <Games />
+                </ProtectedRoute>
+              }
+            />
 
-              {/* Games Routes */}
-              <Route path="/games/sequence-memory" element={<ProtectedRoute><SequenceMemory /></ProtectedRoute>} />
-              <Route path="/games/visual-memory" element={<ProtectedRoute><VisualMemory /></ProtectedRoute>} />
-              <Route path="/games/word-memory" element={<ProtectedRoute><WordMemory /></ProtectedRoute>} />
-              <Route path="/games/seen-number-memory" element={<ProtectedRoute><SeenNumberMemory /></ProtectedRoute>} />
-              <Route path="/games/number-memory" element={<ProtectedRoute><NumberMemory /></ProtectedRoute>} />
-              <Route path="/games/number-sequence" element={<ProtectedRoute><NumberSequence /></ProtectedRoute>} />
-              <Route path="/games/memory-match" element={<ProtectedRoute><MemoryMatch /></ProtectedRoute>} />
-              <Route path="/games/color-memory" element={<ProtectedRoute><ColorMemory /></ProtectedRoute>} />
-              <Route path="/games/chimp-test" element={<ProtectedRoute><ChimpTest /></ProtectedRoute>} />
+            {/* Games Routes */}
+            <Route path="/games/sequence-memory" element={<ProtectedRoute><SequenceMemory /></ProtectedRoute>} />
+            <Route path="/games/visual-memory" element={<ProtectedRoute><VisualMemory /></ProtectedRoute>} />
+            <Route path="/games/word-memory" element={<ProtectedRoute><WordMemory /></ProtectedRoute>} />
+            <Route path="/games/seen-number-memory" element={<ProtectedRoute><SeenNumberMemory /></ProtectedRoute>} />
+            <Route path="/games/number-memory" element={<ProtectedRoute><NumberMemory /></ProtectedRoute>} />
+            <Route path="/games/number-sequence" element={<ProtectedRoute><NumberSequence /></ProtectedRoute>} />
+            <Route path="/games/memory-match" element={<ProtectedRoute><MemoryMatch /></ProtectedRoute>} />
+            <Route path="/games/color-memory" element={<ProtectedRoute><ColorMemory /></ProtectedRoute>} />
+            <Route path="/games/chimp-test" element={<ProtectedRoute><ChimpTest /></ProtectedRoute>} />
 
-              <Route path="/games/pattern-logic" element={<ProtectedRoute><PatternLogic /></ProtectedRoute>} />
-              <Route path="/games/stroop-test" element={<ProtectedRoute><StroopTest /></ProtectedRoute>} />
-              <Route path="/games/color-target" element={<ProtectedRoute><ColorTarget /></ProtectedRoute>} />
-              <Route path="/games/one-to-fifty" element={<ProtectedRoute><OneToFifty /></ProtectedRoute>} />
-              <Route path="/games/word-scramble" element={<ProtectedRoute><WordScramble /></ProtectedRoute>} />
-              <Route path="/games/speed-math" element={<ProtectedRoute><SpeedMath /></ProtectedRoute>} />
+            <Route path="/games/pattern-logic" element={<ProtectedRoute><PatternLogic /></ProtectedRoute>} />
+            <Route path="/games/stroop-test" element={<ProtectedRoute><StroopTest /></ProtectedRoute>} />
+            <Route path="/games/color-target" element={<ProtectedRoute><ColorTarget /></ProtectedRoute>} />
+            <Route path="/games/one-to-fifty" element={<ProtectedRoute><OneToFifty /></ProtectedRoute>} />
+            <Route path="/games/word-scramble" element={<ProtectedRoute><WordScramble /></ProtectedRoute>} />
+            <Route path="/games/speed-math" element={<ProtectedRoute><SpeedMath /></ProtectedRoute>} />
 
-              <Route path="/games/5-second-test" element={<ProtectedRoute><FiveSecondTest /></ProtectedRoute>} />
-              <Route path="/games/time-estimator" element={<ProtectedRoute><TimeEstimator /></ProtectedRoute>} />
-              <Route path="/games/inverted-mouse" element={<ProtectedRoute><InvertedMouse /></ProtectedRoute>} />
-              <Route path="/games/perfect-circle" element={<ProtectedRoute><PerfectCircle /></ProtectedRoute>} />
-              <Route path="/games/association-learning" element={<ProtectedRoute><AssociationLearning /></ProtectedRoute>} />
-              <Route path="/games/odd-one-out" element={<ProtectedRoute><OddOneOut /></ProtectedRoute>} />
-              <Route path="/games/sum-finder" element={<ProtectedRoute><SumFinder /></ProtectedRoute>} />
-              <Route path="/games/emotion-reading" element={<ProtectedRoute><EmotionReading /></ProtectedRoute>} />
-              <Route path="/games/impromptu-pitch" element={<ProtectedRoute><ImpromptuPitch /></ProtectedRoute>} />
+            <Route path="/games/5-second-test" element={<ProtectedRoute><FiveSecondTest /></ProtectedRoute>} />
+            <Route path="/games/time-estimator" element={<ProtectedRoute><TimeEstimator /></ProtectedRoute>} />
+            <Route path="/games/inverted-mouse" element={<ProtectedRoute><InvertedMouse /></ProtectedRoute>} />
+            <Route path="/games/perfect-circle" element={<ProtectedRoute><PerfectCircle /></ProtectedRoute>} />
+            <Route path="/games/association-learning" element={<ProtectedRoute><AssociationLearning /></ProtectedRoute>} />
+            <Route path="/games/odd-one-out" element={<ProtectedRoute><OddOneOut /></ProtectedRoute>} />
+            <Route path="/games/sum-finder" element={<ProtectedRoute><SumFinder /></ProtectedRoute>} />
+            <Route path="/games/emotion-reading" element={<ProtectedRoute><EmotionReading /></ProtectedRoute>} />
+            <Route path="/games/impromptu-pitch" element={<ProtectedRoute><ImpromptuPitch /></ProtectedRoute>} />
 
-              {/* Learning & Analytics Pages */}
-              <Route path="/iq-test" element={<ProtectedRoute><IQTest /></ProtectedRoute>} />
-              <Route path="/progress" element={<ProtectedRoute><Progress /></ProtectedRoute>} />
-              <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-              <Route path="/quiz-zone" element={<ProtectedRoute><QuizZone /></ProtectedRoute>} />
-              <Route path="/assessment" element={<ProtectedRoute><BrainAssessment /></ProtectedRoute>} />
+            {/* Learning & Analytics Pages */}
+            <Route path="/iq-test" element={<ProtectedRoute><IQTest /></ProtectedRoute>} />
+            <Route path="/progress" element={<ProtectedRoute><Progress /></ProtectedRoute>} />
+            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+            <Route path="/quiz-zone" element={<ProtectedRoute><QuizZone /></ProtectedRoute>} />
+            <Route path="/assessment" element={<ProtectedRoute><BrainAssessment /></ProtectedRoute>} />
 
-              {/* Informational Pages */}
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="/terms" element={<Terms />} />
-              <Route path="/help" element={<HelpCenter />} />
+            {/* Informational Pages */}
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/help" element={<HelpCenter />} />
 
-              {/* Catch-all redirect */}
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          </main>
-          <Footer />
-        </div>
+            {/* Catch-all redirect */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Route>
+        </Routes>
       </AuthProvider>
     </Router>
   )

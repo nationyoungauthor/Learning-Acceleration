@@ -18,8 +18,8 @@ const ProtectedRoute = ({ children }) => {
   }
 
   if (!isAuthenticated) {
-    // If not registered/logged in, redirect to Sign Up/Sign In page first
-    return <Navigate to="/signup" replace state={{ from: location }} />;
+    // If not registered/logged in, redirect to Sign In page first
+    return <Navigate to="/signin" replace state={{ from: location }} />;
   }
 
   return children;

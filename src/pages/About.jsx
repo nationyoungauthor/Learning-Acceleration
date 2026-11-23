@@ -106,7 +106,7 @@ const About = () => {
                 </li>
               ))}
             </ul>
-            <Link to="/login" className="inline-block px-8 py-3.5 bg-[#ffb900] hover:bg-[#e6a600] text-white font-semibold rounded-full shadow-[0_8px_20px_-6px_rgba(255,185,0,0.5)] transition-all">
+            <Link to="/signup" className="inline-block px-8 py-3.5 bg-[#ffb900] hover:bg-[#e6a600] text-white font-semibold rounded-full shadow-[0_8px_20px_-6px_rgba(255,185,0,0.5)] transition-all">
               Join Community
             </Link>
           </div>

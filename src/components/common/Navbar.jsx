@@ -99,9 +99,8 @@ const Navbar = () => {
 
       {/* Main Navbar Bar (Light Blue) */}
       <nav
-        className={`w-full bg-[#EAF2FE] backdrop-blur-md border-b border-blue-100 transition-all duration-300 ${
-          scrolled ? 'shadow-md py-2.5' : 'py-3 sm:py-3.5'
-        }`}
+        className={`w-full bg-[#EAF2FE] backdrop-blur-md border-b border-blue-100 transition-all duration-300 ${scrolled ? 'shadow-md py-2.5' : 'py-3 sm:py-3.5'
+          }`}
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
@@ -135,11 +134,10 @@ const Navbar = () => {
                   <Link
                     key={item.name}
                     to={item.path}
-                    className={`relative text-sm font-bold px-4 py-2 rounded-xl transition-all duration-200 select-none ${
-                      active
-                        ? 'bg-gradient-to-b from-white to-[#F0F5FF] text-blue-600 border border-blue-200/90 shadow-[0_3px_0_#93C5FD,0_4px_8px_rgba(37,99,235,0.1),inset_0_1px_1px_white] hover:-translate-y-1 hover:bg-gradient-to-b hover:from-blue-500 hover:to-blue-700 hover:text-white hover:border-blue-600 hover:shadow-[0_5px_0_#1E40AF,0_10px_20px_rgba(37,99,235,0.4),inset_0_1px_1px_rgba(255,255,255,0.4)] active:translate-y-0.5 active:shadow-[0_1px_0_#1E40AF]'
-                        : 'text-slate-700 border border-transparent hover:text-white hover:-translate-y-1 hover:bg-gradient-to-b hover:from-blue-500 hover:to-blue-700 hover:border-blue-600 hover:shadow-[0_5px_0_#1E40AF,0_10px_20px_rgba(37,99,235,0.4),inset_0_1px_1px_rgba(255,255,255,0.4)] active:translate-y-0.5 active:shadow-[0_1px_0_#1E40AF]'
-                    }`}
+                    className={`relative text-sm font-bold px-4 py-2 rounded-xl transition-all duration-200 select-none ${active
+                      ? 'bg-gradient-to-b from-white to-[#F0F5FF] text-blue-600 border border-blue-200/90 shadow-[0_3px_0_#93C5FD,0_4px_8px_rgba(37,99,235,0.1),inset_0_1px_1px_white] hover:-translate-y-1 hover:bg-gradient-to-b hover:from-blue-500 hover:to-blue-700 hover:text-white hover:border-blue-600 hover:shadow-[0_5px_0_#1E40AF,0_10px_20px_rgba(37,99,235,0.4),inset_0_1px_1px_rgba(255,255,255,0.4)] active:translate-y-0.5 active:shadow-[0_1px_0_#1E40AF]'
+                      : 'text-slate-700 border border-transparent hover:text-white hover:-translate-y-1 hover:bg-gradient-to-b hover:from-blue-500 hover:to-blue-700 hover:border-blue-600 hover:shadow-[0_5px_0_#1E40AF,0_10px_20px_rgba(37,99,235,0.4),inset_0_1px_1px_rgba(255,255,255,0.4)] active:translate-y-0.5 active:shadow-[0_1px_0_#1E40AF]'
+                      }`}
                   >
                     {item.name}
                   </Link>
@@ -173,7 +171,7 @@ const Navbar = () => {
                     type="button"
                     onClick={() => {
                       logout();
-                      navigate('/login');
+                      navigate('/signin');
                     }}
                     className="cursor-pointer flex items-center space-x-1.5 px-3.5 py-2 text-xs font-bold text-rose-600 hover:text-rose-700 bg-white hover:bg-rose-50 border border-rose-200 rounded-full shadow-[0_2px_0_#FECDD3] active:translate-y-0.5 transition-all"
                     title="Sign Out"
@@ -185,7 +183,7 @@ const Navbar = () => {
               ) : (
                 <>
                   <Link
-                    to="/login"
+                    to="/signin"
                     className="flex items-center space-x-1.5 px-4 py-2 text-sm font-bold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 rounded-full shadow-[0_2px_0_#E2E8F0] active:translate-y-0.5 transition-all select-none"
                   >
                     <FiLogIn className="w-3.5 h-3.5 text-slate-500" />
@@ -229,9 +227,8 @@ const Navbar = () => {
 
       {/* Mobile Slide-in Drawer */}
       <div
-        className={`fixed top-0 right-0 bottom-0 w-[300px] max-w-full bg-[#EAF2FE] shadow-2xl border-l border-blue-100 z-50 p-6 flex flex-col justify-between transition-transform duration-300 ease-out transform lg:hidden ${
-          isOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
+        className={`fixed top-0 right-0 bottom-0 w-[300px] max-w-full bg-[#EAF2FE] shadow-2xl border-l border-blue-100 z-50 p-6 flex flex-col justify-between transition-transform duration-300 ease-out transform lg:hidden ${isOpen ? 'translate-x-0' : 'translate-x-full'
+          }`}
       >
         <div>
           {/* Drawer Header */}
@@ -260,11 +257,10 @@ const Navbar = () => {
                   key={item.name}
                   to={item.path}
                   onClick={() => setIsOpen(false)}
-                  className={`text-sm font-bold py-2.5 px-3.5 rounded-xl transition-all ${
-                    active
-                      ? 'bg-gradient-to-b from-white to-[#F0F5FF] text-blue-600 shadow-[0_2px_0_#93C5FD] border border-blue-200/80 hover:bg-gradient-to-b hover:from-blue-500 hover:to-blue-700 hover:text-white'
-                      : 'text-slate-800 hover:bg-gradient-to-b hover:from-blue-500 hover:to-blue-700 hover:text-white hover:shadow-[0_3px_0_#1E40AF]'
-                  }`}
+                  className={`text-sm font-bold py-2.5 px-3.5 rounded-xl transition-all ${active
+                    ? 'bg-gradient-to-b from-white to-[#F0F5FF] text-blue-600 shadow-[0_2px_0_#93C5FD] border border-blue-200/80 hover:bg-gradient-to-b hover:from-blue-500 hover:to-blue-700 hover:text-white'
+                    : 'text-slate-800 hover:bg-gradient-to-b hover:from-blue-500 hover:to-blue-700 hover:text-white hover:shadow-[0_3px_0_#1E40AF]'
+                    }`}
                 >
                   {item.name}
                 </Link>
@@ -295,7 +291,7 @@ const Navbar = () => {
                   onClick={() => {
                     setIsOpen(false);
                     logout();
-                    navigate('/login');
+                    navigate('/signin');
                   }}
                   className="cursor-pointer flex items-center justify-center space-x-2 w-full py-2.5 text-sm font-bold text-rose-600 bg-white border border-rose-200 rounded-full shadow-[0_2px_0_#FECDD3] active:translate-y-0.5 transition-all"
                 >
@@ -306,7 +302,7 @@ const Navbar = () => {
             ) : (
               <>
                 <Link
-                  to="/login"
+                  to="/signin"
                   onClick={() => setIsOpen(false)}
                   className="flex items-center justify-center space-x-2 w-full py-2.5 text-sm font-bold text-slate-700 bg-white border border-slate-200 rounded-full shadow-[0_2px_0_#E2E8F0] active:translate-y-0.5 transition-all"
                 >
