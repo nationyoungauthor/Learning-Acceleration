@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash,
   FaCalendarAlt, FaGraduationCap, FaCheckCircle,
-  FaArrowRight, FaChild, FaExclamationTriangle, FaTimes
+  FaArrowRight, FaChild, FaExclamationTriangle, FaTimes, FaInfoCircle
 } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { FaFacebookF, FaApple } from 'react-icons/fa';
 import { LuSparkles, LuBrain, LuZap, LuTrophy } from 'react-icons/lu';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { CLASS_OPTIONS, getStudentLearningBand } from '../../utils/learningBands';
 
 const AuthForm = ({ mode = 'signin' }) => {
   const isSignUp = mode === 'signup';
@@ -33,6 +34,14 @@ const AuthForm = ({ mode = 'signin' }) => {
   const { isAuthenticated, register, login } = useAuth();
 
   const redirectTarget = location.state?.from?.pathname || '/';
+
+  // Live learning band resolution preview for registration
+  const liveBandInfo = useMemo(() => {
+    if (!formData.class || !formData.age) return null;
+    const ageNum = parseInt(formData.age, 10);
+    if (isNaN(ageNum) || ageNum < 5 || ageNum > 20) return null;
+    return getStudentLearningBand(formData.class, ageNum);
+  }, [formData.class, formData.age]);
 
   useEffect(() => {
     // If student is already logged in, redirect them to Home
@@ -83,8 +92,8 @@ const AuthForm = ({ mode = 'signin' }) => {
         } else if (ageNum < 5) {
           newErrors.age = 'Minimum age requirement is 5 years';
           setShowAgePopup(true);
-        } else if (ageNum > 25) {
-          newErrors.age = 'Enter an age between 5 and 25';
+        } else if (ageNum > 20) {
+          newErrors.age = 'Enter an age between 5 and 20';
         }
       }
 
@@ -373,56 +382,87 @@ const AuthForm = ({ mode = 'signin' }) => {
 
               {/* ----------------- SIGN UP ONLY: AGE & CLASS (2-Col Grid) ----------------- */}
               {isSignUp && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                  {/* Age Field */}
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                      Age <span className="text-rose-500">*</span>
-                    </label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
-                        <FaCalendarAlt className="text-sm" />
+                <>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                    {/* Age Field */}
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                        Age (5–20) <span className="text-rose-500">*</span>
+                      </label>
+                      <div className="relative">
+                        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+                          <FaCalendarAlt className="text-sm" />
+                        </div>
+                        <input
+                          name="age"
+                          type="number"
+                          min="5"
+                          max="20"
+                          value={formData.age}
+                          onChange={handleChange}
+                          onBlur={handleAgeBlur}
+                          placeholder="e.g. 12"
+                          className={`w-full pl-11 pr-3 py-3 rounded-xl text-sm font-bold bg-slate-50/70 border-2 ${
+                            errors.age ? 'border-rose-400 bg-rose-50/30' : 'border-slate-200/90'
+                          } text-slate-800 placeholder-slate-400 shadow-[0_3px_0_#E2E8F0] focus:bg-white focus:outline-none focus:border-blue-500 focus:shadow-[0_4px_0_#93C5FD] transition-all`}
+                        />
                       </div>
-                      <input
-                        name="age"
-                        type="number"
-                        min="1"
-                        max="25"
-                        value={formData.age}
-                        onChange={handleChange}
-                        onBlur={handleAgeBlur}
-                        placeholder="e.g. 12"
-                        className={`w-full pl-11 pr-3 py-3 rounded-xl text-sm font-bold bg-slate-50/70 border-2 ${
-                          errors.age ? 'border-rose-400 bg-rose-50/30' : 'border-slate-200/90'
-                        } text-slate-800 placeholder-slate-400 shadow-[0_3px_0_#E2E8F0] focus:bg-white focus:outline-none focus:border-blue-500 focus:shadow-[0_4px_0_#93C5FD] transition-all`}
-                      />
+                      {errors.age && <p className="text-rose-500 text-[11px] font-bold mt-1">{errors.age}</p>}
                     </div>
-                    {errors.age && <p className="text-rose-500 text-[11px] font-bold mt-1">{errors.age}</p>}
+
+                    {/* Class Field */}
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                        School Class / Track <span className="text-rose-500">*</span>
+                      </label>
+                      <div className="relative">
+                        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 z-10">
+                          <FaGraduationCap className="text-sm" />
+                        </div>
+                        <select
+                          name="class"
+                          value={formData.class}
+                          onChange={handleChange}
+                          className={`w-full pl-11 pr-8 py-3 rounded-xl text-sm font-bold bg-slate-50/70 border-2 ${
+                            errors.class ? 'border-rose-400 bg-rose-50/30' : 'border-slate-200/90'
+                          } text-slate-800 focus:bg-white focus:outline-none focus:border-blue-500 focus:shadow-[0_4px_0_#93C5FD] transition-all cursor-pointer`}
+                        >
+                          <option value="">Select Class...</option>
+                          {CLASS_OPTIONS.map((opt) => (
+                            <option key={opt.value} value={opt.value}>
+                              {opt.label}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      {errors.class && <p className="text-rose-500 text-[11px] font-bold mt-1">{errors.class}</p>}
+                    </div>
                   </div>
 
-                  {/* Class Field */}
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                      Class / Grade <span className="text-rose-500">*</span>
-                    </label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
-                        <FaGraduationCap className="text-sm" />
+                  {/* Live Band Preview & Age Mismatch Notification */}
+                  {liveBandInfo && (
+                    <div className="p-3.5 rounded-2xl bg-gradient-to-r from-blue-50/90 via-indigo-50/70 to-blue-50/90 border border-blue-200/80 shadow-2xs text-left animate-fadeIn">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="font-extrabold text-slate-700 flex items-center gap-1.5">
+                          <LuSparkles className="text-blue-600" />
+                          <span>Assigned Band:</span>
+                        </span>
+                        <span className="px-2.5 py-0.5 rounded-full bg-white text-blue-700 font-black border border-blue-200 shadow-2xs text-[11px]">
+                          {liveBandInfo.config.displayName}
+                        </span>
                       </div>
-                      <input
-                        name="class"
-                        type="text"
-                        value={formData.class}
-                        onChange={handleChange}
-                        placeholder="e.g. Class 7th"
-                        className={`w-full pl-11 pr-3 py-3 rounded-xl text-sm font-bold bg-slate-50/70 border-2 ${
-                          errors.class ? 'border-rose-400 bg-rose-50/30' : 'border-slate-200/90'
-                        } text-slate-800 placeholder-slate-400 shadow-[0_3px_0_#E2E8F0] focus:bg-white focus:outline-none focus:border-blue-500 focus:shadow-[0_4px_0_#93C5FD] transition-all`}
-                      />
+
+                      {liveBandInfo.isMismatch && (
+                        <div className="mt-2.5 pt-2.5 border-t border-blue-200/70 text-[11px] text-amber-900 font-semibold flex items-start gap-2 bg-amber-50/90 -mx-1 px-2.5 py-2 rounded-xl border border-amber-200">
+                          <FaInfoCircle className="text-amber-600 mt-0.5 shrink-0 text-sm" />
+                          <span>
+                            {liveBandInfo.mismatchMessage}
+                          </span>
+                        </div>
+                      )}
                     </div>
-                    {errors.class && <p className="text-rose-500 text-[11px] font-bold mt-1">{errors.class}</p>}
-                  </div>
-                </div>
+                  )}
+                </>
               )}
 
               {/* ----------------- COMMON: PASSWORD ----------------- */}

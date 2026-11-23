@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import {
   FaBook, FaCalculator, FaAtom, FaGlobe, FaHourglassHalf,
   FaHistory, FaLaptopCode, FaBrain, FaPlay, FaCheckCircle,
   FaTimesCircle, FaTrophy, FaArrowRight, FaRedo, FaFire,
   FaBolt, FaStar, FaLightbulb, FaClock, FaMedal, FaAward,
-  FaCheck, FaTimes, FaUndo, FaShareAlt, FaQuestionCircle
+  FaCheck, FaTimes, FaUndo, FaShareAlt, FaQuestionCircle, FaGraduationCap
 } from 'react-icons/fa';
 import {
   LuTimer, LuZap, LuFlame, LuTrophy, LuSparkles, LuCheck,
   LuBookOpen, LuRotateCcw
 } from 'react-icons/lu';
+import { useAuth } from '../context/AuthContext';
+import { BANDS, BAND_CONFIG } from '../utils/learningBands';
+import { getAdaptiveQuestions, getSyllabusDescription } from '../data/quizQuestionsByBand';
 
 // 8 Full Categories with curriculum metadata
 const categories = [
@@ -484,9 +488,23 @@ const quizQuestions = {
 };
 
 const QuizZone = () => {
+  const [searchParams] = useSearchParams();
+  const { user, bandInfo, learningBand, recordQuizScore } = useAuth();
+
+  // Active learning band (defaults to student's authenticated band or Middle)
+  const [currentBand, setCurrentBand] = useState(learningBand || BANDS.MIDDLE);
+
+  // Sync currentBand if student logs in / changes
+  useEffect(() => {
+    if (learningBand) {
+      setCurrentBand(learningBand);
+    }
+  }, [learningBand]);
+
   // Navigation & Category states
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [activeFilter, setActiveFilter] = useState('all'); // 'all', 'stem', 'humanities', 'logic'
+  const [activeQuestions, setActiveQuestions] = useState([]);
 
   // Quiz active progression states
   const [currentQuestionIdx, setCurrentQuestionIdx] = useState(0);
@@ -510,23 +528,44 @@ const QuizZone = () => {
   const [hintUsed, setHintUsed] = useState(false);
   const [showHint, setShowHint] = useState(false);
 
-  // User persistent stats from localStorage
-  const [totalXp, setTotalXp] = useState(0);
-  const [userStreakDays, setUserStreakDays] = useState(1);
-  const [quizzesCompletedCount, setQuizzesCompletedCount] = useState(0);
+  // User persistent stats
+  const [totalXp, setTotalXp] = useState(user?.xp || 240);
+  const [userStreakDays, setUserStreakDays] = useState(user?.streak || 3);
+  const [quizzesCompletedCount, setQuizzesCompletedCount] = useState(user?.quizProgress?.length || 6);
 
   // Answers record for detailed results review
   const [quizReviewHistory, setQuizReviewHistory] = useState([]);
 
-  // Load stats from localStorage
+  // Keep stats in sync with auth user
   useEffect(() => {
-    const savedXp = parseInt(localStorage.getItem('user_xp') || '240');
-    const savedStreak = parseInt(localStorage.getItem('user_streak') || '3');
-    const savedCount = parseInt(localStorage.getItem('quizzes_done') || '6');
-    setTotalXp(savedXp);
-    setUserStreakDays(savedStreak);
-    setQuizzesCompletedCount(savedCount);
-  }, []);
+    if (user) {
+      if (user.xp !== undefined) setTotalXp(user.xp);
+      if (user.streak !== undefined) setUserStreakDays(user.streak);
+      if (user.quizProgress) setQuizzesCompletedCount(user.quizProgress.length);
+    } else {
+      const savedXp = parseInt(localStorage.getItem('user_xp') || '240');
+      const savedStreak = parseInt(localStorage.getItem('user_streak') || '3');
+      const savedCount = parseInt(localStorage.getItem('quizzes_done') || '6');
+      setTotalXp(savedXp);
+      setUserStreakDays(savedStreak);
+      setQuizzesCompletedCount(savedCount);
+    }
+  }, [user]);
+
+  // Handle URL query parameter ?subject=...
+  useEffect(() => {
+    const subjectParam = searchParams.get('subject');
+    if (subjectParam && !selectedCategory) {
+      const matched = categories.find(
+        (c) =>
+          c.id.toLowerCase() === subjectParam.toLowerCase() ||
+          c.name.toLowerCase() === subjectParam.toLowerCase()
+      );
+      if (matched) {
+        startQuiz(matched.name);
+      }
+    }
+  }, [searchParams]);
 
   // Timer countdown hook
   useEffect(() => {
@@ -542,12 +581,16 @@ const QuizZone = () => {
     return () => clearInterval(timer);
   }, [selectedCategory, isFinished, timerActive, timeLeft, isAnswerSubmitted]);
 
-  // Start Quiz Handler
-  const startQuiz = (categoryName) => {
-    if (!quizQuestions[categoryName]) {
+  // Start Quiz Handler with Band-Adaptive Questions
+  const startQuiz = (categoryName, bandToUse = currentBand) => {
+    const questions = getAdaptiveQuestions(categoryName, bandToUse) || quizQuestions[categoryName];
+
+    if (!questions || questions.length === 0) {
       alert("This category quiz is loading. Please select another subject!");
       return;
     }
+
+    setActiveQuestions(questions);
     setSelectedCategory(categoryName);
     setCurrentQuestionIdx(0);
     setSelectedAnswer(null);
@@ -576,10 +619,10 @@ const QuizZone = () => {
 
   // Submit Answer & Reveal Feedback
   const handleAnswerSubmit = (chosenIndex = selectedAnswer) => {
-    if (isAnswerSubmitted) return;
+    if (isAnswerSubmitted || !activeQuestions || activeQuestions.length === 0) return;
 
-    const questions = quizQuestions[selectedCategory];
-    const currentQ = questions[currentQuestionIdx];
+    const currentQ = activeQuestions[currentQuestionIdx];
+    if (!currentQ) return;
     const isCorrect = chosenIndex === currentQ.correct;
 
     setIsAnswerSubmitted(true);
@@ -614,9 +657,9 @@ const QuizZone = () => {
 
   // Next Question / Finish Quiz
   const handleNextQuestion = () => {
-    const questions = quizQuestions[selectedCategory];
+    if (!activeQuestions || activeQuestions.length === 0) return;
 
-    if (currentQuestionIdx + 1 < questions.length) {
+    if (currentQuestionIdx + 1 < activeQuestions.length) {
       setCurrentQuestionIdx(currentQuestionIdx + 1);
       setSelectedAnswer(null);
       setIsAnswerSubmitted(false);
@@ -630,11 +673,15 @@ const QuizZone = () => {
       const finalScore = score;
       const streakBonus = maxStreakInSession * 10;
       const calculatedXp = finalScore * 25 + streakBonus;
+      const totalQ = activeQuestions.length;
+      const accuracy = Math.round((finalScore / totalQ) * 100);
 
       setIsFinished(true);
       setXpGained(calculatedXp);
 
-      // Save persistent stats
+      // Save persistent stats in context & MongoDB
+      recordQuizScore(selectedCategory, currentBand, finalScore, totalQ, accuracy);
+
       const newTotalXp = totalXp + calculatedXp;
       const newDoneCount = quizzesCompletedCount + 1;
       setTotalXp(newTotalXp);
@@ -651,10 +698,9 @@ const QuizZone = () => {
 
   // Lifeline: 50:50
   const useFiftyFifty = () => {
-    if (fiftyFiftyUsed || isAnswerSubmitted) return;
-    const currentQ = quizQuestions[selectedCategory][currentQuestionIdx];
+    if (fiftyFiftyUsed || isAnswerSubmitted || !activeQuestions[currentQuestionIdx]) return;
+    const currentQ = activeQuestions[currentQuestionIdx];
     const incorrectIndices = [0, 1, 2, 3].filter((idx) => idx !== currentQ.correct);
-    // Shuffle and pick 2 to hide
     const toHide = incorrectIndices.sort(() => 0.5 - Math.random()).slice(0, 2);
     setHiddenOptions(toHide);
     setFiftyFiftyUsed(true);
@@ -680,6 +726,9 @@ const QuizZone = () => {
     setIsFinished(false);
     setTimerActive(false);
   };
+
+  // Current question helper
+  const currentQ = activeQuestions[currentQuestionIdx] || null;
 
   // Filter categories
   const filteredCategories = categories.filter((cat) => {
@@ -743,10 +792,20 @@ const QuizZone = () => {
                 {/* Main 3D Question Card */}
                 <div className="bg-white rounded-3xl border-2 border-slate-200/90 p-6 sm:p-9 shadow-[0_8px_0_#CBD5E1,0_20px_40px_rgba(15,23,42,0.07)] transition-all">
                   
+                  {/* Syllabus / Band Context Line */}
+                  <div className="mb-4 pb-3 border-b border-slate-100 flex flex-wrap items-center justify-between gap-2">
+                    <div className="text-xs text-slate-500 font-medium">
+                      <span className="font-extrabold text-blue-700 bg-blue-50 px-2.5 py-0.5 rounded-md border border-blue-100 mr-2">
+                        {BAND_CONFIG[currentBand]?.name || currentBand}
+                      </span>
+                      <span>{getSyllabusDescription(selectedCategory, currentBand)}</span>
+                    </div>
+                  </div>
+
                   {/* Question Progress Header */}
                   <div className="flex items-center justify-between mb-4">
                     <span className="text-xs font-black text-slate-400 uppercase tracking-widest">
-                      Question {currentQuestionIdx + 1} of {quizQuestions[selectedCategory].length}
+                      Question {currentQuestionIdx + 1} of {activeQuestions.length}
                     </span>
                     <span className="text-xs font-black text-blue-600 bg-blue-50 px-2.5 py-1 rounded-lg border border-blue-100">
                       +{25} XP per correct
@@ -758,7 +817,7 @@ const QuizZone = () => {
                     <div
                       className="bg-gradient-to-r from-blue-500 via-indigo-500 to-blue-600 h-full rounded-full transition-all duration-300 shadow-sm"
                       style={{
-                        width: `${((currentQuestionIdx + 1) / quizQuestions[selectedCategory].length) * 100}%`
+                        width: `${((currentQuestionIdx + 1) / Math.max(1, activeQuestions.length)) * 100}%`
                       }}
                     />
                   </div>
@@ -817,92 +876,96 @@ const QuizZone = () => {
                   </div>
 
                   {/* Hint Banner (If activated) */}
-                  {showHint && (
+                  {showHint && currentQ && (
                     <div className="mb-6 p-3.5 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-xs sm:text-sm font-medium flex items-start gap-2.5 animate-fadeIn">
                       <FaLightbulb className="text-amber-500 text-base shrink-0 mt-0.5" />
                       <div>
                         <strong className="font-extrabold block text-amber-800">Study Clue:</strong>
-                        <span>{quizQuestions[selectedCategory][currentQuestionIdx].hint}</span>
+                        <span>{currentQ.hint}</span>
                       </div>
                     </div>
                   )}
 
                   {/* The Question Text */}
-                  <h3 className="text-xl sm:text-2xl font-extrabold font-poppins text-slate-900 tracking-tight mb-8 leading-snug">
-                    {quizQuestions[selectedCategory][currentQuestionIdx].q}
-                  </h3>
+                  {currentQ && (
+                    <>
+                      <h3 className="text-xl sm:text-2xl font-extrabold font-poppins text-slate-900 tracking-tight mb-8 leading-snug">
+                        {currentQ.q}
+                      </h3>
 
-                  {/* 3D Option Buttons Grid */}
-                  <div className="space-y-3.5 mb-8">
-                    {quizQuestions[selectedCategory][currentQuestionIdx].a.map((option, idx) => {
-                      const isHidden = hiddenOptions.includes(idx);
-                      const isSelected = selectedAnswer === idx;
-                      const isCorrect = idx === quizQuestions[selectedCategory][currentQuestionIdx].correct;
+                      {/* 3D Option Buttons Grid */}
+                      <div className="space-y-3.5 mb-8">
+                        {currentQ.a.map((option, idx) => {
+                          const isHidden = hiddenOptions.includes(idx);
+                          const isSelected = selectedAnswer === idx;
+                          const isCorrect = idx === currentQ.correct;
 
-                      // Style calculation based on quiz state
-                      let buttonStyle = 'bg-white border-slate-200 text-slate-800 shadow-[0_4px_0_#CBD5E1] hover:border-blue-300 hover:shadow-[0_5px_0_#93C5FD] hover:-translate-y-0.5';
-                      let letterTileStyle = 'bg-slate-100 text-slate-600 border-slate-200';
+                          // Style calculation based on quiz state
+                          let buttonStyle = 'bg-white border-slate-200 text-slate-800 shadow-[0_4px_0_#CBD5E1] hover:border-blue-300 hover:shadow-[0_5px_0_#93C5FD] hover:-translate-y-0.5';
+                          let letterTileStyle = 'bg-slate-100 text-slate-600 border-slate-200';
 
-                      if (isHidden) {
-                        buttonStyle = 'bg-slate-100 border-slate-200 text-slate-300 opacity-40 cursor-not-allowed shadow-none';
-                        letterTileStyle = 'bg-slate-200 text-slate-400';
-                      } else if (isAnswerSubmitted) {
-                        if (isCorrect) {
-                          buttonStyle = 'bg-emerald-50 border-emerald-400 text-emerald-900 shadow-[0_4px_0_#6EE7B7] translate-y-0.5 font-bold';
-                          letterTileStyle = 'bg-emerald-600 text-white border-emerald-700';
-                        } else if (isSelected && !isCorrect) {
-                          buttonStyle = 'bg-rose-50 border-rose-400 text-rose-900 shadow-[0_4px_0_#FDA4AF] translate-y-0.5 font-bold';
-                          letterTileStyle = 'bg-rose-600 text-white border-rose-700';
-                        } else {
-                          buttonStyle = 'bg-slate-50 border-slate-200 text-slate-400 shadow-none opacity-60';
-                        }
-                      } else if (isSelected) {
-                        buttonStyle = 'bg-gradient-to-r from-blue-600 to-indigo-600 border-blue-600 text-white shadow-[0_4px_0_#1E3A8A] translate-y-0.5';
-                        letterTileStyle = 'bg-white/20 text-white border-white/40';
-                      }
+                          if (isHidden) {
+                            buttonStyle = 'bg-slate-100 border-slate-200 text-slate-300 opacity-40 cursor-not-allowed shadow-none';
+                            letterTileStyle = 'bg-slate-200 text-slate-400';
+                          } else if (isAnswerSubmitted) {
+                            if (isCorrect) {
+                              buttonStyle = 'bg-emerald-50 border-emerald-400 text-emerald-900 shadow-[0_4px_0_#6EE7B7] translate-y-0.5 font-bold';
+                              letterTileStyle = 'bg-emerald-600 text-white border-emerald-700';
+                            } else if (isSelected && !isCorrect) {
+                              buttonStyle = 'bg-rose-50 border-rose-400 text-rose-900 shadow-[0_4px_0_#FDA4AF] translate-y-0.5 font-bold';
+                              letterTileStyle = 'bg-rose-600 text-white border-rose-700';
+                            } else {
+                              buttonStyle = 'bg-slate-50 border-slate-200 text-slate-400 shadow-none opacity-60';
+                            }
+                          } else if (isSelected) {
+                            buttonStyle = 'bg-gradient-to-r from-blue-600 to-indigo-600 border-blue-600 text-white shadow-[0_4px_0_#1E3A8A] translate-y-0.5';
+                            letterTileStyle = 'bg-white/20 text-white border-white/40';
+                          }
 
-                      return (
-                        <button
-                          key={idx}
-                          disabled={isHidden || isAnswerSubmitted}
-                          onClick={() => handleOptionSelect(idx)}
-                          className={`w-full text-left p-4 sm:p-4.5 rounded-2xl border-2 font-bold text-sm sm:text-base transition-all duration-150 flex items-center justify-between gap-3 cursor-pointer select-none active:translate-y-1 ${buttonStyle}`}
-                        >
-                          <div className="flex items-center gap-3.5 min-w-0">
-                            {/* Option Letter Tile */}
-                            <span
-                              className={`w-8 h-8 rounded-xl border flex items-center justify-center font-black text-xs shrink-0 shadow-xs ${letterTileStyle}`}
+                          return (
+                            <button
+                              key={idx}
+                              disabled={isHidden || isAnswerSubmitted}
+                              onClick={() => handleOptionSelect(idx)}
+                              className={`w-full text-left p-4 sm:p-4.5 rounded-2xl border-2 font-bold text-sm sm:text-base transition-all duration-150 flex items-center justify-between gap-3 cursor-pointer select-none active:translate-y-1 ${buttonStyle}`}
                             >
-                              {['A', 'B', 'C', 'D'][idx]}
-                            </span>
-                            <span className="truncate">{option}</span>
-                          </div>
+                              <div className="flex items-center gap-3.5 min-w-0">
+                                {/* Option Letter Tile */}
+                                <span
+                                  className={`w-8 h-8 rounded-xl border flex items-center justify-center font-black text-xs shrink-0 shadow-xs ${letterTileStyle}`}
+                                >
+                                  {['A', 'B', 'C', 'D'][idx]}
+                                </span>
+                                <span className="truncate">{option}</span>
+                              </div>
 
-                          {/* Status Icon after submission */}
-                          {isAnswerSubmitted && isCorrect && (
-                            <FaCheckCircle className="text-emerald-600 text-lg shrink-0" />
-                          )}
-                          {isAnswerSubmitted && isSelected && !isCorrect && (
-                            <FaTimesCircle className="text-rose-600 text-lg shrink-0" />
-                          )}
-                        </button>
-                      );
-                    })}
-                  </div>
-
-                  {/* Educational Explanation Box (Shows after checking) */}
-                  {showExplanation && (
-                    <div className="mb-8 p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 shadow-xs animate-fadeIn">
-                      <div className="flex items-center gap-2 mb-1.5">
-                        <LuSparkles className="text-blue-600 text-base" />
-                        <span className="text-xs font-black text-blue-900 uppercase tracking-wider">
-                          Key Concept Takeaway
-                        </span>
+                              {/* Status Icon after submission */}
+                              {isAnswerSubmitted && isCorrect && (
+                                <FaCheckCircle className="text-emerald-600 text-lg shrink-0" />
+                              )}
+                              {isAnswerSubmitted && isSelected && !isCorrect && (
+                                <FaTimesCircle className="text-rose-600 text-lg shrink-0" />
+                              )}
+                            </button>
+                          );
+                        })}
                       </div>
-                      <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-normal">
-                        {quizQuestions[selectedCategory][currentQuestionIdx].explanation}
-                      </p>
-                    </div>
+
+                      {/* Educational Explanation Box (Shows after checking) */}
+                      {showExplanation && (
+                        <div className="mb-8 p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 shadow-xs animate-fadeIn">
+                          <div className="flex items-center gap-2 mb-1.5">
+                            <LuSparkles className="text-blue-600 text-base" />
+                            <span className="text-xs font-black text-blue-900 uppercase tracking-wider">
+                              Key Concept Takeaway
+                            </span>
+                          </div>
+                          <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-normal">
+                            {currentQ.explanation}
+                          </p>
+                        </div>
+                      )}
+                    </>
                   )}
 
                   {/* Action Trigger Buttons Bar */}
@@ -934,7 +997,7 @@ const QuizZone = () => {
                         className="cursor-pointer w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-gradient-to-b from-[#2F73F5] to-[#1E5AD6] hover:from-[#3D7DF7] hover:to-[#2563EB] text-white font-black text-sm tracking-wide shadow-[0_5px_0_#1243A8,0_12px_24px_rgba(30,90,214,0.35)] active:translate-y-1 active:shadow-[0_2px_0_#1243A8] transition-all flex items-center justify-center gap-2.5"
                       >
                         <span>
-                          {currentQuestionIdx + 1 < quizQuestions[selectedCategory].length
+                          {currentQuestionIdx + 1 < activeQuestions.length
                             ? 'Next Question'
                             : 'View Final Score'}
                         </span>
@@ -958,11 +1021,11 @@ const QuizZone = () => {
 
                 <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-black uppercase tracking-wider mb-2">
                   <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
-                  <span>Module Assessment Complete</span>
+                  <span>{BAND_CONFIG[currentBand]?.name || currentBand} Module Assessment Complete</span>
                 </div>
 
                 <h2 className="text-3xl sm:text-4xl font-black font-poppins text-slate-900 tracking-tight mb-2">
-                  {score === quizQuestions[selectedCategory].length
+                  {score === activeQuestions.length
                     ? 'Outstanding Mastery! 🏆'
                     : score >= 3
                     ? 'Great Performance! ⭐'
@@ -971,8 +1034,8 @@ const QuizZone = () => {
 
                 <p className="text-sm sm:text-base text-slate-600 max-w-md mx-auto mb-8 font-medium">
                   You solved <strong className="text-blue-600">{score}</strong> out of{' '}
-                  <strong className="text-slate-900">{quizQuestions[selectedCategory].length}</strong> questions correctly in{' '}
-                  <strong className="text-indigo-600">{selectedCategory}</strong>.
+                  <strong className="text-slate-900">{activeQuestions.length}</strong> questions correctly in{' '}
+                  <strong className="text-indigo-600">{selectedCategory}</strong> ({BAND_CONFIG[currentBand]?.name}).
                 </p>
 
                 {/* Score & XP Metrics 3D Blocks */}
@@ -980,7 +1043,7 @@ const QuizZone = () => {
                   <div className="bg-blue-50/70 border border-blue-200/90 rounded-2xl p-4 text-center shadow-[0_3px_0_#BFDBFE]">
                     <span className="text-[10px] font-extrabold uppercase text-blue-500 tracking-wider block">Accuracy</span>
                     <span className="text-2xl font-black text-blue-700 mt-1 block">
-                      {Math.round((score / quizQuestions[selectedCategory].length) * 100)}%
+                      {Math.round((score / Math.max(1, activeQuestions.length)) * 100)}%
                     </span>
                   </div>
 
@@ -995,8 +1058,8 @@ const QuizZone = () => {
                   </div>
 
                   <div className="bg-emerald-50/70 border border-emerald-200/90 rounded-2xl p-4 text-center shadow-[0_3px_0_#A7F3D0]">
-                    <span className="text-[10px] font-extrabold uppercase text-emerald-500 tracking-wider block">Daily Status</span>
-                    <span className="text-xl font-black text-emerald-700 mt-1.5 block">Level Up</span>
+                    <span className="text-[10px] font-extrabold uppercase text-emerald-500 tracking-wider block">Saved To</span>
+                    <span className="text-base font-black text-emerald-700 mt-1.5 block">MongoDB Profile</span>
                   </div>
                 </div>
 
@@ -1236,6 +1299,51 @@ const QuizZone = () => {
               </button>
             </div>
 
+            {/* Curriculum Band Selector Bar */}
+            <div className="bg-white rounded-2xl p-4 sm:p-5 border-2 border-indigo-100 shadow-[0_4px_0_#EEF2FF,0_10px_20px_rgba(79,70,229,0.06)] mb-8">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <FaGraduationCap className="text-indigo-600 text-lg" />
+                    <span className="text-xs font-black uppercase tracking-wider text-indigo-700">
+                      Adaptive Class Syllabus
+                    </span>
+                    {user && (
+                      <span className="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-indigo-50 border border-indigo-200 text-indigo-800">
+                        {user.class} • Age {user.age}
+                      </span>
+                    )}
+                  </div>
+                  <h3 className="text-base sm:text-lg font-black text-slate-900">
+                    Currently Selected: <span className="text-indigo-600">{BAND_CONFIG[currentBand]?.name}</span>
+                    <span className="text-xs sm:text-sm font-semibold text-slate-500 ml-2">
+                      ({BAND_CONFIG[currentBand]?.classes}, Age {BAND_CONFIG[currentBand]?.ageRange})
+                    </span>
+                  </h3>
+                  <p className="text-xs text-slate-600 mt-0.5">
+                    Questions, syllabus topics, and difficulty automatically adapt to this band based on Section 4 of the guidelines.
+                  </p>
+                </div>
+
+                {/* Band Selector Buttons */}
+                <div className="flex flex-wrap items-center gap-1.5 shrink-0">
+                  {Object.values(BANDS).map((b) => (
+                    <button
+                      key={b}
+                      onClick={() => setCurrentBand(b)}
+                      className={`cursor-pointer px-3 py-1.5 rounded-xl text-xs font-extrabold transition-all ${
+                        currentBand === b
+                          ? 'bg-indigo-600 text-white shadow-[0_2px_0_#3730A3]'
+                          : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200'
+                      }`}
+                    >
+                      {BAND_CONFIG[b]?.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
             {/* Category Filter Tabs */}
             <div className="flex flex-wrap items-center justify-center gap-2 mb-8">
               {[
@@ -1262,6 +1370,8 @@ const QuizZone = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {filteredCategories.map((cat, idx) => {
                 const Icon = cat.icon;
+                const bandSyllabus = getSyllabusDescription(cat.name, currentBand);
+
                 return (
                   <div
                     key={idx}
@@ -1286,14 +1396,17 @@ const QuizZone = () => {
                       </div>
 
                       {/* Subject Name */}
-                      <h3 className="text-xl font-black font-poppins text-slate-900 mb-2 group-hover:text-blue-700 transition-colors">
+                      <h3 className="text-xl font-black font-poppins text-slate-900 mb-1 group-hover:text-blue-700 transition-colors">
                         {cat.name}
                       </h3>
 
-                      {/* Subject Description */}
-                      <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal mb-5">
-                        {cat.desc}
-                      </p>
+                      {/* Band-tailored Syllabus Topic */}
+                      <div className="text-[11px] bg-white/80 p-2.5 rounded-xl border border-slate-200/80 text-slate-700 font-medium mb-3 shadow-2xs">
+                        <span className="font-extrabold text-indigo-700 block text-[10px] uppercase tracking-wider mb-0.5">
+                          {BAND_CONFIG[currentBand]?.name} Syllabus:
+                        </span>
+                        <span>{bandSyllabus}</span>
+                      </div>
 
                       {/* Micro Curriculum Tags */}
                       <div className="flex flex-wrap gap-1.5 mb-6">
@@ -1310,7 +1423,7 @@ const QuizZone = () => {
 
                     {/* 3D "Start Practice" Button */}
                     <button
-                      onClick={() => startQuiz(cat.name)}
+                      onClick={() => startQuiz(cat.name, currentBand)}
                       className={`cursor-pointer w-full py-3.5 px-4 rounded-2xl text-white font-black text-xs uppercase tracking-wider transition-all duration-200 flex items-center justify-center gap-2 active:translate-y-1 active:shadow-none ${cat.colorTheme.btnGradient} ${cat.colorTheme.btnShadow}`}
                     >
                       <FaPlay className="text-[10px]" />
