@@ -1,15 +1,25 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import {
   FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash,
-  FaCalendarAlt, FaGraduationCap, FaCheckCircle,
-  FaArrowRight, FaChild, FaExclamationTriangle, FaTimes, FaInfoCircle
+  FaGraduationCap, FaCheckCircle,
+  FaArrowRight, FaExclamationTriangle, FaInfoCircle
 } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { FaFacebookF, FaApple } from 'react-icons/fa';
 import { LuSparkles, LuBrain, LuZap, LuTrophy } from 'react-icons/lu';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { CLASS_OPTIONS, getStudentLearningBand } from '../../utils/learningBands';
+import { CLASS_OPTIONS, BAND_CONFIG, getStudentLearningBand } from '../../utils/learningBands';
+
+// Derive a representative age (midpoint of typicalAge) from a class string
+function getDerivedAgeFromClass(classValue) {
+  const opt = CLASS_OPTIONS.find(o => o.value === classValue);
+  if (!opt) return 13; // safe fallback
+  const bandCfg = BAND_CONFIG[opt.band];
+  if (!bandCfg) return 13;
+  const [minAge, maxAge] = bandCfg.typicalAge;
+  return Math.round((minAge + maxAge) / 2);
+}
 
 const AuthForm = ({ mode = 'signin' }) => {
   const isSignUp = mode === 'signup';
@@ -17,7 +27,6 @@ const AuthForm = ({ mode = 'signin' }) => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
-  const [showAgePopup, setShowAgePopup] = useState(false);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -35,13 +44,12 @@ const AuthForm = ({ mode = 'signin' }) => {
 
   const redirectTarget = location.state?.from?.pathname || '/';
 
-  // Live learning band resolution preview for registration
+  // Live learning band resolution preview for registration (derived from class only)
   const liveBandInfo = useMemo(() => {
-    if (!formData.class || !formData.age) return null;
-    const ageNum = parseInt(formData.age, 10);
-    if (isNaN(ageNum) || ageNum < 5 || ageNum > 20) return null;
-    return getStudentLearningBand(formData.class, ageNum);
-  }, [formData.class, formData.age]);
+    if (!formData.class) return null;
+    const derivedAge = getDerivedAgeFromClass(formData.class);
+    return getStudentLearningBand(formData.class, derivedAge);
+  }, [formData.class]);
 
   useEffect(() => {
     // If student is already logged in, redirect them to Home
@@ -53,7 +61,6 @@ const AuthForm = ({ mode = 'signin' }) => {
   useEffect(() => {
     setErrors({});
     setSubmitSuccess(false);
-    setShowAgePopup(false);
   }, [mode]);
 
   const validate = () => {
@@ -73,7 +80,7 @@ const AuthForm = ({ mode = 'signin' }) => {
       newErrors.password = 'Password must be at least 6 characters';
     }
 
-    // SignUp specific validations: name, age, class, confirmPassword
+    // SignUp specific validations: name, class, confirmPassword
     if (isSignUp) {
       if (!formData.name.trim()) {
         newErrors.name = 'Full name is required';
@@ -81,20 +88,6 @@ const AuthForm = ({ mode = 'signin' }) => {
         newErrors.name = 'Student full name can only contain letters and spaces (no numbers or special characters)';
       } else if (formData.name.trim().length < 2) {
         newErrors.name = 'Student full name must be at least 2 characters';
-      }
-
-      if (!formData.age) {
-        newErrors.age = 'Age is required';
-      } else {
-        const ageNum = parseInt(formData.age, 10);
-        if (isNaN(ageNum)) {
-          newErrors.age = 'Enter a valid age';
-        } else if (ageNum < 5) {
-          newErrors.age = 'Minimum age requirement is 5 years';
-          setShowAgePopup(true);
-        } else if (ageNum > 20) {
-          newErrors.age = 'Enter an age between 5 and 20';
-        }
       }
 
       if (!formData.class.trim()) {
@@ -130,19 +123,17 @@ const AuthForm = ({ mode = 'signin' }) => {
       return;
     }
 
+    // Auto-derive age from class selection (backend still needs age)
+    if (name === 'class') {
+      const derivedAge = getDerivedAgeFromClass(value);
+      setFormData((prev) => ({ ...prev, class: value, age: String(derivedAge) }));
+      if (errors.class) setErrors((prev) => ({ ...prev, class: null }));
+      return;
+    }
+
     setFormData((prev) => ({ ...prev, [name]: value }));
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: null }));
-    }
-  };
-
-  const handleAgeBlur = () => {
-    if (formData.age !== '') {
-      const ageNum = parseInt(formData.age, 10);
-      if (!isNaN(ageNum) && ageNum < 5) {
-        setShowAgePopup(true);
-        setErrors((prev) => ({ ...prev, age: 'Minimum age requirement is 5 years' }));
-      }
     }
   };
 
@@ -193,7 +184,7 @@ const AuthForm = ({ mode = 'signin' }) => {
         {/* LEFT PANEL: 3D Student Showcase & Value Propositions                      */}
         {/* ========================================================================= */}
         <div className="w-full lg:w-[48%] bg-gradient-to-br from-[#EFF6FF] via-[#F4F8FF] to-[#DBEAFE] p-8 sm:p-12 flex flex-col justify-between relative border-b lg:border-b-0 lg:border-r border-blue-100 overflow-hidden">
-          
+
           {/* Subtle Corner Glow */}
           <div className="absolute -top-16 -right-16 w-56 h-56 bg-gradient-to-br from-blue-400/20 to-indigo-400/20 rounded-full blur-2xl pointer-events-none" />
 
@@ -276,22 +267,20 @@ const AuthForm = ({ mode = 'signin' }) => {
             <div className="flex bg-slate-100 p-1.5 rounded-2xl border border-slate-200 shadow-inner mb-8">
               <Link
                 to="/signin"
-                className={`cursor-pointer flex-1 py-3 text-center rounded-xl text-xs sm:text-sm font-black uppercase tracking-wider transition-all duration-200 select-none ${
-                  !isSignUp
-                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-[0_4px_0_#1E3A8A,0_8px_16px_rgba(37,99,235,0.3)] translate-y-0'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
-                }`}
+                className={`cursor-pointer flex-1 py-3 text-center rounded-xl text-xs sm:text-sm font-black uppercase tracking-wider transition-all duration-200 select-none ${!isSignUp
+                  ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-[0_4px_0_#1E3A8A,0_8px_16px_rgba(37,99,235,0.3)] translate-y-0'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
+                  }`}
               >
                 Sign In
               </Link>
 
               <Link
                 to="/signup"
-                className={`cursor-pointer flex-1 py-3 text-center rounded-xl text-xs sm:text-sm font-black uppercase tracking-wider transition-all duration-200 select-none ${
-                  isSignUp
-                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-[0_4px_0_#1E3A8A,0_8px_16px_rgba(37,99,235,0.3)] translate-y-0'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
-                }`}
+                className={`cursor-pointer flex-1 py-3 text-center rounded-xl text-xs sm:text-sm font-black uppercase tracking-wider transition-all duration-200 select-none ${isSignUp
+                  ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-[0_4px_0_#1E3A8A,0_8px_16px_rgba(37,99,235,0.3)] translate-y-0'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
+                  }`}
               >
                 Create Account
               </Link>
@@ -348,9 +337,8 @@ const AuthForm = ({ mode = 'signin' }) => {
                       value={formData.name}
                       onChange={handleChange}
                       placeholder="e.g. Alex Johnson"
-                      className={`w-full pl-11 pr-4 py-3 rounded-xl text-sm font-bold bg-slate-50/70 border-2 ${
-                        errors.name ? 'border-rose-400 bg-rose-50/30' : 'border-slate-200/90'
-                      } text-slate-800 placeholder-slate-400 shadow-[0_3px_0_#E2E8F0] focus:bg-white focus:outline-none focus:border-blue-500 focus:shadow-[0_4px_0_#93C5FD] transition-all`}
+                      className={`w-full pl-11 pr-4 py-3 rounded-xl text-sm font-bold bg-slate-50/70 border-2 ${errors.name ? 'border-rose-400 bg-rose-50/30' : 'border-slate-200/90'
+                        } text-slate-800 placeholder-slate-400 shadow-[0_3px_0_#E2E8F0] focus:bg-white focus:outline-none focus:border-blue-500 focus:shadow-[0_4px_0_#93C5FD] transition-all`}
                     />
                   </div>
                   {errors.name && <p className="text-rose-500 text-[11px] font-bold mt-1">{errors.name}</p>}
@@ -372,71 +360,42 @@ const AuthForm = ({ mode = 'signin' }) => {
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="student@example.com"
-                    className={`w-full pl-11 pr-4 py-3 rounded-xl text-sm font-bold bg-slate-50/70 border-2 ${
-                      errors.email ? 'border-rose-400 bg-rose-50/30' : 'border-slate-200/90'
-                    } text-slate-800 placeholder-slate-400 shadow-[0_3px_0_#E2E8F0] focus:bg-white focus:outline-none focus:border-blue-500 focus:shadow-[0_4px_0_#93C5FD] transition-all`}
+                    className={`w-full pl-11 pr-4 py-3 rounded-xl text-sm font-bold bg-slate-50/70 border-2 ${errors.email ? 'border-rose-400 bg-rose-50/30' : 'border-slate-200/90'
+                      } text-slate-800 placeholder-slate-400 shadow-[0_3px_0_#E2E8F0] focus:bg-white focus:outline-none focus:border-blue-500 focus:shadow-[0_4px_0_#93C5FD] transition-all`}
                   />
                 </div>
                 {errors.email && <p className="text-rose-500 text-[11px] font-bold mt-1">{errors.email}</p>}
               </div>
 
-              {/* ----------------- SIGN UP ONLY: AGE & CLASS (2-Col Grid) ----------------- */}
+              {/* ----------------- SIGN UP ONLY: CLASS (Full Width) ----------------- */}
               {isSignUp && (
                 <>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                    {/* Age Field */}
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                        Age (5–20) <span className="text-rose-500">*</span>
-                      </label>
-                      <div className="relative">
-                        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
-                          <FaCalendarAlt className="text-sm" />
-                        </div>
-                        <input
-                          name="age"
-                          type="number"
-                          min="5"
-                          max="20"
-                          value={formData.age}
-                          onChange={handleChange}
-                          onBlur={handleAgeBlur}
-                          placeholder="e.g. 12"
-                          className={`w-full pl-11 pr-3 py-3 rounded-xl text-sm font-bold bg-slate-50/70 border-2 ${
-                            errors.age ? 'border-rose-400 bg-rose-50/30' : 'border-slate-200/90'
-                          } text-slate-800 placeholder-slate-400 shadow-[0_3px_0_#E2E8F0] focus:bg-white focus:outline-none focus:border-blue-500 focus:shadow-[0_4px_0_#93C5FD] transition-all`}
-                        />
+                  {/* Class Field */}
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                      School Class / Track <span className="text-rose-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 z-10">
+                        <FaGraduationCap className="text-sm" />
                       </div>
-                      {errors.age && <p className="text-rose-500 text-[11px] font-bold mt-1">{errors.age}</p>}
+                      <select
+                        name="class"
+                        value={formData.class}
+                        onChange={handleChange}
+                        className={`w-full pl-11 pr-8 py-3 rounded-xl text-sm font-bold bg-slate-50/70 border-2 ${
+                          errors.class ? 'border-rose-400 bg-rose-50/30' : 'border-slate-200/90'
+                        } text-slate-800 focus:bg-white focus:outline-none focus:border-blue-500 focus:shadow-[0_4px_0_#93C5FD] transition-all cursor-pointer`}
+                      >
+                        <option value="">Select Class...</option>
+                        {CLASS_OPTIONS.map((opt) => (
+                          <option key={opt.value} value={opt.value}>
+                            {opt.label}
+                          </option>
+                        ))}
+                      </select>
                     </div>
-
-                    {/* Class Field */}
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                        School Class / Track <span className="text-rose-500">*</span>
-                      </label>
-                      <div className="relative">
-                        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 z-10">
-                          <FaGraduationCap className="text-sm" />
-                        </div>
-                        <select
-                          name="class"
-                          value={formData.class}
-                          onChange={handleChange}
-                          className={`w-full pl-11 pr-8 py-3 rounded-xl text-sm font-bold bg-slate-50/70 border-2 ${
-                            errors.class ? 'border-rose-400 bg-rose-50/30' : 'border-slate-200/90'
-                          } text-slate-800 focus:bg-white focus:outline-none focus:border-blue-500 focus:shadow-[0_4px_0_#93C5FD] transition-all cursor-pointer`}
-                        >
-                          <option value="">Select Class...</option>
-                          {CLASS_OPTIONS.map((opt) => (
-                            <option key={opt.value} value={opt.value}>
-                              {opt.label}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                      {errors.class && <p className="text-rose-500 text-[11px] font-bold mt-1">{errors.class}</p>}
-                    </div>
+                    {errors.class && <p className="text-rose-500 text-[11px] font-bold mt-1">{errors.class}</p>}
                   </div>
 
                   {/* Live Band Preview & Age Mismatch Notification */}
@@ -487,9 +446,8 @@ const AuthForm = ({ mode = 'signin' }) => {
                     value={formData.password}
                     onChange={handleChange}
                     placeholder="••••••••"
-                    className={`w-full pl-11 pr-12 py-3 rounded-xl text-sm font-bold bg-slate-50/70 border-2 ${
-                      errors.password ? 'border-rose-400 bg-rose-50/30' : 'border-slate-200/90'
-                    } text-slate-800 placeholder-slate-400 shadow-[0_3px_0_#E2E8F0] focus:bg-white focus:outline-none focus:border-blue-500 focus:shadow-[0_4px_0_#93C5FD] transition-all`}
+                    className={`w-full pl-11 pr-12 py-3 rounded-xl text-sm font-bold bg-slate-50/70 border-2 ${errors.password ? 'border-rose-400 bg-rose-50/30' : 'border-slate-200/90'
+                      } text-slate-800 placeholder-slate-400 shadow-[0_3px_0_#E2E8F0] focus:bg-white focus:outline-none focus:border-blue-500 focus:shadow-[0_4px_0_#93C5FD] transition-all`}
                   />
                   <button
                     type="button"
@@ -518,9 +476,8 @@ const AuthForm = ({ mode = 'signin' }) => {
                       value={formData.confirmPassword}
                       onChange={handleChange}
                       placeholder="••••••••"
-                      className={`w-full pl-11 pr-12 py-3 rounded-xl text-sm font-bold bg-slate-50/70 border-2 ${
-                        errors.confirmPassword ? 'border-rose-400 bg-rose-50/30' : 'border-slate-200/90'
-                      } text-slate-800 placeholder-slate-400 shadow-[0_3px_0_#E2E8F0] focus:bg-white focus:outline-none focus:border-blue-500 focus:shadow-[0_4px_0_#93C5FD] transition-all`}
+                      className={`w-full pl-11 pr-12 py-3 rounded-xl text-sm font-bold bg-slate-50/70 border-2 ${errors.confirmPassword ? 'border-rose-400 bg-rose-50/30' : 'border-slate-200/90'
+                        } text-slate-800 placeholder-slate-400 shadow-[0_3px_0_#E2E8F0] focus:bg-white focus:outline-none focus:border-blue-500 focus:shadow-[0_4px_0_#93C5FD] transition-all`}
                     />
                     <button
                       type="button"
@@ -601,71 +558,6 @@ const AuthForm = ({ mode = 'signin' }) => {
         </div>
 
       </div>
-
-      {/* Underage Alert Modal (< 5 years) */}
-      {showAgePopup && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
-          <div className="relative w-full max-w-md bg-white rounded-3xl border-2 border-amber-300 shadow-[0_24px_50px_rgba(245,158,11,0.25),0_8px_0_#F59E0B] p-6 sm:p-8 text-center overflow-hidden">
-            
-            {/* Top Ambient Glow */}
-            <div className="absolute -top-16 -right-16 w-36 h-36 bg-amber-400/20 rounded-full blur-2xl pointer-events-none" />
-
-            {/* Close Button */}
-            <button
-              type="button"
-              onClick={() => setShowAgePopup(false)}
-              className="cursor-pointer absolute top-4 right-4 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-all shadow-xs"
-              title="Close notification"
-            >
-              <FaTimes className="text-sm" />
-            </button>
-
-            {/* Icon Tile */}
-            <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-b from-amber-400 to-amber-600 text-white flex items-center justify-center text-3xl shadow-[0_5px_0_#B45309] transform hover:scale-105 transition-transform">
-              <FaChild />
-            </div>
-
-            {/* Notice Badge */}
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 border border-amber-300 text-amber-800 text-[11px] font-black uppercase tracking-wider mb-3">
-              <FaExclamationTriangle className="text-amber-600 text-xs" />
-              <span>Age Requirement Notice</span>
-            </div>
-
-            {/* Title */}
-            <h3 className="text-xl sm:text-2xl font-black font-poppins text-slate-900 tracking-tight mb-2">
-              Age 5+ Required
-            </h3>
-
-            {/* Educational Description */}
-            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mb-6 font-medium">
-              Students must be at least <strong className="text-slate-900 font-bold">5 years old</strong> to create an account. Our cognitive workouts, memory challenges, and adaptive quizzes are calibrated specifically for learners aged 5 and above.
-            </p>
-
-            {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-3">
-              <button
-                type="button"
-                onClick={() => {
-                  setShowAgePopup(false);
-                  setFormData((prev) => ({ ...prev, age: '' }));
-                }}
-                className="cursor-pointer flex-1 py-3 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs uppercase tracking-wider shadow-[0_3px_0_#CBD5E1] active:translate-y-0.5 transition-all"
-              >
-                Change Age
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setShowAgePopup(false)}
-                className="cursor-pointer flex-1 py-3 px-5 rounded-xl bg-gradient-to-b from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-white font-black text-xs uppercase tracking-wider shadow-[0_4px_0_#B45309] active:translate-y-1 active:shadow-[0_1px_0_#B45309] transition-all"
-              >
-                I Understand
-              </button>
-            </div>
-
-          </div>
-        </div>
-      )}
 
     </div>
   );

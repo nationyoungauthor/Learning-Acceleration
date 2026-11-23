@@ -303,7 +303,7 @@ const Dashboard = () => {
               to="/games"
               className="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white border border-slate-200 hover:border-blue-300 text-xs font-black text-slate-700 hover:text-blue-600 shadow-[0_2px_0_#E2E8F0] active:translate-y-0.5 transition-all shrink-0 self-start sm:self-auto"
             >
-              <span>View All 24 Games</span>
+              <span>View All {recommendedGames.length} Band Games</span>
               <FaArrowRight className="text-[10px]" />
             </Link>
           </div>
