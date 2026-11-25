@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaVolumeUp, FaExpand, FaTrophy, FaMicrophone, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
+import { useAdaptiveDifficulty } from '../../hooks/useAdaptiveDifficulty';
 
 const speechTranscripts = [
   {
     original: "So, basically, um, we should, like, invest in this project, you know, because it is, uh, highly profitable.",
-    // List of words that are fillers and should be clicked to remove
     fillers: ["So,", "basically,", "um,", "like,", "you", "know,", "uh,"],
     cleaned: "We should invest in this project because it is highly profitable."
   },
@@ -26,14 +26,13 @@ const speechTranscripts = [
   },
   {
     original: "Um, actually, you know, like, learning new skills is, uh, basically, the best way to, like, grow your mind.",
-    fillers: ["Um,", "actually,", "you", "know,", "like,", "uh,", "basically,", "the", "best", "way", "to", "like,"],
-    // Let's refine fillers to only be actual fillers to avoid user confusion
     fillers: ["Um,", "actually,", "you", "know,", "like,", "uh,", "basically,", "like,"],
     cleaned: "Learning new skills is the best way to grow your mind."
   }
 ];
 
 const ImpromptuPitch = () => {
+  const { difficultyConfig, recordResult } = useAdaptiveDifficulty('impromptu-pitch', 'Impromptu Pitch');
   const [gameState, setGameState] = useState('menu'); // menu, playing, over
   const [highScore, setHighScore] = useState(
     parseInt(localStorage.getItem('impromptuPitchHighScore')) || 0
@@ -69,8 +68,9 @@ const ImpromptuPitch = () => {
   };
 
   const startGame = () => {
+    const duration = difficultyConfig.timeLimit || 45;
     setScore(0);
-    setTimeLeft(45);
+    setTimeLeft(duration);
     setSentenceIdx(0);
     setGameState('playing');
     setupSentence(0);
@@ -108,7 +108,8 @@ const ImpromptuPitch = () => {
 
       if (remainingFillers.length === 0) {
         // Round won! Show points and load next sentence after short delay
-        setScore(prev => prev + 150);
+        const bonus = difficultyConfig.bonusPerSentence || 150;
+        setScore(prev => prev + bonus);
         setTimeout(() => {
           const nextIdx = sentenceIdx + 1;
           setSentenceIdx(nextIdx);
@@ -116,8 +117,9 @@ const ImpromptuPitch = () => {
         }, 600);
       }
     } else {
-      // Incorrect click penalty: lose 3 seconds
-      setTimeLeft(prev => Math.max(0, prev - 3));
+      // Incorrect click penalty
+      const penalty = difficultyConfig.penaltySeconds || 3;
+      setTimeLeft(prev => Math.max(0, prev - penalty));
       
       const el = document.getElementById(`word-${index}`);
       if (el) {
@@ -136,6 +138,7 @@ const ImpromptuPitch = () => {
         setHighScore(score);
         localStorage.setItem('impromptuPitchHighScore', score.toString());
       }
+      recordResult({ score, mistakes: 0 });
     }
     return () => clearInterval(timerRef.current);
   }, [gameState, score]);

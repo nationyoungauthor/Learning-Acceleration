@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaVolumeUp, FaExpand, FaTrophy } from 'react-icons/fa';
+import { useAdaptiveDifficulty } from '../../hooks/useAdaptiveDifficulty';
 
 const initialSubMessage = "Click the numbers in ascending order.\nWhen you click 1, the rest will hide.";
 
 const ChimpTest = () => {
+  const { difficultyConfig, recordResult } = useAdaptiveDifficulty('chimp-test', 'Chimp Test');
   const [gameState, setGameState] = useState('menu'); // menu, playing, hidden, transition, over
   const [level, setLevel] = useState(1);
   const [highScore, setHighScore] = useState(parseInt(localStorage.getItem('chimpTestHighScore')) || 0);
@@ -38,8 +40,9 @@ const ChimpTest = () => {
   };
 
   const generateTiles = (currentLevel) => {
-      const numTiles = currentLevel + 3; // Starts at 4
-      const gridCells = 40; // 5x8 grid
+      const startNum = difficultyConfig.startingNumbers || 3;
+      const numTiles = (currentLevel - 1) + startNum;
+      const gridCells = difficultyConfig.gridCells || 40; // 5x8 grid default
       
       const availableIndices = Array.from({ length: gridCells }, (_, i) => i);
       const selectedIndices = [];
@@ -87,7 +90,8 @@ const ChimpTest = () => {
           newTiles[index] = { ...tile, isClicked: true };
           setTiles(newTiles);
 
-          const totalNumbers = level + 3;
+          const startNum = difficultyConfig.startingNumbers || 3;
+          const totalNumbers = (level - 1) + startNum;
 
           if (expectedNum === 1) {
               setGameState('hidden');
@@ -113,6 +117,7 @@ const ChimpTest = () => {
           setGameState('over');
           setMessage("Wrong Order");
           setSubMessage(`You clicked ${tile.val} instead of ${expectedNum}.\nYou reached level ${level}\n\n${initialSubMessage}`);
+          recordResult({ score: level - 1, mistakes: 1 });
       }
   };
 

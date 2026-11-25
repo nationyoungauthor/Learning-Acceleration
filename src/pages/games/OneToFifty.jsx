@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaVolumeUp, FaExpand, FaStar, FaClock } from 'react-icons/fa';
+import { useAdaptiveDifficulty } from '../../hooks/useAdaptiveDifficulty';
 
 const OneToFifty = () => {
+  const { difficultyConfig, recordResult } = useAdaptiveDifficulty('one-to-fifty', 'One to Fifty');
   const [gameState, setGameState] = useState('menu'); 
   const [grid, setGrid] = useState(Array(25).fill(0));
   const [currentNum, setCurrentNum] = useState(1);
@@ -13,11 +15,14 @@ const OneToFifty = () => {
     parseFloat(localStorage.getItem('oneToFiftyBestTime')) || 0
   );
   
+  const maxTarget = difficultyConfig.targetCount || 50;
+
   const [message, setMessage] = useState('One to Fifty');
-  const [subMessage, setSubMessage] = useState('Click the numbers from 1 to 50 in order as fast as you can. Wrong clicks add a penalty!');
+  const [subMessage, setSubMessage] = useState(`Click numbers in order as fast as you can (Target: 1 to ${maxTarget}). Wrong clicks add a penalty!`);
 
   const initGrid = () => {
-    let nums = Array.from({ length: 25 }, (_, i) => i + 1);
+    const initialPoolSize = Math.min(25, maxTarget);
+    let nums = Array.from({ length: 25 }, (_, i) => i < initialPoolSize ? i + 1 : 0);
     nums.sort(() => Math.random() - 0.5);
     setGrid(nums);
   };
@@ -50,20 +55,21 @@ const OneToFifty = () => {
       setCurrentNum(nextNum);
       
       const newGrid = [...grid];
-      if (currentNum <= 25) {
+      if (currentNum + 25 <= maxTarget) {
         newGrid[index] = currentNum + 25;
       } else {
         newGrid[index] = 0; 
       }
       setGrid(newGrid);
 
-      if (nextNum > 50) {
+      if (nextNum > maxTarget) {
         endGame();
       }
     } else {
       setWrongClick(index);
       setTimeout(() => setWrongClick(null), 200);
-      setTime(prev => prev + 1000); 
+      const penalty = difficultyConfig.penaltyMs || 1000;
+      setTime(prev => prev + penalty); 
     }
   };
 
@@ -76,6 +82,7 @@ const OneToFifty = () => {
       setBestTime(finalTime);
       localStorage.setItem('oneToFiftyBestTime', finalTime);
     }
+    recordResult({ score: Math.round(Math.max(0, 100 - finalTime)), completionTime: finalTime });
   };
 
   const formatTime = (ms) => {

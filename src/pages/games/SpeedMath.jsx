@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaVolumeUp, FaExpand, FaTrophy, FaHeart } from 'react-icons/fa';
+import { useAdaptiveDifficulty } from '../../hooks/useAdaptiveDifficulty';
 
 const SpeedMath = () => {
+  const { difficultyConfig, recordResult } = useAdaptiveDifficulty('speed-math', 'Speed Math');
   const [gameState, setGameState] = useState('menu');
   const [score, setScore] = useState(0);
   const [lives, setLives] = useState(3);
@@ -22,9 +24,10 @@ const SpeedMath = () => {
   const [subMessage, setSubMessage] = useState('Solve arithmetic problems as quickly as possible. Use the on-screen numpad or your keyboard!');
 
   const generateProblem = (currentScore) => {
-    let maxNum = 10 + Math.floor(currentScore / 5) * 5;
-    const ops = ['+', '-', '*'];
-    const opIndex = currentScore > 15 ? Math.floor(Math.random() * 3) : Math.floor(Math.random() * 2);
+    const baseMax = difficultyConfig.maxNumber || 10;
+    const maxNum = baseMax + Math.floor(currentScore / 5) * 5;
+    const ops = difficultyConfig.allowedOps || ['+', '-', '*'];
+    const opIndex = Math.floor(Math.random() * ops.length);
     const op = ops[opIndex];
     
     let n1, n2, ans;
@@ -38,8 +41,9 @@ const SpeedMath = () => {
       n2 = Math.floor(Math.random() * n1); 
       ans = n1 - n2;
     } else {
-      n1 = Math.floor(Math.random() * 12) + 1;
-      n2 = Math.floor(Math.random() * 10) + 1;
+      const multMax = difficultyConfig.multMax || 10;
+      n1 = Math.floor(Math.random() * multMax) + 1;
+      n2 = Math.floor(Math.random() * Math.min(10, multMax)) + 1;
       ans = n1 * n2;
     }
     
@@ -51,8 +55,9 @@ const SpeedMath = () => {
   };
 
   const startGame = () => {
+    const initLives = difficultyConfig.lives || 3;
     setScore(0);
-    setLives(3);
+    setLives(initLives);
     setGameState('playing');
     setMessage('Solve This');
     setSubMessage('');
@@ -77,9 +82,10 @@ const SpeedMath = () => {
         setGameState('over');
         setMessage('Game Over!');
         setSubMessage(`You solved ${score} problems.`);
+        recordResult({ score, mistakes: difficultyConfig.lives || 3 });
       }
     }
-  }, [userInput, answer, score, highScore, lives]);
+  }, [userInput, answer, score, highScore, lives, difficultyConfig, recordResult]);
 
   const handleNumpadClick = (val) => {
     if (gameState !== 'playing') return;

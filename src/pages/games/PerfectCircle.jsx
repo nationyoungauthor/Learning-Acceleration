@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaVolumeUp, FaExpand, FaTrophy } from 'react-icons/fa';
+import { useAdaptiveDifficulty } from '../../hooks/useAdaptiveDifficulty';
 
 const PerfectCircle = () => {
+  const { difficultyConfig, recordResult } = useAdaptiveDifficulty('perfect-circle', 'Perfect Circle');
   const [gameState, setGameState] = useState('menu'); // menu, playing, over
   const [highScore, setHighScore] = useState(
     parseFloat(localStorage.getItem('perfectCircleHighScore')) || 0
@@ -121,7 +123,8 @@ const PerfectCircle = () => {
     });
     const avgR = sumR / points.length;
 
-    if (avgR < 20) {
+    const minRadius = difficultyConfig.minRadius || 20;
+    if (avgR < minRadius) {
       setGameState('over');
       setMessage('Too small!');
       setSubMessage('Please draw a larger circle.');
@@ -152,10 +155,9 @@ const PerfectCircle = () => {
     // Deviation ratio
     const deviationRatio = avgDeviation / avgR;
     
-    // Perfection score (if deviation is 0, score is 100. If deviation is 0.2 (20% avg error), score is 80)
-    // Scale it slightly so humanly possible circles can get 90+
-    // E.g. deviation ratio * 1.5. So 10% error -> 15% reduction -> 85% score.
-    let perfection = 100 - (deviationRatio * 150);
+    // Perfection score using adaptive error scale
+    const errorScale = difficultyConfig.errorScale || 1.5;
+    let perfection = 100 - (deviationRatio * (errorScale * 100));
     perfection = Math.max(0, Math.min(100, perfection));
     
     const finalScore = parseFloat(perfection.toFixed(1));
@@ -175,6 +177,7 @@ const PerfectCircle = () => {
       setMessage('Keep Practicing!');
     }
     setSubMessage('');
+    recordResult({ score: finalScore });
   };
 
   return (

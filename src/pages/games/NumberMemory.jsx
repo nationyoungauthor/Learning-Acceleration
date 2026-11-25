@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaVolumeUp, FaExpand, FaTrophy, FaBackspace } from 'react-icons/fa';
+import { useAdaptiveDifficulty } from '../../hooks/useAdaptiveDifficulty';
 
 const initialSubMessage = "The average person can remember 7 numbers at once.\nCan you do more?";
 
 const NumberMemory = () => {
+  const { difficultyConfig, recordResult } = useAdaptiveDifficulty('number-memory', 'Number Memory');
   const [gameState, setGameState] = useState('menu'); // menu, showing, input, transition, over
   const [level, setLevel] = useState(1);
   const [highScore, setHighScore] = useState(parseInt(localStorage.getItem('numberHighScore')) || 0);
@@ -35,8 +37,10 @@ const NumberMemory = () => {
   }, []);
 
   const generateNumber = (currentLevel) => {
+    const startDigits = difficultyConfig.startingDigits || 2;
+    const totalDigits = startDigits + (currentLevel - 1);
     let numStr = '';
-    for (let i = 0; i < currentLevel; i++) {
+    for (let i = 0; i < totalDigits; i++) {
         numStr += Math.floor(Math.random() * 10).toString();
     }
     return numStr;
@@ -57,7 +61,9 @@ const NumberMemory = () => {
     setMessage(newNum);
     setSubMessage("");
 
-    const showDuration = 1500 + (currentLevel * 500); 
+    const baseDuration = difficultyConfig.displayDurationBase || 1500;
+    const perDigit = difficultyConfig.perDigitDuration || 500;
+    const showDuration = baseDuration + (currentLevel * perDigit); 
     const intervalMs = 20;
     const decreaseAmount = (100 / (showDuration / intervalMs));
 
@@ -113,6 +119,7 @@ const NumberMemory = () => {
           setGameState('over');
           setMessage("Number");
           setSubMessage(`Target: ${targetNumber}\nYour Answer: ${userAnswer}`);
+          recordResult({ score: level - 1, mistakes: 1 });
       }
   };
 

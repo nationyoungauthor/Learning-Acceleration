@@ -8,6 +8,7 @@ import {
   updateDifficultyApi
 } from '../services/api';
 import { getStudentLearningBand } from '../utils/learningBands';
+import { getInitialDifficulty } from '../utils/difficultyConfig';
 
 export const SCORE_KEY_MAP = {
   associationLearningHighScore: { gameId: 'association-learning', title: 'Association Learning' },
@@ -237,8 +238,8 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Record brain game score & personal best
-  const recordGameScore = async (gameId, gameTitle, score, accuracy = 100, completionTime = 0) => {
+  // Record brain game score & personal best with adaptive difficulty tracking
+  const recordGameScore = async (gameId, gameTitle, score, accuracy = 100, completionTime = 0, meta = {}) => {
     if (!user) return;
 
     const numScore = parseFloat(score) || 0;
@@ -253,6 +254,12 @@ export const AuthProvider = ({ children }) => {
     const existingProgressIndex = (user.gameProgress || []).findIndex(p => p.gameId === gameId);
     let newProgressList = [...(user.gameProgress || [])];
 
+    const assignedDiff = meta.assignedDifficulty || (user.class || user.age ? getInitialDifficulty(user.class, user.age) : 'Moderate');
+    const curDiff = meta.currentDifficulty || meta.difficulty || (existingProgressIndex > -1 ? newProgressList[existingProgressIndex].currentDifficulty || newProgressList[existingProgressIndex].difficulty : assignedDiff);
+    const highestDiff = meta.highestDifficulty || (existingProgressIndex > -1 ? newProgressList[existingProgressIndex].highestDifficulty || curDiff : curDiff);
+    const mistakesCount = meta.mistakes !== undefined ? meta.mistakes : (existingProgressIndex > -1 ? newProgressList[existingProgressIndex].mistakes || 0 : 0);
+    const recentScoresList = meta.recentScores || (existingProgressIndex > -1 ? newProgressList[existingProgressIndex].recentScores || [] : []);
+
     if (existingProgressIndex > -1) {
       const prev = newProgressList[existingProgressIndex];
       newProgressList[existingProgressIndex] = {
@@ -262,18 +269,29 @@ export const AuthProvider = ({ children }) => {
         lastScore: numScore,
         accuracy: parseFloat(accuracy) || 100,
         completionTime: parseFloat(completionTime) || 0,
+        difficulty: curDiff,
+        assignedDifficulty: assignedDiff,
+        currentDifficulty: curDiff,
+        highestDifficulty: highestDiff,
+        mistakes: mistakesCount,
+        recentScores: recentScoresList,
         lastPlayed: new Date().toISOString()
       };
     } else {
       newProgressList.push({
         gameId,
         gameTitle: gameTitle || gameId,
-        difficulty: user.difficultyPreference || 'Easy',
+        difficulty: curDiff,
+        assignedDifficulty: assignedDiff,
+        currentDifficulty: curDiff,
+        highestDifficulty: highestDiff,
         attempts: 1,
         bestScore: numScore,
         lastScore: numScore,
         accuracy: parseFloat(accuracy) || 100,
         completionTime: parseFloat(completionTime) || 0,
+        mistakes: mistakesCount,
+        recentScores: recentScoresList,
         lastPlayed: new Date().toISOString()
       });
     }
@@ -297,7 +315,12 @@ export const AuthProvider = ({ children }) => {
           score: numScore,
           accuracy,
           completionTime,
-          difficulty: user.difficultyPreference || 'Easy'
+          difficulty: curDiff,
+          assignedDifficulty: assignedDiff,
+          currentDifficulty: curDiff,
+          highestDifficulty: highestDiff,
+          mistakes: mistakesCount,
+          recentScores: recentScoresList
         });
       } catch (err) {
         console.error('Error syncing game progress to backend:', err);

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaVolumeUp, FaExpand, FaTrophy } from 'react-icons/fa';
+import { useAdaptiveDifficulty } from '../../hooks/useAdaptiveDifficulty';
 
 const initialSubMessage = "Memorize the highlighted tiles, then select them after they disappear.\nEach level gets progressively harder with more tiles to remember.\nOne mistake and game over! How far can you go?";
 
 const VisualMemory = () => {
+  const { difficultyConfig, recordResult } = useAdaptiveDifficulty('visual-memory', 'Visual Memory');
   const [gameState, setGameState] = useState('menu'); // menu, showing, playing, transition, over
   const [level, setLevel] = useState(1);
   const [highScore, setHighScore] = useState(parseInt(localStorage.getItem('visualHighScore')) || 1);
@@ -17,29 +19,22 @@ const VisualMemory = () => {
   const [subMessage, setSubMessage] = useState(initialSubMessage);
 
   useEffect(() => {
-    // Determine the highest reached level. 
-    // Sequence memory maps score to level reached. Here `level` is the current attempt.
-    // Let's set highScore to the highest level they completed.
-    // If they fail at level 3, they completed level 2.
-    // Wait, the visual memory game tracks the currently playing level, so highest level reached is fine.
     if (level > highScore && gameState !== 'menu') {
       setHighScore(level);
       localStorage.setItem('visualHighScore', level);
     }
   }, [level, highScore, gameState]);
 
-  const getGridSize = (lvl) => {
-    const tiles = lvl + 2;
-    if (tiles <= 4) return 3;
-    if (tiles <= 7) return 4;
-    if (tiles <= 10) return 5;
-    if (tiles <= 14) return 6;
+  const getGridSize = (tilesCount) => {
+    if (tilesCount <= 4) return 3;
+    if (tilesCount <= 7) return 4;
+    if (tilesCount <= 10) return 5;
+    if (tilesCount <= 14) return 6;
     return 7;
   };
 
-  const generatePattern = (lvl, size) => {
+  const generatePattern = (numToSelect, size) => {
     const totalTiles = size * size;
-    const numToSelect = lvl + 2;
     const newPattern = [];
     while (newPattern.length < numToSelect) {
       const randomIdx = Math.floor(Math.random() * totalTiles);
@@ -62,13 +57,15 @@ const VisualMemory = () => {
     setMessage("Watch the pattern");
     setSubMessage(`Level ${currentLevel}`);
     
-    const size = getGridSize(currentLevel);
+    const startingTiles = difficultyConfig.startingTiles || 3;
+    const currentTiles = startingTiles + (currentLevel - 1);
+    const size = Math.max(difficultyConfig.baseGridSize || 3, getGridSize(currentTiles));
     setGridSize(size);
-    const newPattern = generatePattern(currentLevel, size);
+    const newPattern = generatePattern(currentTiles, size);
     setPattern(newPattern);
     
-    const baseDuration = 1000;
-    const scalingDuration = Math.min((currentLevel - 1) * 100, 1500);
+    const baseDuration = difficultyConfig.showDuration || 1000;
+    const scalingDuration = Math.min((currentLevel - 1) * (difficultyConfig.scalingDuration || 100), 1500);
     const showDuration = baseDuration + scalingDuration;
 
     setTimeout(() => {
@@ -107,6 +104,7 @@ const VisualMemory = () => {
         setGameState('over');
         setMessage('Game Over');
         setSubMessage(`You reached Level ${level}\n\n${initialSubMessage}`);
+        recordResult({ score: level, mistakes: 1 });
       }, 1000);
     }
   };

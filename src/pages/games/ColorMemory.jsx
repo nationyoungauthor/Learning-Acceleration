@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaVolumeUp, FaExpand, FaTrophy } from 'react-icons/fa';
+import { useAdaptiveDifficulty } from '../../hooks/useAdaptiveDifficulty';
 
 const initialSubMessage = "Remember the color shown briefly.\nThen select it from similar shades.";
 
 const ColorMemory = () => {
+  const { difficultyConfig, recordResult } = useAdaptiveDifficulty('color-memory', 'Color Memory');
   const [gameState, setGameState] = useState('menu'); // menu, showing, playing, transition, over
   const [level, setLevel] = useState(1);
   const [highScore, setHighScore] = useState(parseInt(localStorage.getItem('colorMemoryHighScore')) || 0);
@@ -45,13 +47,15 @@ const ColorMemory = () => {
 
     const target = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
     
-    // Determine number of choices based on level
-    let numChoices = 4;
-    if (currentLevel > 3) numChoices = 6;
-    if (currentLevel > 7) numChoices = 9;
+    // Determine number of choices based on adaptive config and level
+    const baseChoices = difficultyConfig.startingChoices || 4;
+    let numChoices = baseChoices;
+    if (currentLevel > 3) numChoices = Math.min(9, baseChoices + 2);
+    if (currentLevel > 7) numChoices = Math.min(9, baseChoices + 4);
 
-    // Difficulty factor: lower is harder
-    const diff = Math.max(2, 15 - Math.floor(currentLevel / 2));
+    // Difficulty factor: lower offset is harder
+    const baseDiff = difficultyConfig.colorDifference || 15;
+    const diff = Math.max(2, baseDiff - Math.floor((currentLevel - 1) / 2));
 
     const options = [target];
     while (options.length < numChoices) {
@@ -97,7 +101,8 @@ const ColorMemory = () => {
     setTargetColor(target);
     setChoices(options);
 
-    let displayTime = Math.max(800, 2000 - (currentLevel * 100)); // Gets faster
+    const baseDisplay = difficultyConfig.displayTime || 1800;
+    const displayTime = Math.max(500, baseDisplay - ((currentLevel - 1) * 80));
 
     addTimeout(() => {
         setGameState('playing');
@@ -123,6 +128,7 @@ const ColorMemory = () => {
           setGameState('over');
           setMessage("Wrong Shade");
           setSubMessage(`You reached level ${level}\n\n${initialSubMessage}`);
+          recordResult({ score: level - 1, mistakes: 1 });
       }
   };
 

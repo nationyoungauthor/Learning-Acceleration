@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaVolumeUp, FaExpand, FaTrophy, FaClock } from 'react-icons/fa';
+import { useAdaptiveDifficulty } from '../../hooks/useAdaptiveDifficulty';
 
-const COLORS = [
+const ALL_COLORS = [
   { name: 'RED', hex: '#ef4444', class: 'bg-red-500 hover:bg-red-400' },
   { name: 'BLUE', hex: '#3b82f6', class: 'bg-blue-500 hover:bg-blue-400' },
   { name: 'GREEN', hex: '#22c55e', class: 'bg-green-500 hover:bg-green-400' },
@@ -12,6 +13,7 @@ const COLORS = [
 ];
 
 const StroopTest = () => {
+  const { difficultyConfig, recordResult } = useAdaptiveDifficulty('stroop-test', 'Stroop Test');
   const [gameState, setGameState] = useState('menu');
   const [score, setScore] = useState(0);
   const [rounds, setRounds] = useState(0);
@@ -28,25 +30,29 @@ const StroopTest = () => {
   const [message, setMessage] = useState('Stroop Test');
   const [subMessage, setSubMessage] = useState('Test your inhibitory control by selecting the INK COLOR of the text, not the word itself.');
 
+  const activeColors = ALL_COLORS.slice(0, difficultyConfig.colorsCount || 6);
+
   const generateRound = useCallback(() => {
-    const wordObj = COLORS[Math.floor(Math.random() * COLORS.length)];
-    let colorObj = COLORS[Math.floor(Math.random() * COLORS.length)];
+    const wordObj = activeColors[Math.floor(Math.random() * activeColors.length)];
+    let colorObj = activeColors[Math.floor(Math.random() * activeColors.length)];
     
-    if (Math.random() < 0.7) {
-      while (colorObj.name === wordObj.name) {
-        colorObj = COLORS[Math.floor(Math.random() * COLORS.length)];
+    const mismatchRatio = difficultyConfig.mismatchRatio !== undefined ? difficultyConfig.mismatchRatio : 0.7;
+    if (Math.random() < mismatchRatio) {
+      while (colorObj.name === wordObj.name && activeColors.length > 1) {
+        colorObj = activeColors[Math.floor(Math.random() * activeColors.length)];
       }
     }
     
     setCurrentWord(wordObj);
     setCurrentColor(colorObj);
-  }, []);
+  }, [activeColors, difficultyConfig]);
 
   const startGame = () => {
+    const duration = difficultyConfig.durationSeconds || 60;
     setScore(0);
     setRounds(0);
     setCorrect(0);
-    setTimeLeft(60);
+    setTimeLeft(duration);
     setGameState('playing');
     setMessage('Select the INK COLOR');
     setSubMessage('');
@@ -74,6 +80,8 @@ const StroopTest = () => {
       setHighScore(score);
       localStorage.setItem('stroopTestHighScore', score);
     }
+    const duration = difficultyConfig.durationSeconds || 60;
+    recordResult({ score, accuracy: acc, completionTime: duration - timeLeft, mistakes: rounds - correct });
   };
 
   const handleColorClick = (clickedColorName) => {
@@ -145,7 +153,7 @@ const StroopTest = () => {
             </div>
             
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3 w-full max-w-[400px]">
-              {COLORS.map((c) => (
+              {activeColors.map((c) => (
                 <button
                   key={c.name}
                   onClick={() => handleColorClick(c.name)}

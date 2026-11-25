@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaVolumeUp, FaExpand, FaTrophy } from 'react-icons/fa';
+import { useAdaptiveDifficulty } from '../../hooks/useAdaptiveDifficulty';
 
 const SequenceMemory = () => {
+  const { difficultyConfig, recordResult } = useAdaptiveDifficulty('sequence-memory', 'Sequence Memory');
   const [sequence, setSequence] = useState([]);
   const [playerSequence, setPlayerSequence] = useState([]);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -39,9 +41,14 @@ const SequenceMemory = () => {
     setMessage("Get Ready...");
     setSubMessage("Watch the sequence");
     
-    // Start after a small delay
+    // Start after a small delay with adaptive starting length
     setTimeout(() => {
-      addNewStep([]);
+      const initLen = difficultyConfig.initialSequenceLength || 3;
+      const initialSteps = [];
+      for (let i = 0; i < initLen; i++) {
+        initialSteps.push(Math.floor(Math.random() * 9));
+      }
+      setSequence(initialSteps);
     }, 1000);
   };
 
@@ -62,9 +69,14 @@ const SequenceMemory = () => {
     timerRef.current.forEach(clearTimeout);
     timerRef.current = [];
 
-    let delay = 0;
-    const speed = Math.max(200, 700 - sequence.length * 30); // Speed up as levels increase
-    const pause = Math.max(100, 300 - sequence.length * 15);
+    const baseSpeed = difficultyConfig.displaySpeed || 700;
+    const basePause = difficultyConfig.pauseTime || 300;
+    const speedInc = difficultyConfig.speedIncrement || 25;
+    const initLen = difficultyConfig.initialSequenceLength || 3;
+    const levelOffset = Math.max(0, sequence.length - initLen);
+
+    const speed = Math.max(200, baseSpeed - levelOffset * speedInc);
+    const pause = Math.max(100, basePause - levelOffset * 15);
 
     // Initial pause before starting sequence
     await new Promise(resolve => setTimeout(resolve, 800));
@@ -74,7 +86,7 @@ const SequenceMemory = () => {
             const timer = setTimeout(() => {
                 setActiveSquare(sequence[i]);
                 resolve();
-            }, delay);
+            }, 0);
             timerRef.current.push(timer);
         });
 
@@ -129,6 +141,7 @@ const SequenceMemory = () => {
       setWrongSquare(index);
       setMessage("Game Over");
       setSubMessage(`You reached Level ${sequence.length}`);
+      recordResult({ score: sequence.length, mistakes: 1 });
       setTimeout(() => setWrongSquare(null), 1000);
     }
   };

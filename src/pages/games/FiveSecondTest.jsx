@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaVolumeUp, FaExpand, FaTrophy } from 'react-icons/fa';
+import { useAdaptiveDifficulty } from '../../hooks/useAdaptiveDifficulty';
 
 const FiveSecondTest = () => {
+  const { difficultyConfig, recordResult } = useAdaptiveDifficulty('5-second-test', '5-Second Test');
   const [gameState, setGameState] = useState('menu'); // menu, playing, over
   const [highScore, setHighScore] = useState(
     parseInt(localStorage.getItem('fiveSecondHighScore')) || 0
@@ -42,8 +44,10 @@ const FiveSecondTest = () => {
     const timeDifference = Math.abs(stoppedTime - 5000);
     setDiff(timeDifference);
     
-    // Calculate score: Max 1000 points. Lose 1 point per millisecond off.
-    let calculatedScore = Math.max(0, 1000 - Math.floor(timeDifference));
+    // Calculate score scaled by adaptive tolerance multiplier
+    const tolerance = difficultyConfig.toleranceMultiplier || 1.0;
+    const scaledDiff = Math.floor(timeDifference / tolerance);
+    let calculatedScore = Math.max(0, 1000 - scaledDiff);
     setScore(calculatedScore);
 
     if (calculatedScore > highScore) {
@@ -60,6 +64,7 @@ const FiveSecondTest = () => {
     } else {
       setSubMessage(`You stopped at ${(stoppedTime / 1000).toFixed(3)}s\n${diffSeconds}s too late.`);
     }
+    recordResult({ score: calculatedScore, completionTime: stoppedTime / 1000 });
   };
 
   useEffect(() => {

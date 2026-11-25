@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaVolumeUp, FaExpand, FaTrophy } from 'react-icons/fa';
+import { useAdaptiveDifficulty } from '../../hooks/useAdaptiveDifficulty';
 
 const InvertedMouse = () => {
+  const { difficultyConfig, recordResult } = useAdaptiveDifficulty('inverted-mouse', 'Inverted Mouse');
   const [gameState, setGameState] = useState('menu');
   const [highScore, setHighScore] = useState(
     parseInt(localStorage.getItem('invertedMouseHighScore')) || 0
@@ -30,8 +32,9 @@ const InvertedMouse = () => {
   }, []);
 
   const startGame = () => {
+    const duration = difficultyConfig.timeLimit || 60;
     setScore(0);
-    setTimeLeft(60);
+    setTimeLeft(duration);
     setGameState('playing');
     setMessage('Hover the target!');
     setSubMessage('');
@@ -55,10 +58,8 @@ const InvertedMouse = () => {
     setGameState('over');
     setMessage('Time Up!');
     setSubMessage(`You collected ${score} targets.`);
+    recordResult({ score });
   };
-
-  // We need to use a ref to get the latest score inside the interval or use functional updates.
-  // We are using functional updates for timeLeft, and score is updated on mouse move.
 
   const handleMouseMove = (e) => {
     if (gameState !== 'playing' || !containerRef.current) return;
@@ -80,9 +81,10 @@ const InvertedMouse = () => {
 
     setCursorPos({ x: invX, y: invY });
 
-    // Check collision with target (target radius is 20px)
+    // Check collision with target using adaptive target radius
+    const radius = difficultyConfig.targetRadius || 20;
     const dist = Math.hypot(invX - targetPos.x, invY - targetPos.y);
-    if (dist < 20) {
+    if (dist < radius) {
       if (!isHovering) {
         setIsHovering(true);
         // Collect target

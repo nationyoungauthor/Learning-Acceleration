@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaVolumeUp, FaExpand, FaTrophy, FaCheck, FaTimes } from 'react-icons/fa';
+import { useAdaptiveDifficulty } from '../../hooks/useAdaptiveDifficulty';
 
 const DICTIONARY = [
   "time", "year", "people", "way", "day", "man", "thing", "woman", "life", "child", 
@@ -24,6 +25,7 @@ const DICTIONARY = [
 const initialSubMessage = "Remember a list of words and identify them among distractors.\n\nThe words come one by one. If you've seen the word before, click SEEN. If it's a new word, click NEW. You have 3 strikes.";
 
 const WordMemory = () => {
+  const { difficultyConfig, recordResult } = useAdaptiveDifficulty('word-memory', 'Word Memory');
   const [gameState, setGameState] = useState('menu'); // menu, playing, over
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(parseInt(localStorage.getItem('wordHighScore')) || 0);
@@ -43,21 +45,24 @@ const WordMemory = () => {
   }, [score, highScore]);
 
   const selectNextWord = (currentSeenSet) => {
-    // 50% chance to show a seen word (if any exist), 50% chance to show a new word
-    // Actually, sometimes it's 30/70. Let's do 50/50.
-    const showSeen = currentSeenSet.size > 0 && Math.random() > 0.5;
+    const seenProb = difficultyConfig.seenProbability !== undefined ? difficultyConfig.seenProbability : 0.5;
+    const showSeen = currentSeenSet.size > 0 && Math.random() < seenProb;
     
     if (showSeen) {
       const seenArray = Array.from(currentSeenSet);
       const randomIdx = Math.floor(Math.random() * seenArray.length);
       setCurrentWord(seenArray[randomIdx]);
     } else {
-      // Find a word not in seenWords
+      // Find a word not in seenWords respecting difficulty complexity
+      const maxLen = difficultyConfig.maxWordLength || 15;
+      const filteredDict = DICTIONARY.filter(w => w.length <= maxLen);
+      const pool = filteredDict.length > 0 ? filteredDict : DICTIONARY;
+      
       let newWord = '';
       let attempts = 0;
-      while (attempts < 100) { // arbitrary limit to prevent infinite loops if dict is exhausted
-        const randomIdx = Math.floor(Math.random() * DICTIONARY.length);
-        const candidate = DICTIONARY[randomIdx];
+      while (attempts < 100) {
+        const randomIdx = Math.floor(Math.random() * pool.length);
+        const candidate = pool[randomIdx];
         if (!currentSeenSet.has(candidate)) {
           newWord = candidate;
           break;
@@ -65,9 +70,8 @@ const WordMemory = () => {
         attempts++;
       }
       
-      // If we somehow exhausted the dictionary, just pick any word
       if (!newWord) {
-        newWord = DICTIONARY[Math.floor(Math.random() * DICTIONARY.length)];
+        newWord = pool[Math.floor(Math.random() * pool.length)];
       }
       
       setCurrentWord(newWord);
@@ -75,12 +79,13 @@ const WordMemory = () => {
   };
 
   const startGame = () => {
+    const initLives = difficultyConfig.lives || 3;
     setScore(0);
-    setLives(3);
+    setLives(initLives);
     setSeenWords(new Set());
     setGameState('playing');
     setMessage('Have you seen this word before?');
-    setSubMessage('You have 3 strikes left');
+    setSubMessage(`You have ${initLives} strikes left`);
     selectNextWord(new Set());
   };
 
@@ -88,6 +93,7 @@ const WordMemory = () => {
     setGameState('over');
     setMessage('Game Over');
     setSubMessage(`You reached a score of ${finalScore}\n\n${initialSubMessage}`);
+    recordResult({ score: finalScore, mistakes: difficultyConfig.lives || 3 });
   };
 
   const handleGuess = (guessIsSeen) => {

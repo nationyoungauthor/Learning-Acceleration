@@ -1,15 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaVolumeUp, FaExpand, FaTrophy, FaLightbulb, FaForward, FaHeart } from 'react-icons/fa';
+import { useAdaptiveDifficulty } from '../../hooks/useAdaptiveDifficulty';
 
 const WORD_LIST = [
   'UPGRADE', 'LOGICAL', 'PATTERN', 'MEMORY', 'PUZZLE', 'ATTENTION', 'FOCUS', 'BRAIN',
   'COGNITIVE', 'RECALL', 'SCIENCE', 'TRAINING', 'NEURON', 'SYNAPSE', 'LEARNING',
   'ABILITY', 'COMPLEX', 'SKILL', 'SOLVE', 'THINK', 'SPEED', 'ACCURACY', 'REFLEX',
-  'SYSTEM', 'PROCESS', 'METHOD', 'THEORY', 'CONCEPT', 'DESIGN', 'CREATE', 'IMPROVE'
+  'SYSTEM', 'PROCESS', 'METHOD', 'THEORY', 'CONCEPT', 'DESIGN', 'CREATE', 'IMPROVE',
+  'CAT', 'DOG', 'SUN', 'SKY', 'MAP', 'PEN', 'BOOK', 'TREE', 'STAR', 'BLUE', 'GOLD',
+  'FAST', 'MIND', 'WORD', 'TEST', 'QUIZ', 'PLAY', 'GAME', 'MATH', 'TIME', 'EASY'
 ];
 
 const WordScramble = () => {
+  const { difficultyConfig, recordResult } = useAdaptiveDifficulty('word-scramble', 'Word Scramble');
   const [gameState, setGameState] = useState('menu');
   const [score, setScore] = useState(0);
   const [streak, setStreak] = useState(0);
@@ -44,7 +48,12 @@ const WordScramble = () => {
   };
 
   const nextWord = () => {
-    const word = WORD_LIST[Math.floor(Math.random() * WORD_LIST.length)];
+    const minLen = difficultyConfig.wordLengthMin || 3;
+    const maxLen = difficultyConfig.wordLengthMax || 10;
+    const filtered = WORD_LIST.filter(w => w.length >= minLen && w.length <= maxLen);
+    const pool = filtered.length > 0 ? filtered : WORD_LIST;
+
+    const word = pool[Math.floor(Math.random() * pool.length)];
     setCurrentWord(word);
     setScrambledWord(shuffleWord(word));
     setUserInput('');
@@ -53,9 +62,10 @@ const WordScramble = () => {
   };
 
   const startGame = () => {
+    const initLives = difficultyConfig.lives || 3;
     setScore(0);
     setStreak(0);
-    setLives(3);
+    setLives(initLives);
     setWordsSolved(0);
     setGameState('playing');
     setMessage('Unscramble the word');
@@ -92,14 +102,16 @@ const WordScramble = () => {
           setGameState('over');
           setMessage('Game Over!');
           setSubMessage(`Final Score: ${score}\nWords Solved: ${wordsSolved}`);
+          recordResult({ score, mistakes: difficultyConfig.lives || 3 });
         }, 800);
       }
     }
   };
 
   const handleHint = () => {
-    if (score >= 5) {
-      setScore(prev => prev - 5);
+    const cost = difficultyConfig.hintCost || 5;
+    if (score >= cost) {
+      setScore(prev => prev - cost);
       for (let i = 0; i < currentWord.length; i++) {
         if (!userInput[i] || userInput[i].toUpperCase() !== currentWord[i]) {
           const newUserInput = userInput.slice(0, i) + currentWord[i];
@@ -109,7 +121,7 @@ const WordScramble = () => {
       }
       inputRef.current?.focus();
     } else {
-      setFeedback('Not enough points (need 5)');
+      setFeedback(`Not enough points (need ${cost})`);
     }
   };
 
@@ -120,6 +132,7 @@ const WordScramble = () => {
       setGameState('over');
       setMessage('Game Over!');
       setSubMessage(`Final Score: ${score}\nWords Solved: ${wordsSolved}`);
+      recordResult({ score, mistakes: difficultyConfig.lives || 3 });
     } else {
       nextWord();
     }

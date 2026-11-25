@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaVolumeUp, FaExpand, FaTrophy, FaEye } from 'react-icons/fa';
+import { useAdaptiveDifficulty } from '../../hooks/useAdaptiveDifficulty';
 
 const symbolsPool = ['★', '▲', '●', '■', '◆', '✖', '✚', '♥', '✿', '✦', '▲', '▼', '◄', '►', '⬢', '⬡'];
 
 const OddOneOut = () => {
+  const { difficultyConfig, recordResult } = useAdaptiveDifficulty('odd-one-out', 'Odd One Out');
   const [gameState, setGameState] = useState('menu'); // menu, playing, over
   const [highScore, setHighScore] = useState(
     parseInt(localStorage.getItem('oddOneOutHighScore')) || 0
@@ -26,11 +28,12 @@ const OddOneOut = () => {
   const timerRef = useRef();
 
   const generateGrid = (currentLevel) => {
-    // Determine grid size based on level
-    let size = 3;
-    if (currentLevel >= 3 && currentLevel <= 4) size = 4;
-    else if (currentLevel >= 5 && currentLevel <= 6) size = 5;
-    else if (currentLevel >= 7 && currentLevel <= 8) size = 6;
+    // Determine grid size based on adaptive difficulty and level
+    const baseSize = difficultyConfig.initialGridSize || 3;
+    let size = baseSize;
+    if (currentLevel >= 3 && currentLevel <= 4) size = Math.min(7, baseSize + 1);
+    else if (currentLevel >= 5 && currentLevel <= 6) size = Math.min(7, baseSize + 2);
+    else if (currentLevel >= 7 && currentLevel <= 8) size = Math.min(7, baseSize + 3);
     else if (currentLevel >= 9) size = 7;
 
     setGridSize(size);
@@ -57,9 +60,10 @@ const OddOneOut = () => {
   };
 
   const startGame = () => {
+    const timeLimit = difficultyConfig.timeLimit || 45;
     setScore(0);
     setLevel(1);
-    setTimeLeft(45);
+    setTimeLeft(timeLimit);
     setGameState('playing');
     generateGrid(1);
 
@@ -87,8 +91,9 @@ const OddOneOut = () => {
       setLevel(nextLevel);
       generateGrid(nextLevel);
     } else {
-      // Incorrect penalty: lose 3 seconds
-      setTimeLeft(prev => Math.max(0, prev - 3));
+      // Incorrect penalty
+      const penalty = difficultyConfig.penaltySeconds || 3;
+      setTimeLeft(prev => Math.max(0, prev - penalty));
       const container = document.getElementById('grid-container');
       if (container) {
         container.classList.add('border-red-500', 'bg-red-50');
@@ -106,6 +111,7 @@ const OddOneOut = () => {
         setHighScore(score);
         localStorage.setItem('oddOneOutHighScore', score.toString());
       }
+      recordResult({ score, mistakes: 0 });
     }
     return () => clearInterval(timerRef.current);
   }, [gameState, score]);

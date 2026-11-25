@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaVolumeUp, FaExpand, FaTrophy, FaSmile, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
+import { useAdaptiveDifficulty } from '../../hooks/useAdaptiveDifficulty';
 
-const emotionsList = ['Happy', 'Sad', 'Angry', 'Surprised', 'Fear', 'Disgusted'];
+const ALL_EMOTIONS = ['Happy', 'Sad', 'Angry', 'Surprised', 'Fear', 'Disgusted'];
 
 const FaceSVG = ({ emotion }) => {
   let leftEyebrowPath = "M 65 75 Q 75 75 85 75";
@@ -119,6 +120,7 @@ const FaceSVG = ({ emotion }) => {
 };
 
 const EmotionReading = () => {
+  const { difficultyConfig, recordResult } = useAdaptiveDifficulty('emotion-reading', 'Emotion Reading');
   const [gameState, setGameState] = useState('menu'); // menu, playing, over
   const [highScore, setHighScore] = useState(
     parseInt(localStorage.getItem('emotionReadingHighScore')) || 0
@@ -134,6 +136,8 @@ const EmotionReading = () => {
 
   const timerRef = useRef();
 
+  const emotionsList = ALL_EMOTIONS.slice(0, difficultyConfig.emotionsCount || 6);
+
   const pickRandomEmotion = () => {
     const random = emotionsList[Math.floor(Math.random() * emotionsList.length)];
     setActiveEmotion(random);
@@ -141,8 +145,9 @@ const EmotionReading = () => {
   };
 
   const startGame = () => {
+    const timeLimit = difficultyConfig.timeLimit || 45;
     setScore(0);
-    setTimeLeft(45);
+    setTimeLeft(timeLimit);
     setGameState('playing');
     setMessage('Identify the Expression!');
     setSubMessage('Match the buttons below to the face.');
@@ -172,7 +177,8 @@ const EmotionReading = () => {
         pickRandomEmotion();
       }, 500);
     } else {
-      setTimeLeft(prev => Math.max(0, prev - 3));
+      const penalty = difficultyConfig.penaltySeconds || 3;
+      setTimeLeft(prev => Math.max(0, prev - penalty));
       setTimeout(() => {
         setSelectedOption(null);
       }, 500);
@@ -186,6 +192,7 @@ const EmotionReading = () => {
         setHighScore(score);
         localStorage.setItem('emotionReadingHighScore', score.toString());
       }
+      recordResult({ score, mistakes: 0 });
     }
     return () => clearInterval(timerRef.current);
   }, [gameState, score]);

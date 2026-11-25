@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaVolumeUp, FaExpand, FaTrophy, FaCalculator } from 'react-icons/fa';
+import { useAdaptiveDifficulty } from '../../hooks/useAdaptiveDifficulty';
 
 const SumFinder = () => {
+  const { difficultyConfig, recordResult } = useAdaptiveDifficulty('sum-finder', 'Sum Finder');
   const [gameState, setGameState] = useState('menu'); // menu, playing, over
   const [highScore, setHighScore] = useState(
     parseInt(localStorage.getItem('sumFinderHighScore')) || 0
@@ -24,15 +26,18 @@ const SumFinder = () => {
 
   const generateGrid = () => {
     const arr = [];
+    const maxVal = difficultyConfig.maxCellVal || 9;
     for (let i = 0; i < 16; i++) {
-      arr.push(Math.floor(Math.random() * 9) + 1);
+      arr.push(Math.floor(Math.random() * maxVal) + 1);
     }
     return arr;
   };
 
   const pickTargetSum = (currentGrid) => {
     const gridCopy = [...currentGrid];
-    const length = Math.floor(Math.random() * 3) + 2;
+    const minTerms = difficultyConfig.minTerms || 2;
+    const maxTerms = difficultyConfig.maxTerms || 3;
+    const length = Math.floor(Math.random() * (maxTerms - minTerms + 1)) + minTerms;
     let sum = 0;
     
     for (let i = 0; i < length; i++) {
@@ -45,8 +50,9 @@ const SumFinder = () => {
   };
 
   const startGame = () => {
+    const duration = difficultyConfig.timeLimit || 60;
     setScore(0);
-    setTimeLeft(60);
+    setTimeLeft(duration);
     setSelectedIndices([]);
     setCurrentSum(0);
     setCombo(1);
@@ -152,6 +158,7 @@ const SumFinder = () => {
         setHighScore(score);
         localStorage.setItem('sumFinderHighScore', score.toString());
       }
+      recordResult({ score, mistakes: 0 });
     }
     return () => clearInterval(timerRef.current);
   }, [gameState, score]);

@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaVolumeUp, FaExpand, FaTrophy, FaStar, FaHeart, FaMoon, FaSun, FaCloud, FaBolt, FaLeaf, FaFire } from 'react-icons/fa';
+import { useAdaptiveDifficulty } from '../../hooks/useAdaptiveDifficulty';
 
 const ICONS = [FaStar, FaHeart, FaMoon, FaSun, FaCloud, FaBolt, FaLeaf, FaFire];
 const initialSubMessage = "Memorize the positions of the pairs and match them.";
 
 const MemoryMatch = () => {
+  const { difficultyConfig, recordResult } = useAdaptiveDifficulty('memory-match', 'Memory Match');
   const [gameState, setGameState] = useState('menu'); // menu, showing, playing, transition, over
   const [level, setLevel] = useState(1);
   const [highScore, setHighScore] = useState(parseInt(localStorage.getItem('memoryMatchHighScore')) || 0);
@@ -14,7 +16,7 @@ const MemoryMatch = () => {
   const [flippedIndices, setFlippedIndices] = useState([]);
   const [matchedPairs, setMatchedPairs] = useState([]);
   const [mistakes, setMistakes] = useState(0);
-  const maxMistakes = 3;
+  const maxMistakes = difficultyConfig.mistakesAllowed || 3;
 
   const [message, setMessage] = useState('Memory Match');
   const [subMessage, setSubMessage] = useState(initialSubMessage);
@@ -42,12 +44,8 @@ const MemoryMatch = () => {
   };
 
   const generateCards = (currentLevel) => {
-    // Determine grid size based on level
-    // Level 1: 4 cards (2 pairs), Level 2: 8 cards (4 pairs), Level 3: 12 cards, Level 4+: 16 cards (8 pairs max)
-    let pairCount = 2;
-    if (currentLevel === 2) pairCount = 4;
-    else if (currentLevel === 3) pairCount = 6;
-    else if (currentLevel >= 4) pairCount = 8; // Max 8 pairs with our 8 icons
+    const basePairs = difficultyConfig.startingPairs || 2;
+    const pairCount = Math.min(8, Math.max(2, basePairs + (currentLevel - 1)));
 
     const selectedIcons = ICONS.slice(0, pairCount);
     let newCards = [...selectedIcons, ...selectedIcons]; // Duplicate for pairs
@@ -81,8 +79,8 @@ const MemoryMatch = () => {
     const allIndices = newCards.map((_, idx) => idx);
     setFlippedIndices(allIndices);
 
-    let displayTime = 1500 + (currentLevel * 500); // More time for higher levels
-    if (displayTime > 4000) displayTime = 4000;
+    const baseDisplay = difficultyConfig.previewTime || 2000;
+    const displayTime = Math.min(4000, baseDisplay + (currentLevel - 1) * 300);
 
     addTimeout(() => {
         setFlippedIndices([]);
@@ -131,6 +129,7 @@ const MemoryMatch = () => {
                   setGameState('over');
                   setMessage("Game Over");
                   setSubMessage(`You reached level ${level}\n\n${initialSubMessage}`);
+                  recordResult({ score: level - 1, mistakes: newMistakes });
               }
 
               addTimeout(() => {

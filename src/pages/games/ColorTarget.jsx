@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaVolumeUp, FaExpand, FaTrophy, FaClock } from 'react-icons/fa';
+import { useAdaptiveDifficulty } from '../../hooks/useAdaptiveDifficulty';
 
 const TARGET_COLORS = [
   { name: 'GREEN', hex: '#22c55e', bg: 'bg-green-500' },
@@ -9,6 +10,7 @@ const TARGET_COLORS = [
 ];
 
 const ColorTarget = () => {
+  const { difficultyConfig, recordResult } = useAdaptiveDifficulty('color-target', 'Color Target');
   const [gameState, setGameState] = useState('menu');
   const [score, setScore] = useState(0);
   const [level, setLevel] = useState(1);
@@ -27,8 +29,10 @@ const ColorTarget = () => {
     const color = TARGET_COLORS[Math.floor(Math.random() * TARGET_COLORS.length)];
     setTargetColor(color);
     
-    const totalDots = 10 + Math.floor(currentLevel * 2);
-    const targetCount = Math.floor(totalDots * 0.4); 
+    const baseDots = difficultyConfig.initialDots || 10;
+    const totalDots = baseDots + Math.floor((currentLevel - 1) * 2);
+    const targetRatio = difficultyConfig.targetRatio || 0.4;
+    const targetCount = Math.max(2, Math.floor(totalDots * targetRatio)); 
     
     let newDots = [];
     for (let i = 0; i < totalDots; i++) {
@@ -53,7 +57,8 @@ const ColorTarget = () => {
     
     newDots = newDots.sort(() => Math.random() - 0.5);
     setDots(newDots);
-    setTimeLeft(Math.max(3, 10 - Math.floor(currentLevel / 3)));
+    const baseTime = difficultyConfig.timeLimit || 10;
+    setTimeLeft(Math.max(3, baseTime - Math.floor((currentLevel - 1) / 3)));
   };
 
   const startGame = () => {
@@ -95,6 +100,7 @@ const ColorTarget = () => {
     setGameState('over');
     setMessage('Game Over!');
     setSubMessage(`You reached Level ${level} with a score of ${score}`);
+    recordResult({ score, mistakes: 1 });
   };
 
   const handleDotClick = (id) => {

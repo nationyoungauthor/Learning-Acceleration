@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaVolumeUp, FaExpand, FaTrophy, FaGraduationCap, FaCheckCircle, FaTimesCircle, FaArrowRight } from 'react-icons/fa';
+import { useAdaptiveDifficulty } from '../../hooks/useAdaptiveDifficulty';
 
 const wordPool = [
   { english: 'Book', foreign: 'Libri' },
@@ -24,6 +25,7 @@ const wordPool = [
 ];
 
 const AssociationLearning = () => {
+  const { difficultyConfig, recordResult } = useAdaptiveDifficulty('association-learning', 'Association Learning');
   const [gameState, setGameState] = useState('menu'); // menu, study, quiz, over
   const [highScore, setHighScore] = useState(
     parseInt(localStorage.getItem('associationLearningHighScore')) || 0
@@ -46,8 +48,10 @@ const AssociationLearning = () => {
   const [subMessage, setSubMessage] = useState('Memorize foreign vocabulary word pairs, then test your active recall accuracy and speed.');
 
   const setupLevel = (lvl) => {
-    const numPairs = 3 + lvl;
-    const studyDuration = 9 + lvl * 3;
+    const basePairs = difficultyConfig.basePairs || 3;
+    const numPairs = basePairs + (lvl - 1);
+    const baseDuration = difficultyConfig.baseStudyDuration || 11;
+    const studyDuration = baseDuration + (lvl - 1) * 2;
     
     const shuffled = [...wordPool].sort(() => 0.5 - Math.random());
     const selected = shuffled.slice(0, numPairs);
@@ -56,9 +60,10 @@ const AssociationLearning = () => {
     setStudyTimeLeft(studyDuration);
     setStudyProgress(100);
     
+    const optCount = difficultyConfig.optionCount || 4;
     const qList = selected.map(pair => {
       const poolWithoutCurrent = wordPool.filter(w => w.english !== pair.english);
-      const wrongShuffled = poolWithoutCurrent.sort(() => 0.5 - Math.random()).slice(0, 3);
+      const wrongShuffled = poolWithoutCurrent.sort(() => 0.5 - Math.random()).slice(0, optCount - 1);
       const options = [pair.english, ...wrongShuffled.map(w => w.english)].sort(() => 0.5 - Math.random());
       
       return {
@@ -85,7 +90,8 @@ const AssociationLearning = () => {
 
   useEffect(() => {
     if (gameState === 'study') {
-      const duration = 9 + level * 3;
+      const baseDuration = difficultyConfig.baseStudyDuration || 11;
+      const duration = baseDuration + (level - 1) * 2;
       studyTimerRef.current = setInterval(() => {
         setStudyTimeLeft(prev => {
           if (prev <= 1) {
@@ -103,7 +109,7 @@ const AssociationLearning = () => {
       }, 1000);
     }
     return () => clearInterval(studyTimerRef.current);
-  }, [gameState, level]);
+  }, [gameState, level, difficultyConfig]);
 
   const handleOptionClick = (option) => {
     if (selectedOption !== null) return;
@@ -141,6 +147,7 @@ const AssociationLearning = () => {
         setGameState('over');
         setMessage('Training Complete!');
         setSubMessage('You have successfully tested your vocab associations.');
+        recordResult({ score: finalScore });
       }
     }
   };

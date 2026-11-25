@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaVolumeUp, FaExpand, FaTrophy, FaHeart } from 'react-icons/fa';
+import { useAdaptiveDifficulty } from '../../hooks/useAdaptiveDifficulty';
 
 const PatternLogic = () => {
+  const { difficultyConfig, recordResult } = useAdaptiveDifficulty('pattern-logic', 'Pattern Logic');
   const [gameState, setGameState] = useState('menu'); // menu, playing, over
   const [score, setScore] = useState(0);
   const [lives, setLives] = useState(3);
@@ -19,9 +21,8 @@ const PatternLogic = () => {
   const inputRef = useRef(null);
 
   const generateSequence = (level) => {
-    let type = Math.floor(Math.random() * 3);
-    if (level > 5) type = Math.floor(Math.random() * 4);
-    if (level > 10) type = Math.floor(Math.random() * 5);
+    const maxTypes = difficultyConfig.maxTypes || 3;
+    let type = Math.floor(Math.random() * maxTypes);
     
     let seq = [];
     let ans = 0;
@@ -86,8 +87,9 @@ const PatternLogic = () => {
   }, [gameState, sequence]);
 
   const startGame = () => {
+    const initLives = difficultyConfig.lives || 3;
     setScore(0);
-    setLives(3);
+    setLives(initLives);
     setGameState('playing');
     setMessage('Find the Next Number');
     setSubMessage('Type your answer and press enter.');
@@ -114,6 +116,7 @@ const PatternLogic = () => {
         setGameState('over');
         setMessage('Game Over');
         setSubMessage(`You reached a score of ${score}`);
+        recordResult({ score, mistakes: difficultyConfig.lives || 3 });
       }
     }
   };

@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaVolumeUp, FaExpand, FaTrophy } from 'react-icons/fa';
+import { useAdaptiveDifficulty } from '../../hooks/useAdaptiveDifficulty';
 
 const initialSubMessage = "Watch the sequence of numbers and repeat it.\nOne more digit is added each round.";
 
 const NumberSequence = () => {
+  const { difficultyConfig, recordResult } = useAdaptiveDifficulty('number-sequence', 'Number Sequence');
   const [gameState, setGameState] = useState('menu'); // menu, showing, playing, transition, over
   const [level, setLevel] = useState(1);
   const [highScore, setHighScore] = useState(parseInt(localStorage.getItem('numberSequenceHighScore')) || 0);
@@ -41,33 +43,45 @@ const NumberSequence = () => {
   const startGame = () => {
     setLevel(1);
     setSequence([]);
-    startLevel(1, []);
+    
+    // Generate initial sequence based on adaptive difficulty
+    const initLen = difficultyConfig.initialLength || 3;
+    const initialSeq = [];
+    for (let i = 0; i < initLen; i++) {
+      initialSeq.push(Math.floor(Math.random() * 9) + 1);
+    }
+    startLevel(1, initialSeq, true);
   };
 
-  const startLevel = (currentLevel, currentSeq) => {
+  const startLevel = (currentLevel, currentSeq, isInitial = false) => {
     setGameState('showing');
     setUserStep(0);
     setActiveKey(null);
     setMessage("Watch carefully...");
     setSubMessage("");
 
-    const newDigit = Math.floor(Math.random() * 9) + 1; // 1-9
-    const newSeq = [...currentSeq, newDigit];
+    let newSeq = currentSeq;
+    if (!isInitial) {
+      const newDigit = Math.floor(Math.random() * 9) + 1; // 1-9
+      newSeq = [...currentSeq, newDigit];
+    }
     setSequence(newSeq);
 
-    // Play sequence
+    // Play sequence using adaptive speed
+    const flashDur = difficultyConfig.flashDuration || 400;
+    const intervalDur = difficultyConfig.intervalMs || 600;
     let delay = 500;
     
-    newSeq.forEach((digit, index) => {
+    newSeq.forEach((digit) => {
         addTimeout(() => {
             setActiveKey(digit);
         }, delay);
         
         addTimeout(() => {
             setActiveKey(null);
-        }, delay + 400); // 400ms flash duration
+        }, delay + flashDur);
         
-        delay += 600; // 600ms between flashes
+        delay += intervalDur;
     });
 
     addTimeout(() => {
@@ -101,6 +115,7 @@ const NumberSequence = () => {
           setGameState('over');
           setMessage("Wrong Sequence");
           setSubMessage(`You reached level ${level}\n\n${initialSubMessage}`);
+          recordResult({ score: level - 1, mistakes: 1 });
       }
   };
 

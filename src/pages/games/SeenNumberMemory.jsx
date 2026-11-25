@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaVolumeUp, FaExpand, FaTrophy, FaCheck, FaTimes } from 'react-icons/fa';
+import { useAdaptiveDifficulty } from '../../hooks/useAdaptiveDifficulty';
 
 const initialSubMessage = "Memorize the numbers you see. If you've seen the number before in this test, click SEEN. If it's a new number, click NEW.";
 
 const SeenNumberMemory = () => {
+  const { difficultyConfig, recordResult } = useAdaptiveDifficulty('seen-number-memory', 'Seen Number Memory');
   const [gameState, setGameState] = useState('menu'); // menu, playing, over
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(parseInt(localStorage.getItem('seenNumberHighScore')) || 0);
@@ -25,20 +27,22 @@ const SeenNumberMemory = () => {
   }, [score, highScore, gameState]);
 
   const generateNumber = () => {
-    // Determine if we should show a seen number or a new number
-    // 50% chance, unless we haven't seen any numbers yet
-    if (seenNumbers.size > 0 && Math.random() < 0.5) {
+    const seenProb = difficultyConfig.seenProbability !== undefined ? difficultyConfig.seenProbability : 0.5;
+    if (seenNumbers.size > 0 && Math.random() < seenProb) {
         // Pick a random seen number
         const seenArray = Array.from(seenNumbers);
         const randomSeen = seenArray[Math.floor(Math.random() * seenArray.length)];
         setCurrentNumber(randomSeen);
         setIsSeen(true);
     } else {
-        // Generate a new number
+        // Generate a new number within adaptive range
+        const maxRange = difficultyConfig.maxNumberRange || 1000;
         let newNum;
+        let attempts = 0;
         do {
-            newNum = Math.floor(Math.random() * 1000) + 1; // 1 to 1000
-        } while (seenNumbers.has(newNum));
+            newNum = Math.floor(Math.random() * maxRange) + 1;
+            attempts++;
+        } while (seenNumbers.has(newNum) && attempts < 100);
         
         setCurrentNumber(newNum);
         setIsSeen(false);
@@ -46,17 +50,19 @@ const SeenNumberMemory = () => {
   };
 
   const startGame = () => {
+    const maxStrikes = difficultyConfig.strikes || 3;
     setScore(0);
     setStrikes(0);
     setSeenNumbers(new Set());
     setGameState('playing');
     setMessage('Have you seen this number before?');
-    setSubMessage(`You have 3 strikes left.`);
+    setSubMessage(`You have ${maxStrikes} strikes left.`);
     generateNumber();
   };
 
   const handleChoice = (userChoseSeen) => {
       if (gameState !== 'playing') return;
+      const maxStrikes = difficultyConfig.strikes || 3;
 
       if ((userChoseSeen && isSeen) || (!userChoseSeen && !isSeen)) {
           // Correct
@@ -75,12 +81,13 @@ const SeenNumberMemory = () => {
           const newStrikes = strikes + 1;
           setStrikes(newStrikes);
           
-          if (newStrikes >= 3) {
+          if (newStrikes >= maxStrikes) {
               setGameState('over');
               setMessage('Game Over');
               setSubMessage(`Score: ${score}\n\n${initialSubMessage}`);
+              recordResult({ score, mistakes: newStrikes });
           } else {
-              setSubMessage(`Wrong! You have ${3 - newStrikes} strike${3 - newStrikes === 1 ? '' : 's'} left.`);
+              setSubMessage(`Wrong! You have ${maxStrikes - newStrikes} strike${maxStrikes - newStrikes === 1 ? '' : 's'} left.`);
               
               if (!isSeen) {
                   setSeenNumbers(prev => {

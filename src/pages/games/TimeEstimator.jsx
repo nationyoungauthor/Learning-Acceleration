@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaVolumeUp, FaExpand, FaTrophy } from 'react-icons/fa';
+import { useAdaptiveDifficulty } from '../../hooks/useAdaptiveDifficulty';
 
 const TimeEstimator = () => {
+  const { difficultyConfig, recordResult } = useAdaptiveDifficulty('time-estimator', 'Time Estimator');
   const [gameState, setGameState] = useState('menu'); // menu, ready, playing, over
   const [highScore, setHighScore] = useState(
     parseInt(localStorage.getItem('timeEstimatorHighScore')) || 0
@@ -16,8 +18,9 @@ const TimeEstimator = () => {
   const [subMessage, setSubMessage] = useState('Estimate durations as accurately as possible without counting.');
   
   const generateTarget = () => {
-    // Random target between 3.0 and 12.0 seconds
-    const target = Math.floor(Math.random() * 9000) + 3000;
+    const minTarget = difficultyConfig.minTargetMs || 3000;
+    const maxTarget = difficultyConfig.maxTargetMs || 12000;
+    const target = Math.floor(Math.random() * (maxTarget - minTarget)) + minTarget;
     setTargetTime(target);
   };
 
@@ -40,9 +43,11 @@ const TimeEstimator = () => {
     const diff = Math.abs(elapsedTime - targetTime);
     
     // Calculate score based on percentage error
-    // If error is 0, score is 100. If error is 50% of target, score is 50.
     const errorPercentage = diff / targetTime;
-    const calculatedScore = Math.max(0, Math.floor(100 - (errorPercentage * 100)));
+    const tolerance = difficultyConfig.toleranceMargin || 0.15;
+    // Scale precision score based on tolerance margin
+    const scaledError = errorPercentage / (tolerance * 5);
+    const calculatedScore = Math.max(0, Math.floor(100 - (scaledError * 100)));
     
     setScore(calculatedScore);
 
@@ -60,6 +65,7 @@ const TimeEstimator = () => {
     } else {
       setSubMessage(`You stopped at ${(elapsedTime / 1000).toFixed(3)}s - ${diffSeconds}s too late.`);
     }
+    recordResult({ score: calculatedScore, completionTime: elapsedTime / 1000 });
   };
 
   return (
